@@ -1,17 +1,11 @@
 import * as React from 'react'
+import { AuthCheck } from 'reactfire'
 
-import { MyComponent } from 'components/MyComponent'
+import { Login } from 'components/Login'
+import { AuthenticatedApp } from 'authenticated-app'
 
 const App: React.FC = () => {
-  const [numbers, setNumbers] = React.useState([1, 'balls', 3, 4, 5, 6])
-
-  return (
-    <div>
-      {numbers.map((number: number | string) => {
-        return <MyComponent key={number} myProp={number} />
-      })}
-    </div>
-  )
+  return <AuthCheck fallback={<Login />}>{<AuthenticatedApp />}</AuthCheck>
 }
 
 export default App
