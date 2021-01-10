@@ -1,9 +1,13 @@
 import * as React from 'react'
 
-const MyComponent: React.FC = () => {
+type MyComponentProps = {
+  myProp: number | string
+}
+
+const MyComponent: React.FC<MyComponentProps> = ({ myProp }) => {
   return (
     <div>
-      <span>hi</span>
+      <span>{myProp}</span>
     </div>
   )
 }
