@@ -9,7 +9,7 @@ import { FormErrorMessage, FormLabel, FormControl, Input, Button } from '@chakra
 import Classroom from 'components/Classroom'
 
 const Classrooms: React.FC = () => {
-  const { handleSubmit, errors, register, formState } = useForm<FormData>()
+  const { handleSubmit, errors, register, formState, reset } = useForm<FormData>()
 
   const user = useUser()
 
@@ -26,25 +26,14 @@ const Classrooms: React.FC = () => {
 
   const classroomRef = useFirestore().collection('classrooms')
   const classroomDocuments = useFirestoreCollectionData<IClassroom>(classroomRef, { idField: 'docId' })
-  console.log({ classroomDocuments, user })
 
-  async function onSubmit(data: FormData, e: Event) {
-    console.log(data)
+  async function onSubmit(data: FormData, e: React.BaseSyntheticEvent | undefined) {
     await classroomRef.add({
       classroomName: data.classroomName,
       students: [],
     })
     e && e.target.reset()
   }
-
-  //   function validateName(value: string) {
-  //     console.log(value)
-  //     if (value === 'Steve') {
-  //       return 'Fuck you, Steve'
-  //     } else {
-  //       return true
-  //     }
-  //   }
 
   return (
     <>
