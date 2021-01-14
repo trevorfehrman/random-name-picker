@@ -32,7 +32,7 @@ const Classrooms: React.FC = () => {
       classroomName: data.classroomName,
       students: [],
     })
-    e && e.target.reset()
+    e?.target.reset()
   }
 
   return (
