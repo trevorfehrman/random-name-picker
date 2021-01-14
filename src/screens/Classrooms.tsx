@@ -16,35 +16,35 @@ const Classrooms: React.FC = () => {
   type FormData = {
     classroomName: string
   }
-
-  //Steve is the coolest
   interface IClassroom {
     docId: string
     classroomName: string
     students: []
   }
 
-  const classroomRef = useFirestore().collection('classrooms')
+  // tried getting to the correct user this way but it doesn't seem to be working well for me
+  const classroomQuery = useFirestore().collection('users').where('uid', '==', user.data.uid)
+  classroomQuery.get().then(result => {
+    console.log(result)
+  })
+  console.log(classroomQuery)
+
+  // This is creating new phantom user docs that have the google id as the docId
+  const classroomRef = useFirestore().collection('users').doc(user.data.uid).collection('studentGroups')
   const classroomDocuments = useFirestoreCollectionData<IClassroom>(classroomRef, { idField: 'docId' })
-  console.log({ classroomDocuments, user })
 
-  async function onSubmit(data: FormData) {
-    console.log(data)
-    await classroomRef.add({
-      classroomName: data.classroomName,
-      students: [],
-    })
-    reset({ classroomName: '' })
+  function onSubmit(data: FormData) {
+    console.log(data, user)
+    classroomRef
+      .add({
+        classroomName: data.classroomName,
+        students: [],
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    reset()
   }
-
-  //   function validateName(value: string) {
-  //     console.log(value)
-  //     if (value === 'Steve') {
-  //       return 'Fuck you, Steve'
-  //     } else {
-  //       return true
-  //     }
-  //   }
 
   return (
     <>
@@ -63,9 +63,9 @@ const Classrooms: React.FC = () => {
           Submit
         </Button>
       </form>
-      {!!classroomDocuments
+      {!!classroomDocuments.data
         ? classroomDocuments.data.map(doc => {
-            return <Classroom key={doc.docId} classroomName={doc.classroomName} />
+            return <Classroom key={doc.docId} classroomName={doc.classroomName} classroomId={doc.docId} />
           })
         : null}
     </>
