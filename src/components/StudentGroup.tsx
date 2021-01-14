@@ -19,13 +19,13 @@ const ButtonDiv = styled.div`
   display: flex;
 `
 
-type ClassroomProps = {
-  classroomName: string
-  classroomId: string
+type StudentGroupProps = {
+  studentGroupName: string
+  studentGroupId: string
 }
 
-const Classroom: React.FC<ClassroomProps> = ({ classroomName, classroomId }) => {
-  const classroomRef = useFirestore().collection('classrooms')
+const Classroom: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroupId }) => {
+  const studentGroupRef = useFirestore().collection('studentGroups')
 
   const openClassroomHandler = () => {
     console.log('hello')
@@ -34,8 +34,8 @@ const Classroom: React.FC<ClassroomProps> = ({ classroomName, classroomId }) => 
   const deleteHandler = (event: React.MouseEvent) => {
     event.stopPropagation()
     console.log('Ill be working soon')
-    classroomRef
-      .doc(classroomId)
+    studentGroupRef
+      .doc(studentGroupId)
       .delete()
       .catch(err => {
         console.log(err)
@@ -45,7 +45,7 @@ const Classroom: React.FC<ClassroomProps> = ({ classroomName, classroomId }) => 
   return (
     <ClassroomDiv onClick={openClassroomHandler}>
       <Heading as="h2" size="lg">
-        {classroomName}
+        {studentGroupName}
       </Heading>
       <ButtonDiv>
         <Button onClick={event => deleteHandler(event)}>Delete</Button>

@@ -6,7 +6,7 @@ import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 
 import { FormErrorMessage, FormLabel, FormControl, Input, Button } from '@chakra-ui/react'
 
-import Classroom from 'components/Classroom'
+import StudentGroup from 'components/StudentGroup'
 
 const Classrooms: React.FC = () => {
   const { handleSubmit, errors, register, formState, reset } = useForm<FormData>()
@@ -14,30 +14,30 @@ const Classrooms: React.FC = () => {
   const user = useUser()
 
   type FormData = {
-    classroomName: string
+    studentGroupName: string
   }
   interface IClassroom {
     docId: string
-    classroomName: string
+    studentGroupName: string
     students: []
   }
 
   // tried getting to the correct user this way but it doesn't seem to be working well for me
-  const classroomQuery = useFirestore().collection('users').where('uid', '==', user.data.uid)
-  classroomQuery.get().then(result => {
+  const studentGroupQuery = useFirestore().collection('users').where('uid', '==', user.data.uid)
+  studentGroupQuery.get().then(result => {
     console.log(result)
   })
-  console.log(classroomQuery)
+  console.log(studentGroupQuery)
 
   // This is creating new phantom user docs that have the google id as the docId
-  const classroomRef = useFirestore().collection('users').doc(user.data.uid).collection('studentGroups')
-  const classroomDocuments = useFirestoreCollectionData<IClassroom>(classroomRef, { idField: 'docId' })
+  const studentGroupRef = useFirestore().collection('users').doc(user.data.uid).collection('studentGroups')
+  const studentGroupDocuments = useFirestoreCollectionData<IClassroom>(studentGroupRef, { idField: 'docId' })
 
   function onSubmit(data: FormData) {
     console.log(data, user)
-    classroomRef
+    studentGroupRef
       .add({
-        classroomName: data.classroomName,
+        classroomName: data.studentGroupName,
         students: [],
       })
       .catch(err => {
@@ -49,13 +49,17 @@ const Classrooms: React.FC = () => {
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={!!errors.classroomName}>
-          <FormLabel htmlFor="classroomName">Classroom Name</FormLabel>
-          <Input name="classroomName" placeholder="Classroom name" ref={register({ required: true, minLength: 3 })} />
-          {errors.classroomName && errors.classroomName.type === 'required' && (
+        <FormControl isInvalid={!!errors.studentGroupName}>
+          <FormLabel htmlFor="studentGroupName">Classroom Name</FormLabel>
+          <Input
+            name="studentGroupName"
+            placeholder="Classroom name"
+            ref={register({ required: true, minLength: 3 })}
+          />
+          {errors.studentGroupName && errors.studentGroupName.type === 'required' && (
             <FormErrorMessage>This field is required</FormErrorMessage>
           )}
-          {errors.classroomName && errors.classroomName.type === 'minLength' && (
+          {errors.studentGroupName && errors.studentGroupName.type === 'minLength' && (
             <FormErrorMessage>Please enter a classroom name with at least 3 characters</FormErrorMessage>
           )}
         </FormControl>
@@ -63,9 +67,9 @@ const Classrooms: React.FC = () => {
           Submit
         </Button>
       </form>
-      {!!classroomDocuments.data
-        ? classroomDocuments.data.map(doc => {
-            return <Classroom key={doc.docId} classroomName={doc.classroomName} classroomId={doc.docId} />
+      {!!studentGroupDocuments.data
+        ? studentGroupDocuments.data.map(doc => {
+            return <StudentGroup key={doc.docId} studentGroupName={doc.studentGroupName} studentGroupId={doc.docId} />
           })
         : null}
     </>
