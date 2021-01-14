@@ -28,12 +28,13 @@ const Classrooms: React.FC = () => {
   const classroomDocuments = useFirestoreCollectionData<IClassroom>(classroomRef, { idField: 'docId' })
   console.log({ classroomDocuments, user })
 
-  async function onSubmit(values: FormData) {
-    console.log(values)
+  async function onSubmit(data: FormData, e: Event) {
+    console.log(data)
     await classroomRef.add({
-      classroomName: values.classroomName,
+      classroomName: data.classroomName,
       students: [],
     })
+    e && e.target.reset()
   }
 
   //   function validateName(value: string) {
@@ -62,9 +63,11 @@ const Classrooms: React.FC = () => {
           Submit
         </Button>
       </form>
-      {classroomDocuments.data.map((doc: IClassroom) => {
-        return <Classroom key={doc.docId} classroomName={doc.classroomName} />
-      })}
+      {!!classroomDocuments
+        ? classroomDocuments.data.map(doc => {
+            return <Classroom key={doc.docId} classroomName={doc.classroomName} />
+          })
+        : null}
     </>
   )
 }

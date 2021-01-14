@@ -1,12 +1,15 @@
 import * as React from 'react'
 
 type ClassroomProps = {
-  key: string
-  classroomName: string
+  classroomName?: string
+}
+
+const openClassroomHandler = () => {
+  console.log('hello')
 }
 
 const Classroom: React.FC<ClassroomProps> = ({ classroomName }) => {
-  return <div>hello</div>
+  return <div onClick={openClassroomHandler}>{classroomName}</div>
 }
 
 export default Classroom
