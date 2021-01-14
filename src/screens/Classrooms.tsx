@@ -24,7 +24,7 @@ const Classrooms: React.FC = () => {
   }
 
   const classroomRef = useFirestore().collection('classrooms')
-  const classroomDocuments = useFirestoreCollectionData(classroomRef, { idField: 'docId' })
+  const classroomDocuments = useFirestoreCollectionData<IClassroom>(classroomRef, { idField: 'docId' })
   console.log({ classroomDocuments, user })
 
   async function onSubmit(values: FormData) {
