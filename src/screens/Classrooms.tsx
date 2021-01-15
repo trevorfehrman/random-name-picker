@@ -21,13 +21,14 @@ const Classrooms: React.FC = () => {
 
   //Steve is the druel-ist.
   interface IClassroom {
-    docId: string
     classroomName: string
     students: []
   }
 
   const classroomRef = useFirestore().collection('classrooms')
-  const classroomDocuments = useFirestoreCollectionData<IClassroom>(classroomRef, { idField: 'docId' })
+  const classroomDocuments = useFirestoreCollectionData<IClassroom & { docId: string }>(classroomRef, {
+    idField: 'docId',
+  })
 
   async function onSubmit(data: FormData, e: React.BaseSyntheticEvent | undefined) {
     await classroomRef.add({
