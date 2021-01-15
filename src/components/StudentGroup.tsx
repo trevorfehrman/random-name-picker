@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import 'firebase/firestore'
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 
-const ClassroomDiv = styled.div`
+const StudentGroupDiv = styled.div`
   border: 1px solid black;
   margin: 3px 0;
   display: flex;
@@ -19,15 +19,22 @@ const ButtonDiv = styled.div`
   display: flex;
 `
 
+interface IClassroom {
+  studentGroupName: string
+  students: []
+  docId: string
+}
+
 type StudentGroupProps = {
   studentGroupName: string
   studentGroupId: string
+  doc: IClassroom
 }
 
-const Classroom: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroupId }) => {
+const StudentGroup: React.FC<StudentGroupProps> = ({ doc }) => {
   const studentGroupRef = useFirestore().collection('studentGroups')
 
-  const openClassroomHandler = () => {
+  const openStudentGroupHandler = () => {
     console.log('hello')
   }
 
@@ -35,7 +42,7 @@ const Classroom: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroup
     event.stopPropagation()
     console.log('Ill be working soon')
     studentGroupRef
-      .doc(studentGroupId)
+      .doc(doc.docId)
       .delete()
       .catch(err => {
         console.log(err)
@@ -43,16 +50,16 @@ const Classroom: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroup
   }
 
   return (
-    <ClassroomDiv onClick={openClassroomHandler}>
+    <StudentGroupDiv onClick={openStudentGroupHandler}>
       <Heading as="h2" size="lg">
-        {studentGroupName}
+        {doc.studentGroupName}
       </Heading>
       <ButtonDiv>
         <Button onClick={event => deleteHandler(event)}>Delete</Button>
         <Button>Edit</Button>
       </ButtonDiv>
-    </ClassroomDiv>
+    </StudentGroupDiv>
   )
 }
 
-export default Classroom
+export default StudentGroup
