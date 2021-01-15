@@ -6,8 +6,6 @@ import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 
 import { FormErrorMessage, FormLabel, FormControl, Input, Button } from '@chakra-ui/react'
 
-import Classroom from 'components/Classroom'
-
 const Classrooms: React.FC = () => {
   const { handleSubmit, errors, register, formState } = useForm<FormData>()
 
@@ -57,7 +55,7 @@ const Classrooms: React.FC = () => {
         </Button>
       </form>
       {classroomDocuments.data?.map(doc => {
-        return <Classroom key={doc.docId} classroomName={doc.classroomName} />
+        // return <Classroom key={doc.docId} classroomName={doc.classroomName} />
       })}
     </>
   )
