@@ -22,14 +22,14 @@ const StudentGroups: React.FC = () => {
   }
 
   //Steve is the druel-ist.
-  interface IClassroom {
+  interface IStudentGroup {
     studentGroupName: string
     students: []
     docId: string
   }
 
   const studentGroupRef = useFirestore().collection('studentGroups')
-  const studentGroupDocuments = useFirestoreCollectionData<IClassroom & { docId: string }>(studentGroupRef, {
+  const studentGroupDocuments = useFirestoreCollectionData<IStudentGroup & { docId: string }>(studentGroupRef, {
     idField: 'docId',
   })
 
@@ -59,9 +59,7 @@ const StudentGroups: React.FC = () => {
         </Button>
       </form>
       {studentGroupDocuments.data?.map(doc => {
-        return (
-          <StudentGroup key={doc.docId} studentGroupName={doc.studentGroupName} doc={doc} studentGroupId={doc.docId} />
-        )
+        return <StudentGroup key={doc.docId} studentGroup={doc} />
       })}
     </>
   )

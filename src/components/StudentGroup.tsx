@@ -19,19 +19,17 @@ const ButtonDiv = styled.div`
   display: flex;
 `
 
-interface IClassroom {
+interface IStudentGroup {
   studentGroupName: string
   students: []
   docId: string
 }
 
 type StudentGroupProps = {
-  studentGroupName: string
-  studentGroupId: string
-  doc: IClassroom
+  studentGroup: IStudentGroup
 }
 
-const StudentGroup: React.FC<StudentGroupProps> = ({ doc }) => {
+const StudentGroup: React.FC<StudentGroupProps> = ({ studentGroup }) => {
   const studentGroupRef = useFirestore().collection('studentGroups')
 
   const openStudentGroupHandler = () => {
@@ -42,7 +40,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ doc }) => {
     event.stopPropagation()
     console.log('Ill be working soon')
     studentGroupRef
-      .doc(doc.docId)
+      .doc(studentGroup.docId)
       .delete()
       .catch(err => {
         console.log(err)
@@ -52,7 +50,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ doc }) => {
   return (
     <StudentGroupDiv onClick={openStudentGroupHandler}>
       <Heading as="h2" size="lg">
-        {doc.studentGroupName}
+        {studentGroup.studentGroupName}
       </Heading>
       <ButtonDiv>
         <Button onClick={event => deleteHandler(event)}>Delete</Button>
