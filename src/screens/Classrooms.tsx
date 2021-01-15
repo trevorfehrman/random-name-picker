@@ -9,15 +9,19 @@ import { FormErrorMessage, FormLabel, FormControl, Input, Button } from '@chakra
 import Classroom from 'components/Classroom'
 
 const Classrooms: React.FC = () => {
-  const { handleSubmit, errors, register, formState, reset } = useForm<FormData>()
+  const { handleSubmit, errors, register, formState } = useForm<FormData>()
 
-  const user = useUser()
+  const { data: user } = useUser()
+
+  const studentGroupsRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
+  const studentGroupsData = useFirestoreCollectionData(studentGroupsRef)
+  console.log(studentGroupsData)
 
   type FormData = {
     classroomName: string
   }
 
-  //Steve is the coolest
+  //Steve is the druel-ist.
   interface IClassroom {
     docId: string
     classroomName: string
@@ -52,11 +56,9 @@ const Classrooms: React.FC = () => {
           Submit
         </Button>
       </form>
-      {!!classroomDocuments
-        ? classroomDocuments.data.map(doc => {
-            return <Classroom key={doc.docId} classroomName={doc.classroomName} />
-          })
-        : null}
+      {classroomDocuments.data?.map(doc => {
+        return <Classroom key={doc.docId} classroomName={doc.classroomName} />
+      })}
     </>
   )
 }

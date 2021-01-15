@@ -8,7 +8,8 @@ exports.createUserDoc = functions.auth.user().onCreate(user => {
   admin
     .firestore()
     .collection('teachers')
-    .add({
+    .doc(user.uid)
+    .set({
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
