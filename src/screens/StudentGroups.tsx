@@ -13,28 +13,23 @@ const StudentGroups: React.FC = () => {
 
   const { data: user } = useUser()
 
-  const studentGroupsRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
-  const studentGroupsData = useFirestoreCollectionData(studentGroupsRef)
-  console.log(studentGroupsData)
-
   type FormData = {
     studentGroupName: string
   }
 
-  //Steve is the druel-ist.
+  //Trevor is the cruelest.
   interface IStudentGroup {
     studentGroupName: string
     students: []
-    docId: string
   }
 
-  const studentGroupRef = useFirestore().collection('studentGroups')
-  const studentGroupDocuments = useFirestoreCollectionData<IStudentGroup & { docId: string }>(studentGroupRef, {
+  const studentGroupsRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
+  const studentGroupsDocuments = useFirestoreCollectionData<IStudentGroup & { docId: string }>(studentGroupsRef, {
     idField: 'docId',
   })
 
   async function onSubmit(data: FormData, e: React.BaseSyntheticEvent | undefined) {
-    await studentGroupRef.add({
+    await studentGroupsRef.add({
       studentGroupName: data.studentGroupName,
       students: [],
     })
@@ -58,8 +53,15 @@ const StudentGroups: React.FC = () => {
           Submit
         </Button>
       </form>
-      {studentGroupDocuments.data?.map(doc => {
-        return <StudentGroup key={doc.docId} studentGroup={doc} />
+      {studentGroupsDocuments.data?.map(doc => {
+        return (
+          <StudentGroup
+            key={doc.docId}
+            studentGroupName={doc.studentGroupName}
+            studentGroupId={doc.docId}
+            userId={user.uid}
+          />
+        )
       })}
     </>
   )
