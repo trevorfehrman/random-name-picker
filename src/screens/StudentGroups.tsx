@@ -25,7 +25,6 @@ const StudentGroups: React.FC = () => {
   interface IStudentGroup {
     studentGroupName: string
     students: []
-    docId: string
   }
 
   const studentGroupRef = useFirestore().collection('studentGroups')
@@ -59,7 +58,14 @@ const StudentGroups: React.FC = () => {
         </Button>
       </form>
       {studentGroupDocuments.data?.map(doc => {
-        return <StudentGroup key={doc.docId} studentGroup={doc} />
+        return (
+          <StudentGroup
+            key={doc.docId}
+            studentGroupName={doc.studentGroupName}
+            studentGroupId={doc.docId}
+            userId={user.uid}
+          />
+        )
       })}
     </>
   )
