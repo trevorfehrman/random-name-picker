@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import 'firebase/firestore'
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 
-const ClassroomDiv = styled.div`
+const StudentGroupContainer = styled.div`
   border: 1px solid black;
   margin: 3px 0;
   display: flex;
@@ -22,12 +22,13 @@ const ButtonDiv = styled.div`
 type StudentGroupProps = {
   studentGroupName: string
   studentGroupId: string
+  userId: string
 }
 
-const Classroom: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroupId }) => {
+const StudentGroup: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroupId, userId }) => {
   const studentGroupRef = useFirestore().collection('studentGroups')
 
-  const openClassroomHandler = () => {
+  const openStudentGroupHandler = () => {
     console.log('hello')
   }
 
@@ -43,7 +44,7 @@ const Classroom: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroup
   }
 
   return (
-    <ClassroomDiv onClick={openClassroomHandler}>
+    <StudentGroupContainer onClick={openStudentGroupHandler}>
       <Heading as="h2" size="lg">
         {studentGroupName}
       </Heading>
@@ -51,8 +52,8 @@ const Classroom: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroup
         <Button onClick={event => deleteHandler(event)}>Delete</Button>
         <Button>Edit</Button>
       </ButtonDiv>
-    </ClassroomDiv>
+    </StudentGroupContainer>
   )
 }
 
-export default Classroom
+export default StudentGroup
