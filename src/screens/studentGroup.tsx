@@ -25,7 +25,6 @@ const StudentGroup: React.FC = () => {
   const studentGroupDocument = useFirestoreDocData<IStudentGroup & { docId: string }>(studentGroupRef, {
     idField: 'docId',
   }).data
-  console.log(studentGroupDocument)
 
   const addNameHandler = () => {
     studentGroupRef
@@ -35,22 +34,29 @@ const StudentGroup: React.FC = () => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center">
-      <Heading as="h1">{studentGroupDocument?.studentGroupName}</Heading>
+    <>
+      <Box display="flex" flexDirection="column" alignItems="center">
+        <Heading as="h1">{studentGroupDocument?.studentGroupName}</Heading>
 
-      <Box display="flex" alignItems="center">
-        <label htmlFor="student-name">Name:</label>
-        <Input
-          placeholder="Student name"
-          id="student-name"
-          aria-label="student-name"
-          onChange={e => setStudentInput(e.target.value)}
-        ></Input>
-        <Button aria-label="add" onClick={addNameHandler}>
-          Add
-        </Button>
+        <Box display="flex" alignItems="center">
+          <label htmlFor="student-name">Name:</label>
+          <Input
+            placeholder="Student name"
+            id="student-name"
+            aria-label="student-name"
+            onChange={e => setStudentInput(e.target.value)}
+          ></Input>
+          <Button aria-label="add" onClick={addNameHandler}>
+            Add
+          </Button>
+        </Box>
       </Box>
-    </Box>
+      <Box>
+        {studentGroupDocument.students.map(doc => {
+          return <div key={doc.studentName}>{doc.studentName}</div>
+        })}
+      </Box>
+    </>
   )
 }
 
