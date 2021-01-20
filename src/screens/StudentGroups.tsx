@@ -29,7 +29,6 @@ const StudentGroups: React.FC = () => {
         studentGroupName: studentGroupName,
         students: [],
       })
-      console.log(result.id)
       history.push('/student-group/' + result.id)
     } catch (err) {
       console.log(err)
@@ -51,7 +50,14 @@ const StudentGroups: React.FC = () => {
         <Button onSubmit={e => submitHandler(e)}>Create</Button>
       </Box>
       {studentGroupsDocuments.data?.map(doc => {
-        return <StudentGroupPreview key={doc.docId} doc={doc} userId={user.uid} />
+        return (
+          <StudentGroupPreview
+            key={doc.docId}
+            studentGroupId={doc.docId}
+            studentGroupName={doc.studentGroupName}
+            userId={user.uid}
+          />
+        )
       })}
     </>
   )

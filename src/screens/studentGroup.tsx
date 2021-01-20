@@ -15,8 +15,6 @@ const StudentGroup: React.FC = () => {
   const params: Params = useParams()
   const studentGroupId = params.groupId
 
-  console.log(studentGroupId)
-
   const { data: user } = useUser()
 
   const studentGroupRef = useFirestore()

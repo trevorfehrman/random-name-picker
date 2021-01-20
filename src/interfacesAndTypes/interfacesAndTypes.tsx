@@ -1,4 +1,8 @@
 export interface IStudentGroup {
   studentGroupName: string
-  students: []
+  students: IStudent[]
+}
+
+interface IStudent {
+  studentName: string
 }
