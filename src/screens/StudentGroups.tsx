@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useForm } from 'react-hook-form'
+// import { useForm } from 'react-hook-form'
 import 'firebase/firestore'
 
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
@@ -9,7 +9,9 @@ import { FormErrorMessage, FormLabel, FormControl, Input, Button } from '@chakra
 import StudentGroup from 'components/StudentGroup'
 
 const StudentGroups: React.FC = () => {
-  const { handleSubmit, errors, register, formState } = useForm<FormData>()
+  const [studentGroupName, setStudentGroupName] = React.useState('')
+
+  // const { handleSubmit, errors, register, formState } = useForm<FormData>()
 
   const { data: user } = useUser()
 
@@ -17,9 +19,9 @@ const StudentGroups: React.FC = () => {
   const studentGroupsData = useFirestoreCollectionData(studentGroupsRef)
   console.log(studentGroupsData)
 
-  type FormData = {
-    studentGroupName: string
-  }
+  // type FormData = {
+  //   studentGroupName: string
+  // }
 
   //Steve is the druel-ist.
   interface IClassroom {
@@ -28,14 +30,15 @@ const StudentGroups: React.FC = () => {
     docId: string
   }
 
-  const studentGroupRef = useFirestore().collection('studentGroups')
+  const studentGroupRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
   const studentGroupDocuments = useFirestoreCollectionData<IClassroom & { docId: string }>(studentGroupRef, {
     idField: 'docId',
   })
 
-  async function onSubmit(data: FormData, e: React.BaseSyntheticEvent | undefined) {
+  async function submitHandler(e: React.BaseSyntheticEvent | undefined) {
+    e?.preventDefault()
     await studentGroupRef.add({
-      studentGroupName: data.studentGroupName,
+      studentGroupName: studentGroupName,
       students: [],
     })
     e?.target.reset()
@@ -43,7 +46,7 @@ const StudentGroups: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      {/* <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={!!errors.studentGroupName}>
           <FormLabel htmlFor="studentGroupName">Group Name</FormLabel>
           <Input name="studentGroupName" placeholder="Group name" ref={register({ required: true, minLength: 3 })} />
@@ -57,11 +60,19 @@ const StudentGroups: React.FC = () => {
         <Button mt={4} colorScheme="teal" isLoading={formState.isSubmitting} type="submit">
           Submit
         </Button>
+      </form> */}
+      <form onSubmit={e => submitHandler(e)}>
+        <FormLabel htmlFor="studentGroupName">Student Group Name</FormLabel>
+        <Input
+          onChange={e => setStudentGroupName(e.target.value)}
+          placeholder="Student Group Name"
+          id="studentGroupName"
+          isRequired
+        ></Input>
+        <Button type="submit">Create</Button>
       </form>
       {studentGroupDocuments.data?.map(doc => {
-        return (
-          <StudentGroup key={doc.docId} studentGroupName={doc.studentGroupName} doc={doc} studentGroupId={doc.docId} />
-        )
+        return <StudentGroup key={doc.docId} doc={doc} userId={user.uid} />
       })}
     </>
   )
