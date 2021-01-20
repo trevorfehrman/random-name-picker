@@ -5,32 +5,17 @@ import 'firebase/firestore'
 
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 
-import { FormErrorMessage, FormLabel, FormControl, Input, Button } from '@chakra-ui/react'
+import { Box, FormLabel, Input, Button } from '@chakra-ui/react'
 
 import StudentGroupPreview from 'components/StudentGroupPreview'
+import { IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
 
 const StudentGroups: React.FC = () => {
   const [studentGroupName, setStudentGroupName] = React.useState('')
 
-  // const { handleSubmit, errors, register, formState } = useForm<FormData>()
-
   const { data: user } = useUser()
 
   const history = useHistory()
-
-  // const studentGroupsRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
-  // const studentGroupsData = useFirestoreCollectionData(studentGroupsRef)
-
-  // type FormData = {
-  //   studentGroupName: string
-  // }
-
-  //Steve is the druel-ist.
-  interface IStudentGroup {
-    studentGroupName: string
-    students: []
-    docId: string
-  }
 
   const studentGroupsRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
   const studentGroupsDocuments = useFirestoreCollectionData<IStudentGroup & { docId: string }>(studentGroupsRef, {
@@ -55,7 +40,7 @@ const StudentGroups: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={e => submitHandler(e)}>
+      <Box>
         <FormLabel htmlFor="studentGroupName">Student Group Name</FormLabel>
         <Input
           onChange={e => setStudentGroupName(e.target.value)}
@@ -63,8 +48,8 @@ const StudentGroups: React.FC = () => {
           id="studentGroupName"
           isRequired
         ></Input>
-        <Button type="submit">Create</Button>
-      </form>
+        <Button onSubmit={e => submitHandler(e)}>Create</Button>
+      </Box>
       {studentGroupsDocuments.data?.map(doc => {
         return <StudentGroupPreview key={doc.docId} doc={doc} userId={user.uid} />
       })}

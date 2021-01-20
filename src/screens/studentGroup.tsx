@@ -3,20 +3,19 @@ import { useParams } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData } from 'reactfire'
 import { Input, Button, Heading, Box } from '@chakra-ui/react'
+import { IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
 
 interface Params {
   groupId: string
 }
 
-interface IStudentGroup {
-  studentGroupName: string
-  students: []
-  docId: string
-}
-
 const StudentGroup: React.FC = () => {
+  const [studentInput, setStudentInput] = React.useState('')
+
   const params: Params = useParams()
   const studentGroupId = params.groupId
+
+  console.log(studentGroupId)
 
   const { data: user } = useUser()
 
@@ -25,19 +24,33 @@ const StudentGroup: React.FC = () => {
     .doc(user.uid)
     .collection('studentGroups')
     .doc(studentGroupId)
-  const studentGroupDocument = useFirestoreDocData<IStudentGroup>(studentGroupRef, {
+  const studentGroupDocument = useFirestoreDocData<IStudentGroup & { docId: string }>(studentGroupRef, {
     idField: 'docId',
   }).data
   console.log(studentGroupDocument)
 
+  const addNameHandler = () => {
+    studentGroupRef
+      .update({ students: [...studentGroupDocument.students, { studentName: studentInput }] })
+      .catch(err => console.log(err))
+    setStudentInput('')
+  }
+
   return (
     <Box display="flex" flexDirection="column" alignItems="center">
-      <Heading as="h1">{studentGroupDocument.studentGroupName}</Heading>
+      <Heading as="h1">{studentGroupDocument?.studentGroupName}</Heading>
 
-      <Box display="flex">
+      <Box display="flex" alignItems="center">
         <label htmlFor="student-name">Name:</label>
-        <Input placeholder="Student name" id="student-name" aria-label="student-name"></Input>
-        <Button aria-label="add">Add</Button>
+        <Input
+          placeholder="Student name"
+          id="student-name"
+          aria-label="student-name"
+          onChange={e => setStudentInput(e.target.value)}
+        ></Input>
+        <Button aria-label="add" onClick={addNameHandler}>
+          Add
+        </Button>
       </Box>
     </Box>
   )

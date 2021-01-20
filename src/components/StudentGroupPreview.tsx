@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Heading, IconButton } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import styled from '@emotion/styled'
+import { useHistory } from 'react-router-dom'
 
 import 'firebase/firestore'
 import { useFirestore } from 'reactfire'
@@ -34,8 +35,10 @@ type StudentGroupProps = {
 const StudentGroup: React.FC<StudentGroupProps> = ({ doc, userId }) => {
   const studentGroupRef = useFirestore().collection('teachers').doc(userId).collection('studentGroups')
 
+  const history = useHistory()
+
   const openStudentGroupHandler = () => {
-    console.log('hello')
+    history.push('/student-group/' + doc.docId)
   }
 
   const deleteHandler = (event: React.MouseEvent) => {
