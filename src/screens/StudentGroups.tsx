@@ -11,7 +11,7 @@ import StudentGroupPreview from 'components/StudentGroupPreview'
 import { IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
 
 const StudentGroups: React.FC = () => {
-  const [studentGroupName, setStudentGroupName] = React.useState('')
+  const [studentGroupNameInput, setStudentGroupNameInput] = React.useState('')
 
   const { data: user } = useUser()
 
@@ -26,15 +26,14 @@ const StudentGroups: React.FC = () => {
     e?.preventDefault()
     try {
       const result = await studentGroupsRef.add({
-        studentGroupName: studentGroupName,
+        studentGroupName: studentGroupNameInput,
         students: [],
       })
       history.push('/student-group/' + result.id)
     } catch (err) {
       console.log(err)
     }
-
-    e?.target.reset()
+    setStudentGroupNameInput('')
   }
 
   return (
@@ -42,12 +41,12 @@ const StudentGroups: React.FC = () => {
       <Box>
         <FormLabel htmlFor="studentGroupName">Student Group Name</FormLabel>
         <Input
-          onChange={e => setStudentGroupName(e.target.value)}
+          onChange={e => setStudentGroupNameInput(e.target.value)}
           placeholder="Student Group Name"
           id="studentGroupName"
           isRequired
         ></Input>
-        <Button onSubmit={e => submitHandler(e)}>Create</Button>
+        <Button onClick={e => submitHandler(e)}>Create</Button>
       </Box>
       {studentGroupsDocuments.data?.map(doc => {
         return (

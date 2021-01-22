@@ -5,4 +5,5 @@ export interface IStudentGroup {
 
 interface IStudent {
   studentName: string
+  studentId: string
 }

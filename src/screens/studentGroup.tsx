@@ -1,16 +1,27 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
 import 'firebase/firestore'
-import { useFirestore, useUser, useFirestoreDocData } from 'reactfire'
-import { Input, Button, Heading, Box } from '@chakra-ui/react'
+import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
+import { Input, Button, Box, Editable, EditablePreview, EditableInput } from '@chakra-ui/react'
 import { IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
+import styled from '@emotion/styled'
 
 interface Params {
   groupId: string
 }
 
+const StudentNameForm = styled.form``
+
+const StudentBox = styled.div`
+  margin: auto;
+  width: 90%;
+  border: 1px solid black;
+  min-height: 100px;
+`
+
 const StudentGroup: React.FC = () => {
   const [studentInput, setStudentInput] = React.useState('')
+  const [studentGroupNameInput, setStudentGroupNameInput] = React.useState<string>('')
 
   const params: Params = useParams()
   const studentGroupId = params.groupId
@@ -26,36 +37,73 @@ const StudentGroup: React.FC = () => {
     idField: 'docId',
   }).data
 
-  const addNameHandler = () => {
-    studentGroupRef
-      .update({ students: [...studentGroupDocument.students, { studentName: studentInput }] })
-      .catch(err => console.log(err))
-    setStudentInput('')
+  const studentsRef = useFirestore().collection('teachers').doc(user.uid).collection('students')
+  const students = useFirestoreCollectionData(studentsRef, { idField: 'docId' })
+
+  React.useEffect(() => {
+    if (studentGroupDocument) {
+      setStudentGroupNameInput(studentGroupDocument.studentGroupName)
+    }
+  }, [studentGroupDocument])
+
+  const addStudentHandler = async (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    try {
+      const studentResult = await studentsRef.add({
+        studentName: studentInput,
+      })
+      console.log(studentResult.id)
+      studentGroupRef
+        .update({
+          students: [...studentGroupDocument.students, { studentId: studentResult.id, studentName: studentInput }],
+        })
+        .catch(err => console.log(err))
+      setStudentInput('')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const editStudentGroupNameHandler = () => {
+    studentGroupRef.update({ studentGroupName: studentGroupNameInput }).catch(err => {
+      console.log(err)
+    })
   }
 
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Heading as="h1">{studentGroupDocument?.studentGroupName}</Heading>
-
-        <Box display="flex" alignItems="center">
+        <Editable
+          defaultValue="poop"
+          placeholder="Enter Student Group Name"
+          value={studentGroupNameInput}
+          onChange={e => setStudentGroupNameInput(e)}
+          onSubmit={editStudentGroupNameHandler}
+          fontSize="2.5rem"
+        >
+          <EditablePreview _hover={{ cursor: 'pointer' }} />
+          <EditableInput />
+        </Editable>
+        <StudentNameForm onSubmit={e => addStudentHandler(e)}>
           <label htmlFor="student-name">Name:</label>
           <Input
             placeholder="Student name"
             id="student-name"
             aria-label="student-name"
             onChange={e => setStudentInput(e.target.value)}
+            value={studentInput}
           ></Input>
-          <Button aria-label="add" onClick={addNameHandler}>
+          <Button aria-label="add" type="submit">
             Add
           </Button>
-        </Box>
+        </StudentNameForm>
       </Box>
-      <Box>
-        {studentGroupDocument.students.map(doc => {
-          return <div key={doc.studentName}>{doc.studentName}</div>
+      <StudentBox>
+        {studentGroupDocument?.students.map(doc => {
+          //
+          return <div key={doc.studentId}>{doc.studentName}</div> // Create Student Component
         })}
-      </Box>
+      </StudentBox>
     </>
   )
 }
