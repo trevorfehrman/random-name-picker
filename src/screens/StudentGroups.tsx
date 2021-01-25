@@ -8,7 +8,7 @@ import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 import { Box, FormLabel, Input, Button } from '@chakra-ui/react'
 
 import StudentGroupPreview from 'components/StudentGroupPreview'
-import { IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudentGroup } from 'interfaces and types/IStudentGroup'
 
 const StudentGroups: React.FC = () => {
   const [studentGroupNameInput, setStudentGroupNameInput] = React.useState('')
@@ -46,7 +46,7 @@ const StudentGroups: React.FC = () => {
           id="studentGroupName"
           isRequired
         ></Input>
-        <Button onClick={e => submitHandler(e)}>Create</Button>
+        <Button onClick={submitHandler}>Create</Button>
       </Box>
       {studentGroupsDocuments.data?.map(doc => {
         return (

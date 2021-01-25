@@ -3,14 +3,12 @@ import { useParams } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import { Input, Button, Box, Editable, EditablePreview, EditableInput } from '@chakra-ui/react'
-import { IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudentGroup } from 'interfaces and types/IStudentGroup'
 import styled from '@emotion/styled'
 
 interface Params {
   groupId: string
 }
-
-const StudentNameForm = styled.form``
 
 const StudentBox = styled.div`
   margin: auto;
@@ -21,7 +19,6 @@ const StudentBox = styled.div`
 
 const StudentGroup: React.FC = () => {
   const [studentInput, setStudentInput] = React.useState('')
-  const [studentGroupNameInput, setStudentGroupNameInput] = React.useState<string>('')
 
   const params: Params = useParams()
   const studentGroupId = params.groupId
@@ -39,12 +36,6 @@ const StudentGroup: React.FC = () => {
 
   const studentsRef = useFirestore().collection('teachers').doc(user.uid).collection('students')
   const students = useFirestoreCollectionData(studentsRef, { idField: 'docId' })
-
-  React.useEffect(() => {
-    if (studentGroupDocument) {
-      setStudentGroupNameInput(studentGroupDocument.studentGroupName)
-    }
-  }, [studentGroupDocument])
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -64,8 +55,9 @@ const StudentGroup: React.FC = () => {
     }
   }
 
-  const editStudentGroupNameHandler = () => {
-    studentGroupRef.update({ studentGroupName: studentGroupNameInput }).catch(err => {
+  const editStudentGroupNameHandler = (value: string) => {
+    console.log(value)
+    studentGroupRef.update({ studentGroupName: value }).catch(err => {
       console.log(err)
     })
   }
@@ -73,18 +65,17 @@ const StudentGroup: React.FC = () => {
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <Editable
-          defaultValue="poop"
-          placeholder="Enter Student Group Name"
-          value={studentGroupNameInput}
-          onChange={e => setStudentGroupNameInput(e)}
-          onSubmit={editStudentGroupNameHandler}
-          fontSize="2.5rem"
-        >
-          <EditablePreview _hover={{ cursor: 'pointer' }} />
-          <EditableInput />
-        </Editable>
-        <StudentNameForm onSubmit={e => addStudentHandler(e)}>
+        {studentGroupDocument ? (
+          <Editable
+            defaultValue={studentGroupDocument.studentGroupName}
+            onSubmit={editStudentGroupNameHandler}
+            fontSize="2.5rem"
+          >
+            <EditablePreview _hover={{ cursor: 'pointer' }} />
+            <EditableInput />
+          </Editable>
+        ) : null}
+        <form onSubmit={addStudentHandler}>
           <label htmlFor="student-name">Name:</label>
           <Input
             placeholder="Student name"
@@ -96,7 +87,7 @@ const StudentGroup: React.FC = () => {
           <Button aria-label="add" type="submit">
             Add
           </Button>
-        </StudentNameForm>
+        </form>
       </Box>
       <StudentBox>
         {studentGroupDocument?.students.map(doc => {

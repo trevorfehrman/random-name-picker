@@ -39,7 +39,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
   const history = useHistory()
 
   const openStudentGroupHandler = () => {
-    history.push('/student-group/' + studentGroupId)
+    history.push(`/student-group/${studentGroupId}`)
   }
 
   const deleteHandler = (event: React.MouseEvent) => {
@@ -58,7 +58,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
         {studentGroupName}
       </Heading>
       <ButtonDiv>
-        <IconButton icon={<DeleteIcon />} onClick={event => deleteHandler(event)} aria-label="delete">
+        <IconButton icon={<DeleteIcon />} onClick={deleteHandler} aria-label="delete">
           Delete
         </IconButton>
       </ButtonDiv>
