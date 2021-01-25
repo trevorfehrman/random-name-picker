@@ -65,7 +65,7 @@ const StudentGroup: React.FC = () => {
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
-        {studentGroupDocument ? (
+        {studentGroupDocument && (
           <Editable
             defaultValue={studentGroupDocument.studentGroupName}
             onSubmit={editStudentGroupNameHandler}
@@ -74,7 +74,7 @@ const StudentGroup: React.FC = () => {
             <EditablePreview _hover={{ cursor: 'pointer' }} />
             <EditableInput />
           </Editable>
-        ) : null}
+        )}
         <form onSubmit={addStudentHandler}>
           <label htmlFor="student-name">Name:</label>
           <Input
