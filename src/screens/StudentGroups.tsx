@@ -27,9 +27,8 @@ const StudentGroups: React.FC = () => {
     try {
       const result = await studentGroupsRef.add({
         studentGroupName: studentGroupNameInput,
-        students: [],
       })
-      history.push('/student-group/' + result.id)
+      history.push(`/student-group/${result.id}`)
     } catch (err) {
       console.log(err)
     }
