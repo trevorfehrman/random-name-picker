@@ -7,7 +7,7 @@ import { useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore } from 'reactfire'
 
-const StudentGroupDiv = styled.div`
+const StudentGroupContainer = styled.div`
   border: 1px solid black;
   margin: 3px 0;
   display: flex;
@@ -53,7 +53,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
   }
 
   return (
-    <StudentGroupDiv onClick={openStudentGroupHandler}>
+    <StudentGroupContainer onClick={openStudentGroupHandler}>
       <Heading as="h2" size="lg">
         {studentGroupName}
       </Heading>
@@ -62,7 +62,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
           Delete
         </IconButton>
       </ButtonDiv>
-    </StudentGroupDiv>
+    </StudentGroupContainer>
   )
 }
 
