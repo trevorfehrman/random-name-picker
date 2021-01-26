@@ -10,6 +10,13 @@ interface Params {
   groupId: string
 }
 
+interface IStudentInStudentGroup {
+  studentId: string
+  studentName: string
+  studentGroupId: string
+  studentGroupName: string
+}
+
 const StudentBox = styled.div`
   margin: auto;
   width: 90%;
@@ -25,17 +32,21 @@ const StudentGroup: React.FC = () => {
 
   const { data: user } = useUser()
 
-  const studentGroupRef = useFirestore()
-    .collection('teachers')
-    .doc(user.uid)
-    .collection('studentGroups')
-    .doc(studentGroupId)
+  const teacherRef = useFirestore().collection('teachers').doc(user.uid)
+
+  const studentGroupRef = teacherRef.collection('studentGroups').doc(studentGroupId)
   const studentGroupDocument = useFirestoreDocData<IStudentGroup & { docId: string }>(studentGroupRef, {
     idField: 'docId',
   }).data
 
-  const studentsRef = useFirestore().collection('teachers').doc(user.uid).collection('students')
-  const students = useFirestoreCollectionData(studentsRef, { idField: 'docId' })
+  const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups')
+  const studentsInThisStudentGroupRef = studentsInStudentGroupsRef.where('studentGroupId', '==', studentGroupId)
+  const studentsInThisStudentGroupDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
+    studentsInThisStudentGroupRef,
+    { idField: 'docId' },
+  ).data
+
+  const studentsRef = teacherRef.collection('students')
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -43,10 +54,13 @@ const StudentGroup: React.FC = () => {
       const studentResult = await studentsRef.add({
         studentName: studentInput,
       })
-      console.log(studentResult.id)
-      studentGroupRef
-        .update({
-          students: [...studentGroupDocument.students, { studentId: studentResult.id, studentName: studentInput }],
+      console.log(studentResult)
+      studentsInStudentGroupsRef
+        .add({
+          studentId: studentResult.id,
+          studentName: studentInput,
+          studentGroupId,
+          studentGroupName: studentGroupDocument.studentGroupName,
         })
         .catch(err => console.log(err))
       setStudentInput('')
@@ -90,9 +104,8 @@ const StudentGroup: React.FC = () => {
         </form>
       </Box>
       <StudentBox>
-        {studentGroupDocument?.students.map(doc => {
-          //
-          return <div key={doc.studentId}>{doc.studentName}</div> // Create Student Component
+        {studentsInThisStudentGroupDocuments?.map(doc => {
+          return <div key={doc.studentId}>{doc.studentName}</div>
         })}
       </StudentBox>
     </>
