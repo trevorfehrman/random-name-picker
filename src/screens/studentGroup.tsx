@@ -47,7 +47,6 @@ const StudentGroup: React.FC = () => {
   ).data
 
   const studentsRef = teacherRef.collection('students')
-  const students = useFirestoreCollectionData(studentsRef, { idField: 'docId' })
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -63,10 +62,6 @@ const StudentGroup: React.FC = () => {
           studentGroupId,
           studentGroupName: studentGroupDocument.studentGroupName,
         })
-        //   studentGroupRef
-        //     .update({
-        //       students: [...studentGroupDocument.students, { studentId: studentResult.id, studentName: studentInput }],
-        //     })
         .catch(err => console.log(err))
       setStudentInput('')
     } catch (err) {
