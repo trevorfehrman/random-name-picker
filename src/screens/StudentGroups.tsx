@@ -1,68 +1,59 @@
 import * as React from 'react'
-import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
+// import { useForm } from 'react-hook-form'
 import 'firebase/firestore'
 
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 
-import { FormErrorMessage, FormLabel, FormControl, Input, Button } from '@chakra-ui/react'
+import { Box, FormLabel, Input, Button } from '@chakra-ui/react'
 
-import StudentGroup from 'components/StudentGroup'
+import StudentGroupPreview from 'components/StudentGroupPreview'
+import { IStudentGroup } from 'interfaces and types/IStudentGroup'
 
 const StudentGroups: React.FC = () => {
-  const { handleSubmit, errors, register, formState } = useForm<FormData>()
+  const [studentGroupNameInput, setStudentGroupNameInput] = React.useState('')
 
   const { data: user } = useUser()
 
+  const history = useHistory()
+
   const studentGroupsRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
-  const studentGroupsData = useFirestoreCollectionData(studentGroupsRef)
-  console.log(studentGroupsData)
-
-  type FormData = {
-    studentGroupName: string
-  }
-
-  //Steve is the druel-ist.
-  interface IStudentGroup {
-    studentGroupName: string
-    students: []
-  }
-
-  const studentGroupRef = useFirestore().collection('studentGroups')
-  const studentGroupDocuments = useFirestoreCollectionData<IStudentGroup & { docId: string }>(studentGroupRef, {
+  const studentGroupsDocuments = useFirestoreCollectionData<IStudentGroup & { docId: string }>(studentGroupsRef, {
     idField: 'docId',
   })
 
-  async function onSubmit(data: FormData, e: React.BaseSyntheticEvent | undefined) {
-    await studentGroupRef.add({
-      studentGroupName: data.studentGroupName,
-      students: [],
-    })
-    e?.target.reset()
+  async function submitHandler(e: React.BaseSyntheticEvent | undefined) {
+    e?.preventDefault()
+    try {
+      const result = await studentGroupsRef.add({
+        studentGroupName: studentGroupNameInput,
+        students: [],
+      })
+      history.push('/student-group/' + result.id)
+    } catch (err) {
+      console.log(err)
+    }
+    setStudentGroupNameInput('')
   }
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={!!errors.studentGroupName}>
-          <FormLabel htmlFor="studentGroupName">Group Name</FormLabel>
-          <Input name="studentGroupName" placeholder="Group name" ref={register({ required: true, minLength: 3 })} />
-          {errors.studentGroupName && errors.studentGroupName.type === 'required' && (
-            <FormErrorMessage>This field is required</FormErrorMessage>
-          )}
-          {errors.studentGroupName && errors.studentGroupName.type === 'minLength' && (
-            <FormErrorMessage>Please enter a group name with at least 3 characters</FormErrorMessage>
-          )}
-        </FormControl>
-        <Button mt={4} colorScheme="teal" isLoading={formState.isSubmitting} type="submit">
-          Submit
-        </Button>
-      </form>
-      {studentGroupDocuments.data?.map(doc => {
+      <Box>
+        <FormLabel htmlFor="studentGroupName">Student Group Name</FormLabel>
+        <Input
+          onChange={e => setStudentGroupNameInput(e.target.value)}
+          placeholder="Student Group Name"
+          id="studentGroupName"
+          isRequired
+        ></Input>
+        <Button onClick={submitHandler}>Create</Button>
+      </Box>
+      {studentGroupsDocuments.data?.map(doc => {
         return (
-          <StudentGroup
+          <StudentGroupPreview
             key={doc.docId}
-            studentGroupName={doc.studentGroupName}
             studentGroupId={doc.docId}
+            studentGroupName={doc.studentGroupName}
             userId={user.uid}
           />
         )

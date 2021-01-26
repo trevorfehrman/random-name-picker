@@ -1,9 +1,11 @@
 import * as React from 'react'
-import { Heading, Button } from '@chakra-ui/react'
+import { Heading, IconButton } from '@chakra-ui/react'
+import { DeleteIcon } from '@chakra-ui/icons'
 import styled from '@emotion/styled'
+import { useHistory } from 'react-router-dom'
 
 import 'firebase/firestore'
-import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
+import { useFirestore } from 'reactfire'
 
 const StudentGroupContainer = styled.div`
   border: 1px solid black;
@@ -19,22 +21,29 @@ const ButtonDiv = styled.div`
   display: flex;
 `
 
+// interface IClassroom {
+//   studentGroupName: string
+//   students: []
+//   docId: string
+// }
+
 type StudentGroupProps = {
-  studentGroupName: string
   studentGroupId: string
+  studentGroupName: string
   userId: string
 }
 
-const StudentGroup: React.FC<StudentGroupProps> = ({ studentGroupName, studentGroupId, userId }) => {
-  const studentGroupRef = useFirestore().collection('studentGroups')
+const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, studentGroupName }) => {
+  const studentGroupRef = useFirestore().collection('teachers').doc(userId).collection('studentGroups')
+
+  const history = useHistory()
 
   const openStudentGroupHandler = () => {
-    console.log('hello')
+    history.push(`/student-group/${studentGroupId}`)
   }
 
   const deleteHandler = (event: React.MouseEvent) => {
     event.stopPropagation()
-    console.log('Ill be working soon')
     studentGroupRef
       .doc(studentGroupId)
       .delete()
@@ -49,8 +58,9 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ studentGroupName, studentGr
         {studentGroupName}
       </Heading>
       <ButtonDiv>
-        <Button onClick={event => deleteHandler(event)}>Delete</Button>
-        <Button>Edit</Button>
+        <IconButton icon={<DeleteIcon />} onClick={deleteHandler} aria-label="delete">
+          Delete
+        </IconButton>
       </ButtonDiv>
     </StudentGroupContainer>
   )
