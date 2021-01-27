@@ -21,12 +21,6 @@ const ButtonDiv = styled.div`
   display: flex;
 `
 
-// interface IClassroom {
-//   studentGroupName: string
-//   students: []
-//   docId: string
-// }
-
 type StudentGroupProps = {
   studentGroupId: string
   studentGroupName: string
@@ -36,20 +30,32 @@ type StudentGroupProps = {
 const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, studentGroupName }) => {
   const studentGroupRef = useFirestore().collection('teachers').doc(userId).collection('studentGroups')
 
+  const studentsInStudentGroupsRef = useFirestore()
+    .collection('teachers')
+    .doc(userId)
+    .collection('studentsInStudentGroups')
+    .where('studentGroupId', '==', studentGroupId)
+
   const history = useHistory()
 
   const openStudentGroupHandler = () => {
     history.push(`/student-group/${studentGroupId}`)
   }
 
+  const batch = useFirestore().batch()
+
   const deleteHandler = (event: React.MouseEvent) => {
     event.stopPropagation()
-    studentGroupRef
-      .doc(studentGroupId)
-      .delete()
-      .catch(err => {
-        console.log(err)
+    batch.delete(studentGroupRef.doc(studentGroupId))
+    studentsInStudentGroupsRef
+      .get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          batch.delete(doc.ref)
+        })
+        return batch.commit()
       })
+      .catch(err => console.log(err))
   }
 
   return (
