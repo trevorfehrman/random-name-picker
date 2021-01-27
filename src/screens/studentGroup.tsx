@@ -106,7 +106,7 @@ const StudentGroup: React.FC = () => {
       </Box>
       <StudentBox>
         {studentsInThisStudentGroupDocuments?.map(doc => {
-          return <Student key={doc.studentId} studentName={doc.studentName} />
+          return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
         })}
       </StudentBox>
     </>
