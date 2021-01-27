@@ -5,6 +5,7 @@ import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData 
 import { Input, Button, Box, Editable, EditablePreview, EditableInput } from '@chakra-ui/react'
 import { IStudentGroup } from 'interfaces and types/IStudentGroup'
 import styled from '@emotion/styled'
+import Student from 'components/Student'
 
 interface Params {
   groupId: string
@@ -105,7 +106,7 @@ const StudentGroup: React.FC = () => {
       </Box>
       <StudentBox>
         {studentsInThisStudentGroupDocuments?.map(doc => {
-          return <div key={doc.studentId}>{doc.studentName}</div>
+          return <Student key={doc.studentId} studentName={doc.studentName} />
         })}
       </StudentBox>
     </>
