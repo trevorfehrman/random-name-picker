@@ -20,7 +20,7 @@ const Student: React.FC<StudentProps> = ({ studentName, studentInStudentGroupId 
   const removeHandler = () => {
     studentsInStudentGroupsRef.delete()
   }
-  ;``
+
   return (
     <Flex align="center" justify="space-between" padding="10px" border="1px solid black">
       <Heading as="h3" size="md">
