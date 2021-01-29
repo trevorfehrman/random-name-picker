@@ -3,7 +3,7 @@ export interface IStudentGroup {
   students: IStudent[]
 }
 
-interface IStudent {
+export interface IStudent {
   studentName: string
   studentId: string
 }
