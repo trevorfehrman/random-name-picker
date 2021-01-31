@@ -2,13 +2,34 @@ import * as React from 'react'
 import { useParams } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { Input, Button, Box, Editable, EditablePreview, EditableInput } from '@chakra-ui/react'
-import { IStudentGroup } from 'interfaces and types/IStudentGroup'
+import {
+  Input,
+  Button,
+  Box,
+  Editable,
+  EditablePreview,
+  EditableInput,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+} from '@chakra-ui/react'
+import { IStudentGroup, IStudent } from 'interfaces and types/IStudentGroup'
 import styled from '@emotion/styled'
 import Student from 'components/Student'
+import StudentPreview from 'components/StudentPreview'
 
 interface Params {
   groupId: string
+}
+
+interface IStudentToAdd {
+  studentId: string
+  studentName: string
 }
 
 interface IStudentInStudentGroup {
@@ -26,6 +47,10 @@ const StudentBox = styled.div`
 `
 
 const StudentGroup: React.FC = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
+
   const [studentInput, setStudentInput] = React.useState('')
 
   const params: Params = useParams()
@@ -48,6 +73,8 @@ const StudentGroup: React.FC = () => {
   ).data
 
   const studentsRef = teacherRef.collection('students')
+  const studentDocuments = useFirestoreCollectionData<IStudent & { docId: string }>(studentsRef, { idField: 'docId' })
+    .data
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -77,6 +104,28 @@ const StudentGroup: React.FC = () => {
     })
   }
 
+  const batch = useFirestore().batch()
+
+  const addExistingHandler = () => {
+    console.log(selectedStudentsToAdd)
+    selectedStudentsToAdd.forEach(student => {
+      const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
+      batch.set(newStudentInStudentGroupRef, {
+        studentName: student.studentName,
+        studentId: student.studentId,
+        studentGroupId: studentGroupDocument.docId,
+        studentGroupName: studentGroupDocument.studentGroupName,
+      })
+    })
+    return batch
+      .commit()
+      .then(() => {
+        onClose()
+        setSelectedStudentsToAdd([])
+      })
+      .catch(err => console.log(err))
+  }
+
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -100,8 +149,9 @@ const StudentGroup: React.FC = () => {
             value={studentInput}
           ></Input>
           <Button aria-label="add" type="submit">
-            Add
+            Add New
           </Button>
+          <Button onClick={onOpen}>Add Existing</Button>
         </form>
       </Box>
       <StudentBox>
@@ -109,6 +159,45 @@ const StudentGroup: React.FC = () => {
           return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
         })}
       </StudentBox>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Add Existing Students</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box border="1px solid black" maxHeight="500px" minHeight="100px" padding="10px" overflowY="auto">
+              {studentDocuments
+                ?.filter(student => {
+                  let studentIsInClass = false
+                  studentsInThisStudentGroupDocuments?.forEach(studentInGroup => {
+                    if (studentInGroup.studentId === student.docId) {
+                      studentIsInClass = true
+                    }
+                  })
+                  return !studentIsInClass
+                })
+                .map(doc => {
+                  return (
+                    <StudentPreview
+                      key={doc.docId}
+                      studentName={doc.studentName}
+                      studentId={doc.docId}
+                      selectedStudentsToAdd={selectedStudentsToAdd}
+                      setSelectedStudentsToAdd={setSelectedStudentsToAdd}
+                    />
+                  )
+                })}
+            </Box>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button variant="ghost">Cancel</Button>
+            <Button colorScheme="blue" mr={3} onClick={addExistingHandler}>
+              Add To Group
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   )
 }
