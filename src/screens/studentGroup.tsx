@@ -140,24 +140,28 @@ const StudentGroup: React.FC = () => {
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <IconButton
-          icon={<ArrowBackIcon />}
-          aria-label="back"
-          position="absolute"
-          left="5%"
-          top="5%"
-          onClick={backHandler}
-        />
-        {studentGroupDocument && (
-          <Editable
-            defaultValue={studentGroupDocument.studentGroupName}
-            onSubmit={editStudentGroupNameHandler}
-            fontSize="2.5rem"
-          >
-            <EditablePreview _hover={{ cursor: 'pointer' }} />
-            <EditableInput />
-          </Editable>
-        )}
+        <Box position="relative" w="90%" textAlign="center">
+          <IconButton
+            icon={<ArrowBackIcon />}
+            aria-label="back"
+            position="absolute"
+            left={0}
+            top="10px"
+            onClick={backHandler}
+          />
+          {studentGroupDocument && (
+            <Editable
+              defaultValue={studentGroupDocument.studentGroupName}
+              onSubmit={editStudentGroupNameHandler}
+              fontSize="2.5rem"
+              margin="auto"
+            >
+              <EditablePreview _hover={{ cursor: 'pointer' }} />
+              <EditableInput />
+            </Editable>
+          )}
+        </Box>
+
         <form onSubmit={addStudentHandler}>
           <label htmlFor="student-name">Name:</label>
           <Input
