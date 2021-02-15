@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import {
@@ -17,7 +17,9 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  IconButton,
 } from '@chakra-ui/react'
+import { ArrowBackIcon } from '@chakra-ui/icons'
 import { IStudentGroup, IStudent } from 'interfaces and types/IStudentGroup'
 import styled from '@emotion/styled'
 import Student from 'components/Student'
@@ -53,6 +55,8 @@ const StudentGroup: React.FC = () => {
 
   const [studentInput, setStudentInput] = React.useState('')
 
+  const history = useHistory()
+
   const params: Params = useParams()
   const studentGroupId = params.groupId
 
@@ -78,6 +82,9 @@ const StudentGroup: React.FC = () => {
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
+    if (studentInput === '') {
+      return
+    }
     try {
       const studentResult = await studentsRef.add({
         studentName: studentInput,
@@ -126,19 +133,35 @@ const StudentGroup: React.FC = () => {
       .catch(err => console.log(err))
   }
 
+  const backHandler = () => {
+    history.push('/')
+  }
+
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
-        {studentGroupDocument && (
-          <Editable
-            defaultValue={studentGroupDocument.studentGroupName}
-            onSubmit={editStudentGroupNameHandler}
-            fontSize="2.5rem"
-          >
-            <EditablePreview _hover={{ cursor: 'pointer' }} />
-            <EditableInput />
-          </Editable>
-        )}
+        <Box position="relative" w="90%" textAlign="center">
+          <IconButton
+            icon={<ArrowBackIcon />}
+            aria-label="back"
+            position="absolute"
+            left={0}
+            top="10px"
+            onClick={backHandler}
+          />
+          {studentGroupDocument && (
+            <Editable
+              defaultValue={studentGroupDocument.studentGroupName}
+              onSubmit={editStudentGroupNameHandler}
+              fontSize="2.5rem"
+              margin="auto"
+            >
+              <EditablePreview _hover={{ cursor: 'pointer' }} />
+              <EditableInput />
+            </Editable>
+          )}
+        </Box>
+
         <form onSubmit={addStudentHandler}>
           <label htmlFor="student-name">Name:</label>
           <Input
