@@ -4,6 +4,7 @@ import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import {
   Input,
+  Heading,
   Button,
   Box,
   Editable,
@@ -47,22 +48,17 @@ const StudentBox = styled.div`
   margin: auto;
   width: 90%;
   border: 1px solid black;
-  min-height: 100px;
 `
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
-
   const [studentInput, setStudentInput] = React.useState('')
-
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
-
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
 
   const history = useHistory()
-
   const params: Params = useParams()
   const studentGroupId = params.groupId
 
@@ -76,6 +72,7 @@ const StudentGroup: React.FC = () => {
   }).data
 
   const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups')
+
   const studentsInThisStudentGroupRef = studentsInStudentGroupsRef.where('studentGroupId', '==', studentGroupId)
   const studentsInThisStudentGroupDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
     studentsInThisStudentGroupRef,
@@ -191,12 +188,6 @@ const StudentGroup: React.FC = () => {
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <h1>
-          {unselected?.map(doc => {
-            return <div key={doc.studentId}>{doc.studentName}</div>
-          })}
-        </h1>
-        <h1>{selectedStudent?.studentName}</h1>
         <Box position="relative" w="90%" textAlign="center">
           <IconButton
             icon={<ArrowBackIcon />}
@@ -232,9 +223,27 @@ const StudentGroup: React.FC = () => {
             Add New
           </Button>
           <Button onClick={onOpen}>Add Existing</Button>
+          <Button onClick={selectHandler}>Select Name</Button>
         </form>
-        <Button onClick={selectHandler}>Select Name</Button>
       </Box>
+      <Box h="7rem" w="100%" textAlign="center">
+        <Heading as="h1" fontSize="6rem">
+          {selectedStudent?.studentName}
+        </Heading>
+      </Box>
+      <Heading as="h2" margin="15px 0 0 20px">
+        Unselected Students:
+      </Heading>
+      <StudentBox>
+        <h1>
+          {unselected?.map(doc => {
+            return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+          })}
+        </h1>
+      </StudentBox>
+      <Heading as="h2" margin="15px 0 0 20px">
+        All Students:
+      </Heading>
       <StudentBox>
         {studentsInThisStudentGroupDocuments?.map(doc => {
           return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
