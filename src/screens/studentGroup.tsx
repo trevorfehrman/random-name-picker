@@ -35,10 +35,12 @@ interface IStudentToAdd {
 }
 
 interface IStudentInStudentGroup {
+  docId: string
   studentId: string
   studentName: string
   studentGroupId: string
   studentGroupName: string
+  selected: boolean
 }
 
 const StudentBox = styled.div`
@@ -54,6 +56,10 @@ const StudentGroup: React.FC = () => {
   const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
 
   const [studentInput, setStudentInput] = React.useState('')
+
+  const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
+
+  const [selected, setSelected] = React.useState<IStudentInStudentGroup | null>(null)
 
   const history = useHistory()
 
@@ -76,9 +82,23 @@ const StudentGroup: React.FC = () => {
     { idField: 'docId' },
   ).data
 
+  const unselectedStudentsRef = studentsInStudentGroupsRef
+    .where('studentGroupId', '==', studentGroupId)
+    .where('selected', '==', false)
+
+  const unselectedStudentsDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
+    unselectedStudentsRef,
+    { idField: 'docId' },
+  ).data
+
   const studentsRef = teacherRef.collection('students')
   const studentDocuments = useFirestoreCollectionData<IStudent & { docId: string }>(studentsRef, { idField: 'docId' })
     .data
+
+  React.useEffect(() => {
+    console.log(unselectedStudentsDocuments)
+    setUnselected(unselectedStudentsDocuments)
+  }, [unselectedStudentsDocuments])
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -96,6 +116,7 @@ const StudentGroup: React.FC = () => {
           studentName: studentInput,
           studentGroupId,
           studentGroupName: studentGroupDocument.studentGroupName,
+          selected: false,
         })
         .catch(err => console.log(err))
       setStudentInput('')
@@ -122,6 +143,7 @@ const StudentGroup: React.FC = () => {
         studentId: student.studentId,
         studentGroupId: studentGroupDocument.docId,
         studentGroupName: studentGroupDocument.studentGroupName,
+        selected: false,
       })
     })
     return batch
@@ -137,9 +159,30 @@ const StudentGroup: React.FC = () => {
     history.push('/')
   }
 
+  const selectHandler = () => {
+    if (unselected.length === 0) return console.log('no more names')
+    const randomIndex = Math.floor(Math.random() * unselected.length)
+    const selectedStudent = unselected[randomIndex]
+    // const updatedUnselected = unselected.filter((student, index) => {
+    //   return index !== randomIndex
+    // })
+    studentsInStudentGroupsRef
+      .doc(selectedStudent.docId)
+      .update({ selected: true })
+      .catch(err => console.log(err))
+    // setUnselected(updatedUnselected)
+    setSelected(selectedStudent)
+  }
+
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
+        <h1>
+          {unselected?.map(doc => {
+            return <div key={doc.studentId}>{doc.studentName}</div>
+          })}
+        </h1>
+        <h1>{selected?.studentName}</h1>
         <Box position="relative" w="90%" textAlign="center">
           <IconButton
             icon={<ArrowBackIcon />}
@@ -176,6 +219,7 @@ const StudentGroup: React.FC = () => {
           </Button>
           <Button onClick={onOpen}>Add Existing</Button>
         </form>
+        <Button onClick={selectHandler}>Select Name</Button>
       </Box>
       <StudentBox>
         {studentsInThisStudentGroupDocuments?.map(doc => {
