@@ -7,6 +7,7 @@ import {
   Heading,
   Button,
   Box,
+  Flex,
   Editable,
   EditablePreview,
   EditableInput,
@@ -226,11 +227,17 @@ const StudentGroup: React.FC = () => {
           <Button onClick={selectHandler}>Select Name</Button>
         </form>
       </Box>
-      <Box h="7rem" w="100%" textAlign="center">
-        <Heading as="h1" fontSize="6rem">
-          {selectedStudent?.studentName}
-        </Heading>
-      </Box>
+      <Flex h="7rem" w="100%" justify="center" align="center">
+        {selectedStudent === null ? (
+          <Heading as="h3" fontSize="3rem">
+            {'click "Select Name"'}
+          </Heading>
+        ) : (
+          <Heading as="h1" fontSize="6rem">
+            {selectedStudent?.studentName}
+          </Heading>
+        )}
+      </Flex>
       <Heading as="h2" margin="15px 0 0 20px">
         Unselected Students:
       </Heading>
@@ -281,7 +288,9 @@ const StudentGroup: React.FC = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="ghost">Cancel</Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
             <Button colorScheme="blue" mr={3} onClick={addExistingHandler}>
               Add To Group
             </Button>
