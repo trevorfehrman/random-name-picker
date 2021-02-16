@@ -59,7 +59,7 @@ const StudentGroup: React.FC = () => {
 
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
 
-  const [selected, setSelected] = React.useState<IStudentInStudentGroup | null>(null)
+  const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
 
   const history = useHistory()
 
@@ -132,13 +132,13 @@ const StudentGroup: React.FC = () => {
     })
   }
 
-  const batch = useFirestore().batch()
+  const addBatch = useFirestore().batch()
 
   const addExistingHandler = () => {
     console.log(selectedStudentsToAdd)
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
-      batch.set(newStudentInStudentGroupRef, {
+      addBatch.set(newStudentInStudentGroupRef, {
         studentName: student.studentName,
         studentId: student.studentId,
         studentGroupId: studentGroupDocument.docId,
@@ -146,7 +146,7 @@ const StudentGroup: React.FC = () => {
         selected: false,
       })
     })
-    return batch
+    return addBatch
       .commit()
       .then(() => {
         onClose()
@@ -160,18 +160,32 @@ const StudentGroup: React.FC = () => {
   }
 
   const selectHandler = () => {
-    if (unselected.length === 0) return console.log('no more names')
     const randomIndex = Math.floor(Math.random() * unselected.length)
     const selectedStudent = unselected[randomIndex]
-    // const updatedUnselected = unselected.filter((student, index) => {
-    //   return index !== randomIndex
-    // })
-    studentsInStudentGroupsRef
-      .doc(selectedStudent.docId)
-      .update({ selected: true })
+    setSelectedStudent(selectedStudent)
+    if (unselected.length === 1) {
+      resetSelectedStatus()
+    } else {
+      studentsInStudentGroupsRef
+        .doc(selectedStudent.docId)
+        .update({ selected: true })
+        .catch(err => console.log(err))
+    }
+  }
+
+  const updateBatch = useFirestore().batch()
+
+  const resetSelectedStatus = () => {
+    studentsInThisStudentGroupRef
+      .get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          console.log(doc, 'made it here')
+          updateBatch.update(doc.ref, { selected: false })
+        })
+        return updateBatch.commit().catch(err => console.log(err))
+      })
       .catch(err => console.log(err))
-    // setUnselected(updatedUnselected)
-    setSelected(selectedStudent)
   }
 
   return (
@@ -182,7 +196,7 @@ const StudentGroup: React.FC = () => {
             return <div key={doc.studentId}>{doc.studentName}</div>
           })}
         </h1>
-        <h1>{selected?.studentName}</h1>
+        <h1>{selectedStudent?.studentName}</h1>
         <Box position="relative" w="90%" textAlign="center">
           <IconButton
             icon={<ArrowBackIcon />}
