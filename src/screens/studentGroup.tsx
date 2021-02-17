@@ -4,8 +4,10 @@ import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import {
   Input,
+  Heading,
   Button,
   Box,
+  Flex,
   Editable,
   EditablePreview,
   EditableInput,
@@ -35,28 +37,29 @@ interface IStudentToAdd {
 }
 
 interface IStudentInStudentGroup {
+  docId: string
   studentId: string
   studentName: string
   studentGroupId: string
   studentGroupName: string
+  selected: boolean
 }
 
 const StudentBox = styled.div`
   margin: auto;
   width: 90%;
   border: 1px solid black;
-  min-height: 100px;
 `
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
-
   const [studentInput, setStudentInput] = React.useState('')
+  const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
+  const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
 
   const history = useHistory()
-
   const params: Params = useParams()
   const studentGroupId = params.groupId
 
@@ -70,15 +73,30 @@ const StudentGroup: React.FC = () => {
   }).data
 
   const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups')
+
   const studentsInThisStudentGroupRef = studentsInStudentGroupsRef.where('studentGroupId', '==', studentGroupId)
   const studentsInThisStudentGroupDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
     studentsInThisStudentGroupRef,
     { idField: 'docId' },
   ).data
 
+  const unselectedStudentsRef = studentsInStudentGroupsRef
+    .where('studentGroupId', '==', studentGroupId)
+    .where('selected', '==', false)
+
+  const unselectedStudentsDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
+    unselectedStudentsRef,
+    { idField: 'docId' },
+  ).data
+
   const studentsRef = teacherRef.collection('students')
   const studentDocuments = useFirestoreCollectionData<IStudent & { docId: string }>(studentsRef, { idField: 'docId' })
     .data
+
+  React.useEffect(() => {
+    console.log(unselectedStudentsDocuments)
+    setUnselected(unselectedStudentsDocuments)
+  }, [unselectedStudentsDocuments])
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -96,6 +114,7 @@ const StudentGroup: React.FC = () => {
           studentName: studentInput,
           studentGroupId,
           studentGroupName: studentGroupDocument.studentGroupName,
+          selected: false,
         })
         .catch(err => console.log(err))
       setStudentInput('')
@@ -111,20 +130,21 @@ const StudentGroup: React.FC = () => {
     })
   }
 
-  const batch = useFirestore().batch()
+  const addBatch = useFirestore().batch()
 
   const addExistingHandler = () => {
     console.log(selectedStudentsToAdd)
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
-      batch.set(newStudentInStudentGroupRef, {
+      addBatch.set(newStudentInStudentGroupRef, {
         studentName: student.studentName,
         studentId: student.studentId,
         studentGroupId: studentGroupDocument.docId,
         studentGroupName: studentGroupDocument.studentGroupName,
+        selected: false,
       })
     })
-    return batch
+    return addBatch
       .commit()
       .then(() => {
         onClose()
@@ -135,6 +155,35 @@ const StudentGroup: React.FC = () => {
 
   const backHandler = () => {
     history.push('/')
+  }
+
+  const selectHandler = () => {
+    const randomIndex = Math.floor(Math.random() * unselected.length)
+    const selectedStudent = unselected[randomIndex]
+    setSelectedStudent(selectedStudent)
+    if (unselected.length === 1) {
+      resetSelectedStatus()
+    } else {
+      studentsInStudentGroupsRef
+        .doc(selectedStudent.docId)
+        .update({ selected: true })
+        .catch(err => console.log(err))
+    }
+  }
+
+  const updateBatch = useFirestore().batch()
+
+  const resetSelectedStatus = () => {
+    studentsInThisStudentGroupRef
+      .get()
+      .then(snapshot => {
+        snapshot.docs.forEach(doc => {
+          console.log(doc, 'made it here')
+          updateBatch.update(doc.ref, { selected: false })
+        })
+        return updateBatch.commit().catch(err => console.log(err))
+      })
+      .catch(err => console.log(err))
   }
 
   return (
@@ -175,8 +224,33 @@ const StudentGroup: React.FC = () => {
             Add New
           </Button>
           <Button onClick={onOpen}>Add Existing</Button>
+          <Button onClick={selectHandler}>Select Name</Button>
         </form>
       </Box>
+      <Flex h="7rem" w="100%" justify="center" align="center">
+        {selectedStudent === null ? (
+          <Heading as="h3" fontSize="3rem">
+            {'click "Select Name"'}
+          </Heading>
+        ) : (
+          <Heading as="h1" fontSize="6rem">
+            {selectedStudent?.studentName}
+          </Heading>
+        )}
+      </Flex>
+      <Heading as="h2" margin="15px 0 0 20px">
+        Unselected Students:
+      </Heading>
+      <StudentBox>
+        <h1>
+          {unselected?.map(doc => {
+            return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+          })}
+        </h1>
+      </StudentBox>
+      <Heading as="h2" margin="15px 0 0 20px">
+        All Students:
+      </Heading>
       <StudentBox>
         {studentsInThisStudentGroupDocuments?.map(doc => {
           return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
@@ -214,7 +288,9 @@ const StudentGroup: React.FC = () => {
           </ModalBody>
 
           <ModalFooter>
-            <Button variant="ghost">Cancel</Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
             <Button colorScheme="blue" mr={3} onClick={addExistingHandler}>
               Add To Group
             </Button>
