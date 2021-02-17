@@ -22,27 +22,14 @@ import {
   IconButton,
 } from '@chakra-ui/react'
 import { ArrowBackIcon } from '@chakra-ui/icons'
-import { IStudentGroup, IStudent } from 'interfaces and types/IStudentGroup'
+import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
 import styled from '@emotion/styled'
 import Student from 'components/Student'
 import StudentPreview from 'components/StudentPreview'
 
-interface Params {
-  groupId: string
-}
-
 interface IStudentToAdd {
   studentId: string
   studentName: string
-}
-
-interface IStudentInStudentGroup {
-  docId: string
-  studentId: string
-  studentName: string
-  studentGroupId: string
-  studentGroupName: string
-  selected: boolean
 }
 
 const StudentBox = styled.div`
@@ -186,6 +173,10 @@ const StudentGroup: React.FC = () => {
       .catch(err => console.log(err))
   }
 
+  const manageRouteHandler = () => {
+    history.push(`/manage-student-group/${studentGroupId}`)
+  }
+
   return (
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
@@ -225,6 +216,7 @@ const StudentGroup: React.FC = () => {
           </Button>
           <Button onClick={onOpen}>Add Existing</Button>
           <Button onClick={selectHandler}>Select Name</Button>
+          <Button onClick={manageRouteHandler}>Manage Students</Button>
         </form>
       </Box>
       <Flex h="7rem" w="100%" justify="center" align="center">
@@ -238,23 +230,15 @@ const StudentGroup: React.FC = () => {
           </Heading>
         )}
       </Flex>
-      <Heading as="h2" margin="15px 0 0 20px">
+      <Heading as="h2" margin="15px 0 0 5%">
         Unselected Students:
       </Heading>
       <StudentBox>
-        <h1>
+        <Box>
           {unselected?.map(doc => {
             return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
           })}
-        </h1>
-      </StudentBox>
-      <Heading as="h2" margin="15px 0 0 20px">
-        All Students:
-      </Heading>
-      <StudentBox>
-        {studentsInThisStudentGroupDocuments?.map(doc => {
-          return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
-        })}
+        </Box>
       </StudentBox>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

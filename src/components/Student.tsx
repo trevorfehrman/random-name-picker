@@ -22,7 +22,7 @@ const Student: React.FC<StudentProps> = ({ studentName, studentInStudentGroupId 
   }
 
   return (
-    <Flex align="center" justify="space-between" padding="10px" border="1px solid black">
+    <Flex align="center" justify="space-between" padding="10px" border="1px solid black" w="100%" margin="auto">
       <Heading as="h3" size="md">
         {studentName}
       </Heading>
