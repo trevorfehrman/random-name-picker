@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import { useUser, useFirestore, useFirestoreCollectionData } from 'reactfire'
+import { useUser, useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire'
 import Student from 'components/Student'
 import { Heading, IconButton, Flex, Box } from '@chakra-ui/react'
 import { ArrowBackIcon } from '@chakra-ui/icons'
-import { IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudentInStudentGroup, Params, IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
 
-const ManageStudents: React.FC = () => {
+const ShowAllStudents: React.FC = () => {
   const params: Params = useParams()
   const history = useHistory()
   const studentGroupId = params.groupId
@@ -15,6 +15,7 @@ const ManageStudents: React.FC = () => {
   const teacherRef = useFirestore().collection('teachers').doc(user.uid)
 
   const studentGroupRef = teacherRef.collection('studentGroups').doc(studentGroupId)
+  const studentGroupDoc = useFirestoreDocData<IStudentGroup & { docId: string }>(studentGroupRef).data
   const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups')
 
   const studentsInThisStudentGroupRef = studentsInStudentGroupsRef.where('studentGroupId', '==', studentGroupId)
@@ -39,14 +40,14 @@ const ManageStudents: React.FC = () => {
           left="10px"
         />
         <Heading as="h1" marginTop="25px">
-          Manage Students
+          {`All Students in ${studentGroupDoc?.studentGroupName}`}
         </Heading>
       </Box>
-      {studentsInThisStudentGroupDocuments.map(doc => {
+      {studentsInThisStudentGroupDocuments?.map(doc => {
         return <Student key={doc.docId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
       })}
     </Flex>
   )
 }
 
-export default ManageStudents
+export default ShowAllStudents

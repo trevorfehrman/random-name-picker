@@ -173,8 +173,8 @@ const StudentGroup: React.FC = () => {
       .catch(err => console.log(err))
   }
 
-  const manageRouteHandler = () => {
-    history.push(`/manage-student-group/${studentGroupId}`)
+  const showAllHandler = () => {
+    history.push(`/show-all-students/${studentGroupId}`)
   }
 
   return (
@@ -216,7 +216,7 @@ const StudentGroup: React.FC = () => {
           </Button>
           <Button onClick={onOpen}>Add Existing</Button>
           <Button onClick={selectHandler}>Select Name</Button>
-          <Button onClick={manageRouteHandler}>Manage Students</Button>
+          <Button onClick={showAllHandler}>Show All Students</Button>
         </form>
       </Box>
       <Flex h="7rem" w="100%" justify="center" align="center">
