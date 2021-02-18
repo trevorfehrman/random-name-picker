@@ -35,6 +35,10 @@ const StudentGroups: React.FC = () => {
     setStudentGroupNameInput('')
   }
 
+  const manageStudentsHandler = () => {
+    history.push('/manage-students')
+  }
+
   return (
     <>
       <Box>
@@ -46,6 +50,7 @@ const StudentGroups: React.FC = () => {
           isRequired
         ></Input>
         <Button onClick={submitHandler}>Create</Button>
+        <Button onClick={manageStudentsHandler}>Manage Students</Button>
       </Box>
       {studentGroupsDocuments.data?.map(doc => {
         return (
