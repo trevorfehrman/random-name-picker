@@ -19,13 +19,12 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  IconButton,
 } from '@chakra-ui/react'
-import { ArrowBackIcon } from '@chakra-ui/icons'
-import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudentGroup, IStudentInGroup, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
 import styled from '@emotion/styled'
-import Student from 'components/Student'
+import StudentInGroup from 'components/StudentInGroup'
 import StudentPreview from 'components/StudentPreview'
+import BackButton from 'components/UI/BackButton'
 
 interface IStudentToAdd {
   studentId: string
@@ -77,8 +76,9 @@ const StudentGroup: React.FC = () => {
   ).data
 
   const studentsRef = teacherRef.collection('students')
-  const studentDocuments = useFirestoreCollectionData<IStudent & { docId: string }>(studentsRef, { idField: 'docId' })
-    .data
+  const studentDocuments = useFirestoreCollectionData<IStudentInGroup & { docId: string }>(studentsRef, {
+    idField: 'docId',
+  }).data
 
   React.useEffect(() => {
     console.log(unselectedStudentsDocuments)
@@ -181,14 +181,7 @@ const StudentGroup: React.FC = () => {
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box position="relative" w="90%" textAlign="center">
-          <IconButton
-            icon={<ArrowBackIcon />}
-            aria-label="back"
-            position="absolute"
-            left={0}
-            top="10px"
-            onClick={backHandler}
-          />
+          <BackButton backHandler={backHandler} />
           {studentGroupDocument && (
             <Editable
               defaultValue={studentGroupDocument.studentGroupName}
@@ -236,7 +229,9 @@ const StudentGroup: React.FC = () => {
       <StudentBox>
         <Box>
           {unselected?.map(doc => {
-            return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+            return (
+              <StudentInGroup key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+            )
           })}
         </Box>
       </StudentBox>
