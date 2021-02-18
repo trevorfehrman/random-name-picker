@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { Heading, IconButton, Flex } from '@chakra-ui/react'
+import { Heading, IconButton, Flex, useDisclosure } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
-import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
+import { useFirestore, useUser } from 'reactfire'
+import ConfirmationModal from 'components/ConfirmationModal'
 
 type StudentProps = {
   studentName: string
@@ -9,6 +10,8 @@ type StudentProps = {
 }
 
 const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
+  const { onClose, onOpen, isOpen } = useDisclosure()
+
   const { data: user } = useUser()
 
   const teacherRef = useFirestore().collection('teachers').doc(user.uid)
@@ -30,12 +33,23 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
   }
 
   return (
-    <Flex align="center" justify="space-between" padding="10px" border="1px solid black" w="100%" margin="auto">
-      <Heading as="h3" size="md">
-        {studentName}
-      </Heading>
-      <IconButton icon={<DeleteIcon />} aria-label="delete" onClick={deleteHandler} />
-    </Flex>
+    <>
+      <Flex align="center" justify="space-between" padding="10px" border="1px solid black" w="100%" margin="auto">
+        <Heading as="h3" size="md">
+          {studentName}
+        </Heading>
+        <IconButton icon={<DeleteIcon />} aria-label="delete" onClick={onOpen} />
+      </Flex>
+      <ConfirmationModal
+        buttonText="Confirm"
+        modalHeadingText="Confirm Delete"
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={deleteHandler}
+      >
+        Are you sure you want to delete this student? They will be removed from all groups.
+      </ConfirmationModal>
+    </>
   )
 }
 
