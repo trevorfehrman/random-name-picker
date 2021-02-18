@@ -12,7 +12,7 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef }) =
 
   const history = useHistory()
 
-  async function submitHandler(e: React.BaseSyntheticEvent | undefined) {
+  async function submitHandler(e: React.BaseSyntheticEvent) {
     e?.preventDefault()
     try {
       const result = await studentGroupsRef.add({
