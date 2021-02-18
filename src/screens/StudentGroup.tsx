@@ -26,6 +26,7 @@ import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfa
 import styled from '@emotion/styled'
 import Student from 'components/Student'
 import StudentPreview from 'components/StudentPreview'
+import FullScreenDisplay from 'components/FullScreenDisplay'
 
 interface IStudentToAdd {
   studentId: string
@@ -45,6 +46,7 @@ const StudentGroup: React.FC = () => {
   const [studentInput, setStudentInput] = React.useState('')
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
+  const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
 
   const history = useHistory()
   const params: Params = useParams()
@@ -217,6 +219,7 @@ const StudentGroup: React.FC = () => {
           <Button onClick={onOpen}>Add Existing</Button>
           <Button onClick={selectHandler}>Select Name</Button>
           <Button onClick={showAllHandler}>Show All Students</Button>
+          <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
         </form>
       </Box>
       <Flex h="7rem" w="100%" justify="center" align="center">
@@ -281,6 +284,24 @@ const StudentGroup: React.FC = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <FullScreenDisplay
+        modalHeadingText="FullScreenMode"
+        onClose={() => setFullScreenDisplayIsOpen(false)}
+        isOpen={fullScreenDisplayIsOpen}
+        selectHandler={selectHandler}
+      >
+        <Flex h="100%" w="100%" justify="center" align="center">
+          {selectedStudent === null ? (
+            <Heading as="h3" fontSize="3rem">
+              {'click to select'}
+            </Heading>
+          ) : (
+            <Heading as="h1" fontSize="20vw">
+              {selectedStudent?.studentName}
+            </Heading>
+          )}
+        </Flex>
+      </FullScreenDisplay>
     </>
   )
 }
