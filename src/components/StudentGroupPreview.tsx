@@ -81,7 +81,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
         </ButtonDiv>
       </StudentGroupContainer>
       <ConfirmationModal
-        buttonText="confirm"
+        buttonText="Confirm"
         modalHeadingText="Confirm Delete"
         isOpen={isOpen}
         onClose={onClose}

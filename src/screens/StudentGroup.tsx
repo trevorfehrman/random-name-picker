@@ -17,7 +17,7 @@ import {
 import { ArrowBackIcon } from '@chakra-ui/icons'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
 import styled from '@emotion/styled'
-import Student from 'components/Student'
+import StudentInGroup from 'components/StudentInGroup'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 
@@ -203,7 +203,9 @@ const StudentGroup: React.FC = () => {
       <StudentBox>
         <Box>
           {unselected?.map(doc => {
-            return <Student key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+            return (
+              <StudentInGroup key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+            )
           })}
         </Box>
       </StudentBox>
