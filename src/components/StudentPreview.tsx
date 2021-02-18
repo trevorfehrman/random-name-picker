@@ -41,6 +41,7 @@ const StudentPreview: React.FC<StudentPreviewProps> = ({
       padding="10px"
       onClick={selectHandler}
       backgroundColor={isSelected ? 'aqua' : 'null'}
+      _hover={{ cursor: 'pointer' }}
     >
       <Heading as="h3" size="md">
         {studentName}
