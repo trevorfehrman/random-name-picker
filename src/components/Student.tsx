@@ -1,24 +1,15 @@
 import * as React from 'react'
 import { Heading, IconButton, Flex } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
-import { useFirestore, useUser } from 'reactfire'
 
 type StudentProps = {
   studentName: string
-  studentInStudentGroupId: string
+  docId: string
 }
 
-const Student: React.FC<StudentProps> = ({ studentName, studentInStudentGroupId }) => {
-  const { data: user } = useUser()
-
-  const studentsInStudentGroupsRef = useFirestore()
-    .collection('teachers')
-    .doc(user.uid)
-    .collection('studentsInStudentGroups')
-    .doc(studentInStudentGroupId)
-
-  const removeHandler = () => {
-    studentsInStudentGroupsRef.delete()
+const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
+  const deleteHandler = () => {
+    console.log('delete student from students collection and all instances from studentsInStudentGroups collection')
   }
 
   return (
@@ -26,7 +17,7 @@ const Student: React.FC<StudentProps> = ({ studentName, studentInStudentGroupId 
       <Heading as="h3" size="md">
         {studentName}
       </Heading>
-      <IconButton icon={<DeleteIcon />} aria-label="delete" onClick={removeHandler} />
+      <IconButton icon={<DeleteIcon />} aria-label="delete" onClick={deleteHandler} />
     </Flex>
   )
 }

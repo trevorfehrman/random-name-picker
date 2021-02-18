@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useUser, useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire'
-import Student from 'components/Student'
 import { Heading, IconButton, Flex, Box } from '@chakra-ui/react'
 import { ArrowBackIcon } from '@chakra-ui/icons'
 import { IStudentInStudentGroup, Params, IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
+import StudentInGroup from 'components/StudentInGroup'
 
 const ShowAllStudents: React.FC = () => {
   const params: Params = useParams()
@@ -44,7 +44,7 @@ const ShowAllStudents: React.FC = () => {
         </Heading>
       </Box>
       {studentsInThisStudentGroupDocuments?.map(doc => {
-        return <Student key={doc.docId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+        return <StudentInGroup key={doc.docId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
       })}
     </Flex>
   )
