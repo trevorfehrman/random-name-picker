@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Heading, IconButton, Flex } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
+import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 
 type StudentProps = {
   studentName: string
@@ -8,8 +9,24 @@ type StudentProps = {
 }
 
 const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
-  const deleteHandler = () => {
+  const { data: user } = useUser()
+
+  const teacherRef = useFirestore().collection('teachers').doc(user.uid)
+  const studentRef = teacherRef.collection('students').doc(docId)
+  const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups').where('studentId', '==', docId)
+
+  const deleteBatch = useFirestore().batch()
+
+  const deleteHandler = async () => {
     console.log('delete student from students collection and all instances from studentsInStudentGroups collection')
+    deleteBatch.delete(studentRef)
+    const snapshot = await studentsInStudentGroupsRef.get()
+    if (snapshot.docs.length > 0) {
+      snapshot.docs.forEach(doc => {
+        deleteBatch.delete(doc.ref)
+      })
+    }
+    deleteBatch.commit()
   }
 
   return (
