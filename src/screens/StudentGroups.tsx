@@ -9,6 +9,7 @@ import { Box, FormLabel, Input, Button } from '@chakra-ui/react'
 
 import StudentGroupPreview from 'components/StudentGroupPreview'
 import { IStudentGroup } from 'interfaces and types/IStudentGroup'
+import ConfirmationModal from 'components/ConfirmationModal'
 
 const StudentGroups: React.FC = () => {
   const [studentGroupNameInput, setStudentGroupNameInput] = React.useState('')
