@@ -28,14 +28,16 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef }) =
   return (
     <>
       <Box>
-        <FormLabel htmlFor="studentGroupName">Student Group Name</FormLabel>
-        <Input
-          onChange={e => setStudentGroupNameInput(e.target.value)}
-          placeholder="Student Group Name"
-          id="studentGroupName"
-          isRequired
-        ></Input>
-        <Button onClick={submitHandler}>Create</Button>
+        <form onSubmit={submitHandler}>
+          <FormLabel htmlFor="studentGroupName">Student Group Name</FormLabel>
+          <Input
+            onChange={e => setStudentGroupNameInput(e.target.value)}
+            placeholder="Student Group Name"
+            id="studentGroupName"
+            isRequired
+          ></Input>
+          <Button type="submit">Create</Button>
+        </form>
       </Box>
     </>
   )
