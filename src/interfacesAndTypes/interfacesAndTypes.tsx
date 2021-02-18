@@ -1,4 +1,5 @@
 export interface IStudentGroup {
+  docId: string
   studentGroupName: string
   students: IStudent[]
 }
@@ -6,6 +7,7 @@ export interface IStudentGroup {
 export interface IStudent {
   studentName: string
   studentId: string
+  docId: string
 }
 
 export interface Params {
