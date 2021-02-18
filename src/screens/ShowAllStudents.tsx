@@ -1,10 +1,10 @@
 import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useUser, useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire'
-import { Heading, IconButton, Flex, Box } from '@chakra-ui/react'
-import { ArrowBackIcon } from '@chakra-ui/icons'
+import { Heading, Flex, Box } from '@chakra-ui/react'
 import { IStudentInStudentGroup, Params, IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
+import BackButton from 'components/UI/BackButton'
 
 const ShowAllStudents: React.FC = () => {
   const params: Params = useParams()
@@ -31,14 +31,7 @@ const ShowAllStudents: React.FC = () => {
   return (
     <Flex w="90%" direction="column" align="center" margin="auto">
       <Box h="100px" position="relative" w="100%" textAlign="center">
-        <IconButton
-          onClick={backHandler}
-          icon={<ArrowBackIcon />}
-          aria-label="back"
-          position="absolute"
-          top="10px"
-          left="10px"
-        />
+        <BackButton backHandler={backHandler} />
         <Heading as="h1" marginTop="25px">
           {`All Students in ${studentGroupDoc?.studentGroupName}`}
         </Heading>

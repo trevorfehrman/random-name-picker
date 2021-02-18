@@ -19,13 +19,12 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
-  IconButton,
 } from '@chakra-ui/react'
-import { ArrowBackIcon } from '@chakra-ui/icons'
 import { IStudentGroup, IStudentInGroup, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
 import styled from '@emotion/styled'
 import StudentInGroup from 'components/StudentInGroup'
 import StudentPreview from 'components/StudentPreview'
+import BackButton from 'components/UI/BackButton'
 
 interface IStudentToAdd {
   studentId: string
@@ -182,14 +181,7 @@ const StudentGroup: React.FC = () => {
     <>
       <Box display="flex" flexDirection="column" alignItems="center">
         <Box position="relative" w="90%" textAlign="center">
-          <IconButton
-            icon={<ArrowBackIcon />}
-            aria-label="back"
-            position="absolute"
-            left={0}
-            top="10px"
-            onClick={backHandler}
-          />
+          <BackButton backHandler={backHandler} />
           {studentGroupDocument && (
             <Editable
               defaultValue={studentGroupDocument.studentGroupName}
