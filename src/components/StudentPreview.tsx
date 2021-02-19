@@ -40,7 +40,9 @@ const StudentPreview: React.FC<StudentPreviewProps> = ({
       justify="space-between"
       padding="10px"
       onClick={selectHandler}
-      backgroundColor={isSelected ? 'aqua' : 'null'}
+      backgroundColor={isSelected ? 'tomato' : 'null'}
+      marginTop="3px"
+      borderRadius="5px"
       _hover={{ cursor: 'pointer' }}
     >
       <Heading as="h3" size="md">
