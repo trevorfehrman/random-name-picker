@@ -62,6 +62,28 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
       .catch(err => console.log(err))
   }
 
+  const studentsNotInStudentGroup = studentDocuments
+    ?.filter(student => {
+      let studentIsInClass = false
+      studentsInThisStudentGroupDocuments?.forEach(studentInGroup => {
+        if (studentInGroup.studentId === student.docId) {
+          studentIsInClass = true
+        }
+      })
+      return !studentIsInClass
+    })
+    .map(doc => {
+      return (
+        <StudentPreview
+          key={doc.docId}
+          studentName={doc.studentName}
+          studentId={doc.docId}
+          selectedStudentsToAdd={selectedStudentsToAdd}
+          setSelectedStudentsToAdd={setSelectedStudentsToAdd}
+        />
+      )
+    })
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -70,27 +92,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
         <ModalCloseButton />
         <ModalBody>
           <Box border="1px solid black" maxHeight="500px" minHeight="100px" padding="10px" overflowY="auto">
-            {studentDocuments
-              ?.filter(student => {
-                let studentIsInClass = false
-                studentsInThisStudentGroupDocuments?.forEach(studentInGroup => {
-                  if (studentInGroup.studentId === student.docId) {
-                    studentIsInClass = true
-                  }
-                })
-                return !studentIsInClass
-              })
-              .map(doc => {
-                return (
-                  <StudentPreview
-                    key={doc.docId}
-                    studentName={doc.studentName}
-                    studentId={doc.docId}
-                    selectedStudentsToAdd={selectedStudentsToAdd}
-                    setSelectedStudentsToAdd={setSelectedStudentsToAdd}
-                  />
-                )
-              })}
+            {studentsNotInStudentGroup?.length > 0 ? studentsNotInStudentGroup : 'All students already in group!'}
           </Box>
         </ModalBody>
 
