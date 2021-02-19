@@ -3,7 +3,6 @@ import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import {
-  Input,
   Heading,
   Button,
   Box,
@@ -25,6 +24,7 @@ import styled from '@emotion/styled'
 import StudentInGroup from 'components/StudentInGroup'
 import StudentPreview from 'components/StudentPreview'
 import BackButton from 'components/UI/BackButton'
+import NewStudent from 'components/NewStudent'
 
 interface IStudentToAdd {
   studentId: string
@@ -41,7 +41,6 @@ const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
-  const [studentInput, setStudentInput] = React.useState('')
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
 
@@ -85,7 +84,11 @@ const StudentGroup: React.FC = () => {
     setUnselected(unselectedStudentsDocuments)
   }, [unselectedStudentsDocuments])
 
-  const addStudentHandler = async (e: React.SyntheticEvent) => {
+  const addStudentHandler = async (
+    e: React.SyntheticEvent,
+    studentInput: string,
+    setStudentInput: React.Dispatch<React.SetStateAction<string>>,
+  ) => {
     e.preventDefault()
     if (studentInput === '') {
       return
@@ -195,22 +198,12 @@ const StudentGroup: React.FC = () => {
           )}
         </Box>
 
-        <form onSubmit={addStudentHandler}>
-          <label htmlFor="student-name">Name:</label>
-          <Input
-            placeholder="Student name"
-            id="student-name"
-            aria-label="student-name"
-            onChange={e => setStudentInput(e.target.value)}
-            value={studentInput}
-          ></Input>
-          <Button aria-label="add" type="submit">
-            Add New
-          </Button>
+        <NewStudent addStudentHandler={addStudentHandler} />
+        <Flex>
           <Button onClick={onOpen}>Add Existing</Button>
           <Button onClick={selectHandler}>Select Name</Button>
           <Button onClick={showAllHandler}>Show All Students</Button>
-        </form>
+        </Flex>
       </Box>
       <Flex h="7rem" w="100%" justify="center" align="center">
         {selectedStudent === null ? (
