@@ -144,9 +144,7 @@ const StudentGroup: React.FC = () => {
       <Flex flexWrap="wrap" justifyContent="space-evenly">
         <Button onClick={showAllHandler}>Show All</Button>
         <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
-        <Button marginTop="5px" onClick={selectHandler}>
-          Select Name
-        </Button>
+        <Button onClick={selectHandler}>Select Name</Button>
       </Flex>
 
       <Heading as="h2" margin="15px 0 0 5%" fontSize="1.2rem" alignSelf="flex-start">
@@ -175,17 +173,7 @@ const StudentGroup: React.FC = () => {
         isOpen={fullScreenDisplayIsOpen}
         selectHandler={selectHandler}
       >
-        <Flex h="100%" w="100%" justify="center" align="center">
-          {selectedStudent === null ? (
-            <Heading as="h3" fontSize="3rem">
-              {'click to select'}
-            </Heading>
-          ) : (
-            <Heading as="h1" fontSize="20vw">
-              {selectedStudent?.studentName}
-            </Heading>
-          )}
-        </Flex>
+        <NameDisplay selectedStudent={selectedStudent} isFullScreen />
       </FullScreenDisplay>
     </PageContentsBox>
   )

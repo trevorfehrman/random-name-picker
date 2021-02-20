@@ -14,7 +14,6 @@ export const StudentContainer = styled.div`
 export const FormBox = styled.div`
   w: 90%;
   max-width: 90%;
-  margin: 0 0 0 0;
   padding: 10px;
 `
 

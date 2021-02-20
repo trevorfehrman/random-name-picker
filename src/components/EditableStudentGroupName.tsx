@@ -24,9 +24,12 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
         <Editable
           defaultValue={studentGroupDocument.studentGroupName}
           onSubmit={editStudentGroupNameHandler}
-          fontSize="1.3rem"
+          fontSize="1.4rem"
+          fontWeight="bolder"
           margin="15px auto 0 auto"
-          w="60%"
+          w="40%"
+          minWidth="200px"
+          textAlign="center"
         >
           <EditablePreview _hover={{ cursor: 'pointer' }} />
           <EditableInput />
