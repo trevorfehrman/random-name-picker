@@ -5,6 +5,7 @@ import { IStudent } from 'interfacesAndTypes/interfacesAndTypes'
 import Student from 'components/Student'
 import BackButton from 'components/UI/BackButton'
 import { useHistory } from 'react-router-dom'
+import { PageContentsBox } from 'styles'
 
 const ManageStudents: React.FC = () => {
   const { data: user } = useUser()
@@ -22,16 +23,17 @@ const ManageStudents: React.FC = () => {
   }
 
   return (
-    <>
-      <Box position="relative" h="75px" textAlign="center" padding="10px">
+    <PageContentsBox>
+      <Box position="relative" textAlign="center" padding="10px">
         <BackButton backHandler={backHandler} />
         <Heading as="h1">All Students</Heading>
       </Box>
-
-      {allStudentsDocuments?.map(doc => {
-        return <Student key={doc.docId} studentName={doc.studentName} docId={doc.docId} />
-      })}
-    </>
+      <Box width="90%" border="1px solid black" maxHeight="500px" minHeight="100px" padding="10px" overflowY="auto">
+        {allStudentsDocuments?.map(doc => {
+          return <Student key={doc.docId} studentName={doc.studentName} docId={doc.docId} />
+        })}
+      </Box>
+    </PageContentsBox>
   )
 }
 

@@ -19,11 +19,20 @@ import StudentInGroup from 'components/StudentInGroup'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import BackButton from 'components/UI/BackButton'
+import { FormBox } from 'styles'
 
 const StudentBox = styled.div`
   margin: auto;
   width: 90%;
-  border: 1px solid black;
+`
+
+const NameDisplayBox = styled.div`
+  display: flex;
+  h: 7rem;
+  w: 100%;
+  justify: center;
+  align: center;
+  padding: 5%;
 `
 
 const StudentGroup: React.FC = () => {
@@ -143,23 +152,24 @@ const StudentGroup: React.FC = () => {
   }
 
   return (
-    <>
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <Box position="relative" w="90%" textAlign="center">
-          <BackButton backHandler={backHandler} />
-          {studentGroupDocument && (
-            <Editable
-              defaultValue={studentGroupDocument.studentGroupName}
-              onSubmit={editStudentGroupNameHandler}
-              fontSize="2.5rem"
-              margin="auto"
-            >
-              <EditablePreview _hover={{ cursor: 'pointer' }} />
-              <EditableInput />
-            </Editable>
-          )}
-        </Box>
+    <Flex flexDirection="column" alignItems="center" w="100%">
+      <Box position="relative" w="90%" textAlign="center">
+        <BackButton backHandler={backHandler} />
+        {studentGroupDocument && (
+          <Editable
+            defaultValue={studentGroupDocument.studentGroupName}
+            onSubmit={editStudentGroupNameHandler}
+            fontSize="1.3rem"
+            margin="15px auto 0 auto"
+            w="60%"
+          >
+            <EditablePreview _hover={{ cursor: 'pointer' }} />
+            <EditableInput />
+          </Editable>
+        )}
+      </Box>
 
+      <FormBox>
         <form onSubmit={addStudentHandler}>
           <label htmlFor="student-name">Name:</label>
           <Input
@@ -169,37 +179,43 @@ const StudentGroup: React.FC = () => {
             onChange={e => setStudentInput(e.target.value)}
             value={studentInput}
           ></Input>
-          <Button aria-label="add" type="submit">
-            Add New
-          </Button>
-          <Button onClick={onOpen}>Add Existing</Button>
-          <Button onClick={selectHandler}>Select Name</Button>
-          <Button onClick={showAllHandler}>Show All Students</Button>
-          <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
+          <Flex justifyContent="space-between">
+            <Button aria-label="add" type="submit">
+              Add New
+            </Button>
+            <Button onClick={onOpen}>Add Existing</Button>
+          </Flex>
         </form>
-      </Box>
-      <Flex h="7rem" w="100%" justify="center" align="center">
+      </FormBox>
+      <Flex flexWrap="wrap" justifyContent="space-evenly">
+        <Button marginTop="5px" onClick={showAllHandler}>
+          Show All Students
+        </Button>
+        <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
+        <Button marginTop="5px" onClick={selectHandler}>
+          Select Name
+        </Button>
+      </Flex>
+      <NameDisplayBox>
         {selectedStudent === null ? (
-          <Heading as="h3" fontSize="3rem">
+          <Heading as="h3" fontSize="1.5rem">
             {'click "Select Name"'}
           </Heading>
         ) : (
-          <Heading as="h1" fontSize="6rem">
+          <Heading as="h1" fontSize="3rem">
             {selectedStudent?.studentName}
           </Heading>
         )}
-      </Flex>
-      <Heading as="h2" margin="15px 0 0 5%">
+      </NameDisplayBox>
+      <Heading as="h2" margin="15px 0 0 5%" fontSize="1.2rem" alignSelf="flex-start">
         Unselected Students:
       </Heading>
       <StudentBox>
-        <Box>
-          {unselected?.map(doc => {
-            return (
-              <StudentInGroup key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
-            )
-          })}
-        </Box>
+        {unselected?.map(doc => {
+          return (
+            <StudentInGroup key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+          )
+        })}
       </StudentBox>
       <AddExistingStudentsModal
         onClose={onClose}
@@ -227,7 +243,7 @@ const StudentGroup: React.FC = () => {
           )}
         </Flex>
       </FullScreenDisplay>
-    </>
+    </Flex>
   )
 }
 

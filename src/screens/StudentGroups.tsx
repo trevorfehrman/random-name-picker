@@ -29,6 +29,7 @@ const StudentGroups: React.FC = () => {
   }
 
   return (
+    // <Flex w="100%" direction="column" align="center"></Flex>
     <Box display="flex" flexDirection="column" alignItems="center">
       <NewStudentGroup studentGroupsRef={studentGroupsRef} />
       <Button onClick={manageStudentsHandler}>Manage Students</Button>

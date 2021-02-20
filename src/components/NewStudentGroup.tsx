@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, FormLabel, Input, Button } from '@chakra-ui/react'
 import firebase from 'firebase'
 import { useHistory } from 'react-router-dom'
+import { FormBox } from 'styles'
 
 type NewStudentGroupProps = {
   studentGroupsRef: firebase.firestore.CollectionReference
@@ -26,7 +27,7 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef }) =
   }
 
   return (
-    <Box position="relative" w="60%" textAlign="center" margin="25px">
+    <FormBox>
       <form onSubmit={submitHandler}>
         <FormLabel htmlFor="studentGroupName">Student Group Name</FormLabel>
         <Input
@@ -37,7 +38,7 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef }) =
         ></Input>
         <Button type="submit">Create</Button>
       </form>
-    </Box>
+    </FormBox>
   )
 }
 
