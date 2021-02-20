@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { Heading, IconButton, Flex } from '@chakra-ui/react'
+import { Heading, IconButton } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { useFirestore, useUser } from 'reactfire'
+import { StudentContainer } from 'styles'
 
 type StudentInGroupProps = {
   studentName: string
@@ -22,12 +23,12 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInS
   }
 
   return (
-    <Flex align="center" justify="space-between" padding="10px" border="1px solid black" w="100%" margin="auto">
+    <StudentContainer>
       <Heading as="h3" size="md">
         {studentName}
       </Heading>
       <IconButton icon={<DeleteIcon />} aria-label="delete" onClick={removeHandler} />
-    </Flex>
+    </StudentContainer>
   )
 }
 

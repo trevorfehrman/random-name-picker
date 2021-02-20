@@ -8,18 +8,21 @@ import 'firebase/firestore'
 import { useFirestore } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
 
+const ButtonDiv = styled.div`
+  display: flex;
+`
+
 const StudentGroupContainer = styled.div`
   border: 1px solid black;
+  border-radius: 5px;
+  padding: 5px 0 0 8px;
+  width: 90%;
   margin: 3px 0;
   display: flex;
   justify-content: space-between;
   &:hover {
     cursor: pointer;
   }
-`
-
-const ButtonDiv = styled.div`
-  display: flex;
 `
 
 type StudentGroupProps = {

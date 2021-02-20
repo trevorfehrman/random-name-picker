@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Button, Input, Box } from '@chakra-ui/react'
+import { Button, Input, Flex } from '@chakra-ui/react'
+import { FormBox } from 'styles'
 
 type NewStudentProps = {
   addStudentHandler: (
@@ -7,13 +8,14 @@ type NewStudentProps = {
     studentInput: string,
     setStudentInput: React.Dispatch<React.SetStateAction<string>>,
   ) => Promise<void>
+  openAddExistingModalHandler: () => void
 }
 
-const NewStudent: React.FC<NewStudentProps> = ({ addStudentHandler }) => {
+const NewStudent: React.FC<NewStudentProps> = ({ addStudentHandler, openAddExistingModalHandler }) => {
   const [studentInput, setStudentInput] = React.useState('')
 
   return (
-    <Box margin="25px">
+    <FormBox>
       <form onSubmit={event => addStudentHandler(event, studentInput, setStudentInput)}>
         <label htmlFor="student-name">Name:</label>
         <Input
@@ -23,11 +25,14 @@ const NewStudent: React.FC<NewStudentProps> = ({ addStudentHandler }) => {
           onChange={e => setStudentInput(e.target.value)}
           value={studentInput}
         ></Input>
-        <Button aria-label="add" type="submit">
-          Add New
-        </Button>
+        <Flex justifyContent="space-between">
+          <Button aria-label="add" type="submit">
+            Add New
+          </Button>
+          <Button onClick={openAddExistingModalHandler}>Add Existing</Button>
+        </Flex>
       </form>
-    </Box>
+    </FormBox>
   )
 }
 
