@@ -2,7 +2,7 @@ import * as React from 'react'
 import 'firebase/firestore'
 
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
-import { Button } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 
 import StudentGroupPreview from 'components/StudentGroupPreview'
 import { IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
@@ -23,7 +23,7 @@ const StudentGroups: React.FC = () => {
   }
 
   return (
-    <>
+    <Flex w="100%" direction="column" align="center">
       <NewStudentGroup studentGroupsRef={studentGroupsRef} />
       <Button onClick={manageStudentsHandler}>Manage Students</Button>
       {studentGroupsDocuments.data?.map(doc => {
@@ -36,7 +36,7 @@ const StudentGroups: React.FC = () => {
           />
         )
       })}
-    </>
+    </Flex>
   )
 }
 

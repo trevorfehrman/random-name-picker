@@ -1,8 +1,9 @@
 import * as React from 'react'
-import { Heading, IconButton, Flex, useDisclosure } from '@chakra-ui/react'
+import { Heading, IconButton, useDisclosure } from '@chakra-ui/react'
 import { DeleteIcon } from '@chakra-ui/icons'
 import { useFirestore, useUser } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
+import { StudentContainer } from 'styles'
 
 type StudentProps = {
   studentName: string
@@ -34,12 +35,12 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
 
   return (
     <>
-      <Flex align="center" justify="space-between" padding="10px" border="1px solid black" w="100%" margin="auto">
+      <StudentContainer>
         <Heading as="h3" size="md">
           {studentName}
         </Heading>
         <IconButton icon={<DeleteIcon />} aria-label="delete" onClick={onOpen} />
-      </Flex>
+      </StudentContainer>
       <ConfirmationModal
         buttonText="Confirm"
         modalHeadingText="Confirm Delete"
