@@ -2,28 +2,21 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { Heading, Button, Box, Flex, Editable, EditablePreview, EditableInput, useDisclosure } from '@chakra-ui/react'
+import { Heading, Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
 import styled from '@emotion/styled'
 import StudentInGroup from 'components/StudentInGroup'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
-import BackButton from 'components/UI/BackButton'
 import NewStudent from 'components/NewStudent'
 import { PageContentsBox } from 'styles'
+import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
+import EditableStudentGroupName from 'components/EditableStudentGroupName'
+import NameDisplay from 'components/NameDisplay'
 
 const StudentBox = styled.div`
   margin: auto;
   width: 90%;
-`
-
-const NameDisplayBox = styled.div`
-  display: flex;
-  h: 7rem;
-  w: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 5%;
 `
 
 const StudentGroup: React.FC = () => {
@@ -101,13 +94,6 @@ const StudentGroup: React.FC = () => {
     }
   }
 
-  const editStudentGroupNameHandler = (value: string) => {
-    console.log(value)
-    studentGroupRef.update({ studentGroupName: value }).catch(err => {
-      console.log(err)
-    })
-  }
-
   const backHandler = () => {
     history.push('/')
   }
@@ -147,41 +133,22 @@ const StudentGroup: React.FC = () => {
 
   return (
     <PageContentsBox>
-      <Box position="relative" w="90%" textAlign="center">
-        <BackButton backHandler={backHandler} />
-        {studentGroupDocument && (
-          <Editable
-            defaultValue={studentGroupDocument.studentGroupName}
-            onSubmit={editStudentGroupNameHandler}
-            fontSize="1.3rem"
-            margin="15px auto 0 auto"
-            w="60%"
-          >
-            <EditablePreview _hover={{ cursor: 'pointer' }} />
-            <EditableInput />
-          </Editable>
-        )}
-      </Box>
+      <HeadingBoxWithBackButton backHandler={backHandler}>
+        <EditableStudentGroupName studentGroupRef={studentGroupRef} studentGroupDocument={studentGroupDocument} />
+      </HeadingBoxWithBackButton>
 
       <NewStudent addStudentHandler={addStudentHandler} openAddExistingModalHandler={onOpen} />
+
+      <NameDisplay selectedStudent={selectedStudent} />
+
       <Flex flexWrap="wrap" justifyContent="space-evenly">
-        <Button onClick={showAllHandler}>Show All Students</Button>
+        <Button onClick={showAllHandler}>Show All</Button>
         <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
         <Button marginTop="5px" onClick={selectHandler}>
           Select Name
         </Button>
       </Flex>
-      <NameDisplayBox>
-        {selectedStudent === null ? (
-          <Heading as="h3" fontSize="1.5rem">
-            {'click "Select Name"'}
-          </Heading>
-        ) : (
-          <Heading as="h1" fontSize="3rem">
-            {selectedStudent?.studentName}
-          </Heading>
-        )}
-      </NameDisplayBox>
+
       <Heading as="h2" margin="15px 0 0 5%" fontSize="1.2rem" alignSelf="flex-start">
         Unselected Students:
       </Heading>
@@ -192,6 +159,7 @@ const StudentGroup: React.FC = () => {
           )
         })}
       </StudentBox>
+
       <AddExistingStudentsModal
         onClose={onClose}
         isOpen={isOpen}
@@ -200,6 +168,7 @@ const StudentGroup: React.FC = () => {
         studentsInStudentGroupsRef={studentsInStudentGroupsRef}
         studentGroupDocument={studentGroupDocument}
       />
+
       <FullScreenDisplay
         modalHeadingText="FullScreenMode"
         onClose={() => setFullScreenDisplayIsOpen(false)}

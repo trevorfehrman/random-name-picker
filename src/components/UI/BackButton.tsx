@@ -14,7 +14,7 @@ const BackButton: React.FC<BackButtonProps> = ({ backHandler }) => {
       aria-label="back"
       position="absolute"
       top="10px"
-      left="10px"
+      left={0}
     />
   )
 }
