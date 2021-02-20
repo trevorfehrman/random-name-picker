@@ -11,26 +11,15 @@ import {
   Editable,
   EditablePreview,
   EditableInput,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react'
-import { IStudentGroup, IStudentInGroup, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
 import styled from '@emotion/styled'
 import StudentInGroup from 'components/StudentInGroup'
-import StudentPreview from 'components/StudentPreview'
+import FullScreenDisplay from 'components/FullScreenDisplay'
+import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import BackButton from 'components/UI/BackButton'
 import { FormBox } from 'styles'
-
-interface IStudentToAdd {
-  studentId: string
-  studentName: string
-}
 
 const StudentBox = styled.div`
   margin: auto;
@@ -49,10 +38,10 @@ const NameDisplayBox = styled.div`
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
   const [studentInput, setStudentInput] = React.useState('')
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
+  const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
 
   const history = useHistory()
   const params: Params = useParams()
@@ -85,9 +74,8 @@ const StudentGroup: React.FC = () => {
   ).data
 
   const studentsRef = teacherRef.collection('students')
-  const studentDocuments = useFirestoreCollectionData<IStudentInGroup & { docId: string }>(studentsRef, {
-    idField: 'docId',
-  }).data
+  const studentDocuments = useFirestoreCollectionData<IStudent & { docId: string }>(studentsRef, { idField: 'docId' })
+    .data
 
   React.useEffect(() => {
     console.log(unselectedStudentsDocuments)
@@ -124,29 +112,6 @@ const StudentGroup: React.FC = () => {
     studentGroupRef.update({ studentGroupName: value }).catch(err => {
       console.log(err)
     })
-  }
-
-  const addBatch = useFirestore().batch()
-
-  const addExistingHandler = () => {
-    console.log(selectedStudentsToAdd)
-    selectedStudentsToAdd.forEach(student => {
-      const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
-      addBatch.set(newStudentInStudentGroupRef, {
-        studentName: student.studentName,
-        studentId: student.studentId,
-        studentGroupId: studentGroupDocument.docId,
-        studentGroupName: studentGroupDocument.studentGroupName,
-        selected: false,
-      })
-    })
-    return addBatch
-      .commit()
-      .then(() => {
-        onClose()
-        setSelectedStudentsToAdd([])
-      })
-      .catch(err => console.log(err))
   }
 
   const backHandler = () => {
@@ -226,11 +191,11 @@ const StudentGroup: React.FC = () => {
         <Button marginTop="5px" onClick={showAllHandler}>
           Show All Students
         </Button>
+        <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
         <Button marginTop="5px" onClick={selectHandler}>
           Select Name
         </Button>
       </Flex>
-
       <NameDisplayBox>
         {selectedStudent === null ? (
           <Heading as="h3" fontSize="1.5rem">
@@ -252,47 +217,32 @@ const StudentGroup: React.FC = () => {
           )
         })}
       </StudentBox>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Add Existing Students</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Box border="1px solid black" maxHeight="500px" minHeight="100px" padding="10px" overflowY="auto">
-              {studentDocuments
-                ?.filter(student => {
-                  let studentIsInClass = false
-                  studentsInThisStudentGroupDocuments?.forEach(studentInGroup => {
-                    if (studentInGroup.studentId === student.docId) {
-                      studentIsInClass = true
-                    }
-                  })
-                  return !studentIsInClass
-                })
-                .map(doc => {
-                  return (
-                    <StudentPreview
-                      key={doc.docId}
-                      studentName={doc.studentName}
-                      studentId={doc.docId}
-                      selectedStudentsToAdd={selectedStudentsToAdd}
-                      setSelectedStudentsToAdd={setSelectedStudentsToAdd}
-                    />
-                  )
-                })}
-            </Box>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue" mr={3} onClick={addExistingHandler}>
-              Add To Group
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <AddExistingStudentsModal
+        onClose={onClose}
+        isOpen={isOpen}
+        studentDocuments={studentDocuments}
+        studentsInThisStudentGroupDocuments={studentsInThisStudentGroupDocuments}
+        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
+        studentGroupDocument={studentGroupDocument}
+      />
+      <FullScreenDisplay
+        modalHeadingText="FullScreenMode"
+        onClose={() => setFullScreenDisplayIsOpen(false)}
+        isOpen={fullScreenDisplayIsOpen}
+        selectHandler={selectHandler}
+      >
+        <Flex h="100%" w="100%" justify="center" align="center">
+          {selectedStudent === null ? (
+            <Heading as="h3" fontSize="3rem">
+              {'click to select'}
+            </Heading>
+          ) : (
+            <Heading as="h1" fontSize="20vw">
+              {selectedStudent?.studentName}
+            </Heading>
+          )}
+        </Flex>
+      </FullScreenDisplay>
     </Flex>
   )
 }

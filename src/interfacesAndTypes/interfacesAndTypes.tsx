@@ -1,11 +1,13 @@
 export interface IStudentGroup {
+  docId: string
   studentGroupName: string
-  students: IStudentInGroup[]
+  students: IStudent[]
 }
 
-export interface IStudentInGroup {
+export interface IStudent {
   studentName: string
   studentId: string
+  docId: string
 }
 
 export interface Params {
