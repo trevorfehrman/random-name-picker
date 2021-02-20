@@ -2,24 +2,15 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import {
-  Input,
-  Heading,
-  Button,
-  Box,
-  Flex,
-  Editable,
-  EditablePreview,
-  EditableInput,
-  useDisclosure,
-} from '@chakra-ui/react'
+import { Heading, Button, Box, Flex, Editable, EditablePreview, EditableInput, useDisclosure } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
 import styled from '@emotion/styled'
 import StudentInGroup from 'components/StudentInGroup'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import BackButton from 'components/UI/BackButton'
-import { FormBox } from 'styles'
+import NewStudent from 'components/NewStudent'
+import { PageContentsBox } from 'styles'
 
 const StudentBox = styled.div`
   margin: auto;
@@ -30,15 +21,14 @@ const NameDisplayBox = styled.div`
   display: flex;
   h: 7rem;
   w: 100%;
-  justify: center;
-  align: center;
+  justify-content: center;
+  align-items: center;
   padding: 5%;
 `
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const [studentInput, setStudentInput] = React.useState('')
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
@@ -82,7 +72,11 @@ const StudentGroup: React.FC = () => {
     setUnselected(unselectedStudentsDocuments)
   }, [unselectedStudentsDocuments])
 
-  const addStudentHandler = async (e: React.SyntheticEvent) => {
+  const addStudentHandler = async (
+    e: React.SyntheticEvent,
+    studentInput: string,
+    setStudentInput: React.Dispatch<React.SetStateAction<string>>,
+  ) => {
     e.preventDefault()
     if (studentInput === '') {
       return
@@ -152,7 +146,7 @@ const StudentGroup: React.FC = () => {
   }
 
   return (
-    <Flex flexDirection="column" alignItems="center" w="100%">
+    <PageContentsBox>
       <Box position="relative" w="90%" textAlign="center">
         <BackButton backHandler={backHandler} />
         {studentGroupDocument && (
@@ -169,28 +163,9 @@ const StudentGroup: React.FC = () => {
         )}
       </Box>
 
-      <FormBox>
-        <form onSubmit={addStudentHandler}>
-          <label htmlFor="student-name">Name:</label>
-          <Input
-            placeholder="Student name"
-            id="student-name"
-            aria-label="student-name"
-            onChange={e => setStudentInput(e.target.value)}
-            value={studentInput}
-          ></Input>
-          <Flex justifyContent="space-between">
-            <Button aria-label="add" type="submit">
-              Add New
-            </Button>
-            <Button onClick={onOpen}>Add Existing</Button>
-          </Flex>
-        </form>
-      </FormBox>
+      <NewStudent addStudentHandler={addStudentHandler} openAddExistingModalHandler={onOpen} />
       <Flex flexWrap="wrap" justifyContent="space-evenly">
-        <Button marginTop="5px" onClick={showAllHandler}>
-          Show All Students
-        </Button>
+        <Button onClick={showAllHandler}>Show All Students</Button>
         <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
         <Button marginTop="5px" onClick={selectHandler}>
           Select Name
@@ -243,7 +218,7 @@ const StudentGroup: React.FC = () => {
           )}
         </Flex>
       </FullScreenDisplay>
-    </Flex>
+    </PageContentsBox>
   )
 }
 

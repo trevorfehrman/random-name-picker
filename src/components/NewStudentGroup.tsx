@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, FormLabel, Input, Button } from '@chakra-ui/react'
+import { FormLabel, Input, Button } from '@chakra-ui/react'
 import firebase from 'firebase'
 import { useHistory } from 'react-router-dom'
 import { FormBox } from 'styles'
