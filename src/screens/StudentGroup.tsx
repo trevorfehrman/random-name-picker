@@ -2,10 +2,8 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { Heading, Button, Flex, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes/interfacesAndTypes'
-import styled from '@emotion/styled'
-import StudentInGroup from 'components/StudentInGroup'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import NewStudent from 'components/NewStudent'
@@ -13,11 +11,7 @@ import { PageContentsBox } from 'styles'
 import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
-
-const StudentBox = styled.div`
-  margin: auto;
-  width: 90%;
-`
+import UnselectedStudents from 'components/UnselectedStudents'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -65,35 +59,6 @@ const StudentGroup: React.FC = () => {
     setUnselected(unselectedStudentsDocuments)
   }, [unselectedStudentsDocuments])
 
-  const addStudentHandler = async (
-    e: React.SyntheticEvent,
-    studentInput: string,
-    setStudentInput: React.Dispatch<React.SetStateAction<string>>,
-  ) => {
-    e.preventDefault()
-    if (studentInput === '') {
-      return
-    }
-    try {
-      const studentResult = await studentsRef.add({
-        studentName: studentInput,
-      })
-      console.log(studentResult)
-      studentsInStudentGroupsRef
-        .add({
-          studentId: studentResult.id,
-          studentName: studentInput,
-          studentGroupId,
-          studentGroupName: studentGroupDocument.studentGroupName,
-          selected: false,
-        })
-        .catch(err => console.log(err))
-      setStudentInput('')
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   const backHandler = () => {
     history.push('/')
   }
@@ -137,7 +102,13 @@ const StudentGroup: React.FC = () => {
         <EditableStudentGroupName studentGroupRef={studentGroupRef} studentGroupDocument={studentGroupDocument} />
       </HeadingBoxWithBackButton>
 
-      <NewStudent addStudentHandler={addStudentHandler} openAddExistingModalHandler={onOpen} />
+      <NewStudent
+        openAddExistingModalHandler={onOpen}
+        studentsRef={studentsRef}
+        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
+        studentGroupDocument={studentGroupDocument}
+        studentGroupId={studentGroupId}
+      />
 
       <NameDisplay selectedStudent={selectedStudent} />
 
@@ -147,16 +118,7 @@ const StudentGroup: React.FC = () => {
         <Button onClick={selectHandler}>Select Name</Button>
       </Flex>
 
-      <Heading as="h2" margin="15px 0 0 5%" fontSize="1.2rem" alignSelf="flex-start">
-        Unselected Students:
-      </Heading>
-      <StudentBox>
-        {unselected?.map(doc => {
-          return (
-            <StudentInGroup key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
-          )
-        })}
-      </StudentBox>
+      <UnselectedStudents unselected={unselected} />
 
       <AddExistingStudentsModal
         onClose={onClose}
