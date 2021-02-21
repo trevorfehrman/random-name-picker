@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import { IStudent, IStudentInStudentGroup, IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudent, IStudentInStudentGroup, IStudentGroup } from 'interfacesAndTypes'
 import StudentPreview from 'components/StudentPreview'
 import firebase from 'firebase'
 import { useFirestore } from 'reactfire'

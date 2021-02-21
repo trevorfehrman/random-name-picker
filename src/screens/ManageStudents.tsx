@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Heading, Box } from '@chakra-ui/react'
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
-import { IStudent } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudent } from 'interfacesAndTypes'
 import Student from 'components/Student'
 import { useHistory } from 'react-router-dom'
 import { PageContentsBox } from 'styles'

@@ -5,7 +5,7 @@ import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 import { Button } from '@chakra-ui/react'
 
 import StudentGroupPreview from 'components/StudentGroupPreview'
-import { IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudentGroup } from 'interfacesAndTypes'
 import NewStudentGroup from 'components/NewStudentGroup'
 import { useHistory } from 'react-router-dom'
 import styled from '@emotion/styled'
@@ -32,7 +32,6 @@ const StudentGroups: React.FC = () => {
   }
 
   return (
-    // <Flex w="100%" direction="column" align="center"></Flex>
     <PageContentsBox>
       <NewStudentGroup studentGroupsRef={studentGroupsRef} />
       <Button onClick={manageStudentsHandler}>Manage Students</Button>

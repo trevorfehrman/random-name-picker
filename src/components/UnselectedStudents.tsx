@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Heading } from '@chakra-ui/react'
-import { IStudentInStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudentInStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
 import styled from '@emotion/styled'
 

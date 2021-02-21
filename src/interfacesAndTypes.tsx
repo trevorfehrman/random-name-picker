@@ -22,3 +22,8 @@ export interface IStudentInStudentGroup {
   studentGroupName: string
   selected: boolean
 }
+
+export type NameDisplayProps = {
+  selectedStudent: IStudentInStudentGroup | null
+  isFullScreen?: boolean
+}

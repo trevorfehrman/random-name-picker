@@ -24,3 +24,12 @@ export const PageContentsBox = styled.div`
   width: 100%;
   overflow: auto;
 `
+
+export const NameDisplayBox = styled.div`
+  display: flex;
+  min-height: 7rem;
+  w: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
+`
