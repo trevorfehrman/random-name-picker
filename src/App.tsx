@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { AuthCheck } from 'reactfire'
 import 'firebase/auth'
+import 'App.css'
 
 import { Login } from 'components/Login'
 import { AuthenticatedApp } from 'authenticated-app'

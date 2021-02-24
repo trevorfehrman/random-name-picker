@@ -23,7 +23,7 @@ const NameDisplayBox = styled.div`
   w: 100%;
   justify-content: center;
   align-items: center;
-  padding: 5%;
+  padding: 1.5rem;
 `
 
 const StudentGroup: React.FC = () => {
@@ -153,9 +153,9 @@ const StudentGroup: React.FC = () => {
           <Editable
             defaultValue={studentGroupDocument.studentGroupName}
             onSubmit={editStudentGroupNameHandler}
-            fontSize="1.3rem"
-            margin="15px auto 0 auto"
-            w="60%"
+            fontSize="1.7rem"
+            margin="1.5rem auto 0 auto"
+            w="70%"
           >
             <EditablePreview _hover={{ cursor: 'pointer' }} />
             <EditableInput />
@@ -167,13 +167,11 @@ const StudentGroup: React.FC = () => {
       <Flex flexWrap="wrap" justifyContent="space-evenly">
         <Button onClick={showAllHandler}>Show All Students</Button>
         <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
-        <Button marginTop="5px" onClick={selectHandler}>
-          Select Name
-        </Button>
+        <Button onClick={selectHandler}>Select Name</Button>
       </Flex>
       <NameDisplayBox>
         {selectedStudent === null ? (
-          <Heading as="h3" fontSize="1.5rem">
+          <Heading as="h3" fontSize="1.6rem">
             {'click "Select Name"'}
           </Heading>
         ) : (
@@ -182,7 +180,7 @@ const StudentGroup: React.FC = () => {
           </Heading>
         )}
       </NameDisplayBox>
-      <Heading as="h2" margin="15px 0 0 5%" fontSize="1.2rem" alignSelf="flex-start">
+      <Heading as="h2" margin="1rem 0 0 3rem" fontSize="1.2rem" alignSelf="flex-start">
         Unselected Students:
       </Heading>
       <StudentBox>
@@ -212,7 +210,7 @@ const StudentGroup: React.FC = () => {
               {'click to select'}
             </Heading>
           ) : (
-            <Heading as="h1" fontSize="20vw">
+            <Heading as="h1" fontSize={selectedStudent.studentName.length > 7 ? '15rem' : '20rem'}>
               {selectedStudent?.studentName}
             </Heading>
           )}

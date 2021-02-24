@@ -30,9 +30,9 @@ const ShowAllStudents: React.FC = () => {
 
   return (
     <Flex w="90%" direction="column" align="center" margin="auto">
-      <Box h="100px" position="relative" w="100%" textAlign="center">
+      <Box h="10rem" position="relative" w="100%" textAlign="center">
         <BackButton backHandler={backHandler} />
-        <Heading as="h1" marginTop="25px">
+        <Heading as="h1" marginTop="2.5rem">
           {`All Students in ${studentGroupDoc?.studentGroupName}`}
         </Heading>
       </Box>

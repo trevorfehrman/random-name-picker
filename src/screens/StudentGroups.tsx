@@ -15,7 +15,8 @@ const GroupBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
+  margin: 2rem auto;
+  width: 100%;
 `
 
 const StudentGroups: React.FC = () => {
@@ -35,7 +36,9 @@ const StudentGroups: React.FC = () => {
     // <Flex w="100%" direction="column" align="center"></Flex>
     <PageContentsBox>
       <NewStudentGroup studentGroupsRef={studentGroupsRef} />
-      <Button onClick={manageStudentsHandler}>Manage Students</Button>
+      <Button onClick={manageStudentsHandler} alignSelf="center">
+        Manage Students
+      </Button>
       <GroupBox>
         {studentGroupsDocuments.data?.map(doc => {
           return (

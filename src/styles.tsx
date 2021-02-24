@@ -12,15 +12,16 @@ export const StudentContainer = styled.div`
 `
 
 export const FormBox = styled.div`
-  w: 90%;
-  max-width: 90%;
-  margin: 0 0 0 0;
+  w: 100%;
+  max-width: 100%;
+  margin: 1rem;
   padding: 10px;
 `
 
 export const PageContentsBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
+  height: 100vh;
 `
