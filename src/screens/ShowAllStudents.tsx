@@ -1,10 +1,11 @@
 import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useUser, useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire'
-import { Heading, Flex, Box } from '@chakra-ui/react'
-import { IStudentInStudentGroup, Params, IStudentGroup } from 'interfacesAndTypes/interfacesAndTypes'
+import { Heading } from '@chakra-ui/react'
+import { IStudentInStudentGroup, Params, IStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
-import BackButton from 'components/UI/BackButton'
+import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
+import { PageContentsBox } from 'styles'
 
 const ShowAllStudents: React.FC = () => {
   const params: Params = useParams()
@@ -29,17 +30,19 @@ const ShowAllStudents: React.FC = () => {
   }
 
   return (
-    <Flex w="90%" direction="column" align="center" margin="auto">
-      <Box h="100px" position="relative" w="100%" textAlign="center">
-        <BackButton backHandler={backHandler} />
+    <PageContentsBox>
+      <HeadingBoxWithBackButton backHandler={backHandler}>
         <Heading as="h1" marginTop="25px">
-          {`All Students in ${studentGroupDoc?.studentGroupName}`}
+          {`All Students `}
         </Heading>
-      </Box>
+        <Heading as="h2" size="md">
+          {`in ${studentGroupDoc?.studentGroupName}`}
+        </Heading>
+      </HeadingBoxWithBackButton>
       {studentsInThisStudentGroupDocuments?.map(doc => {
         return <StudentInGroup key={doc.docId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
       })}
-    </Flex>
+    </PageContentsBox>
   )
 }
 

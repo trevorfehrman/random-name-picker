@@ -14,7 +14,6 @@ export const StudentContainer = styled.div`
 export const FormBox = styled.div`
   w: 90%;
   max-width: 90%;
-  margin: 0 0 0 0;
   padding: 10px;
 `
 
@@ -23,4 +22,14 @@ export const PageContentsBox = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  overflow: auto;
+`
+
+export const NameDisplayBox = styled.div`
+  display: flex;
+  min-height: 7rem;
+  w: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 2%;
 `

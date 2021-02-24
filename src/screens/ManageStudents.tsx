@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { Heading, Box } from '@chakra-ui/react'
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
-import { IStudent } from 'interfacesAndTypes/interfacesAndTypes'
+import { IStudent } from 'interfacesAndTypes'
 import Student from 'components/Student'
-import BackButton from 'components/UI/BackButton'
 import { useHistory } from 'react-router-dom'
 import { PageContentsBox } from 'styles'
+import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 
 const ManageStudents: React.FC = () => {
   const { data: user } = useUser()
@@ -24,10 +24,9 @@ const ManageStudents: React.FC = () => {
 
   return (
     <PageContentsBox>
-      <Box position="relative" textAlign="center" padding="10px">
-        <BackButton backHandler={backHandler} />
+      <HeadingBoxWithBackButton backHandler={backHandler}>
         <Heading as="h1">All Students</Heading>
-      </Box>
+      </HeadingBoxWithBackButton>
       <Box width="90%" border="1px solid black" maxHeight="500px" minHeight="100px" padding="10px" overflowY="auto">
         {allStudentsDocuments?.map(doc => {
           return <Student key={doc.docId} studentName={doc.studentName} docId={doc.docId} />
