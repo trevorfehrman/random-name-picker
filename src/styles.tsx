@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 
 export const StudentContainer = styled.div`
   display: flex;
-  align: center;
+  align-items: center;
   justify-content: space-between;
   padding: 10px;
   border: 1px solid black;
@@ -12,7 +12,7 @@ export const StudentContainer = styled.div`
 `
 
 export const FormBox = styled.div`
-  w: 90%;
+  width: 90%;
   max-width: 90%;
   padding: 10px;
 `
@@ -28,7 +28,7 @@ export const PageContentsBox = styled.div`
 export const NameDisplayBox = styled.div`
   display: flex;
   min-height: 7rem;
-  w: 100%;
+  width: 100%;
   justify-content: center;
   align-items: center;
   padding: 2%;
