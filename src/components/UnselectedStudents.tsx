@@ -1,24 +1,38 @@
 import * as React from 'react'
-import { Heading } from '@chakra-ui/react'
+import { Heading, Flex, Button, Box } from '@chakra-ui/react'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
 import styled from '@emotion/styled'
+import { useHistory } from 'react-router-dom'
 
 const StudentBox = styled.div`
-  margin: auto;
-  width: 90%;
+  width: 100%;
+  height: 28vh;
+  min-height: 40%;
+  overflow-y: auto;
 `
 
 type UnselectedStudentsProps = {
   unselected: IStudentInStudentGroup[]
+  studentGroupId: string
 }
 
-const UnselectedStudents: React.FC<UnselectedStudentsProps> = ({ unselected }) => {
+const UnselectedStudents: React.FC<UnselectedStudentsProps> = ({ unselected, studentGroupId }) => {
+  const history = useHistory()
+
+  const showAllHandler = () => {
+    history.push(`/show-all-students/${studentGroupId}`)
+  }
+
   return (
-    <>
-      <Heading as="h2" margin="15px 0 0 5%" fontSize="1.2rem" alignSelf="flex-start">
-        Unselected Students:
-      </Heading>
+    <Box width="100%">
+      <Flex justify="space-between" width="100%" alignItems="center">
+        <Heading as="h2" fontSize="1.2rem">
+          Unselected:
+        </Heading>
+        <Button onClick={showAllHandler}>Show All</Button>
+      </Flex>
+
       <StudentBox>
         {unselected?.map(doc => {
           return (
@@ -26,7 +40,7 @@ const UnselectedStudents: React.FC<UnselectedStudentsProps> = ({ unselected }) =
           )
         })}
       </StudentBox>
-    </>
+    </Box>
   )
 }
 

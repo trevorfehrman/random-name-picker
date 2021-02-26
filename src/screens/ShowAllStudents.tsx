@@ -32,9 +32,7 @@ const ShowAllStudents: React.FC = () => {
   return (
     <PageContentsBox>
       <HeadingBoxWithBackButton backHandler={backHandler}>
-        <Heading as="h1" marginTop="25px">
-          {`All Students `}
-        </Heading>
+        <Heading as="h1">{`All Students `}</Heading>
         <Heading as="h2" size="md">
           {`in ${studentGroupDoc?.studentGroupName}`}
         </Heading>

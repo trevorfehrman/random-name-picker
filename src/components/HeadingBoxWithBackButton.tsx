@@ -9,14 +9,16 @@ const HeadingBoxWithBackButton: React.FC<HeadingBoxWithBackButtonProps> = ({ chi
   return (
     <Flex
       flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
+      justifyContent="flex-end"
+      alignItems="flex-end"
       position="relative"
-      w="90%"
-      minHeight="60px"
+      w="100%"
+      padding="1rem 0"
     >
       <BackButton backHandler={backHandler} />
+      {/* <Flex direction="column" w="100%" backgroundColor="blue.400" justify="center"> */}
       {children}
+      {/* </Flex> */}
     </Flex>
   )
 }

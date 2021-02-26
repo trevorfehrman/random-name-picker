@@ -2,7 +2,8 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { Button, Flex, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure, Icon, IconButton } from '@chakra-ui/react'
+import { BiExpand } from 'react-icons/bi'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
@@ -64,10 +65,13 @@ const StudentGroup: React.FC = () => {
   }
 
   const selectHandler = () => {
+    if (studentsInThisStudentGroupDocuments.length === 0) {
+      return
+    }
     const randomIndex = Math.floor(Math.random() * unselected.length)
     const selectedStudent = unselected[randomIndex]
     setSelectedStudent(selectedStudent)
-    if (unselected.length === 1) {
+    if (unselected.length <= 1) {
       resetSelectedStatus()
     } else {
       studentsInStudentGroupsRef
@@ -101,7 +105,7 @@ const StudentGroup: React.FC = () => {
       <HeadingBoxWithBackButton backHandler={backHandler}>
         <EditableStudentGroupName studentGroupRef={studentGroupRef} studentGroupDocument={studentGroupDocument} />
       </HeadingBoxWithBackButton>
-
+      {/* <hr style={{ width: '85%', padding: '.5rem' }} /> */}
       <NewStudent
         openAddExistingModalHandler={onOpen}
         studentsRef={studentsRef}
@@ -110,15 +114,20 @@ const StudentGroup: React.FC = () => {
         studentGroupId={studentGroupId}
       />
 
-      <NameDisplay selectedStudent={selectedStudent} />
+      <NameDisplay
+        selectedStudent={selectedStudent}
+        setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
+        selectHandler={selectHandler}
+      />
 
-      <Flex flexWrap="wrap" justifyContent="space-evenly">
+      {/* <Flex flexWrap="wrap" justifyContent="space-evenly" width="100%" padding="1rem">
         <Button onClick={showAllHandler}>Show All</Button>
-        <Button onClick={() => setFullScreenDisplayIsOpen(true)}>Full Screen</Button>
-        <Button onClick={selectHandler}>Select Name</Button>
-      </Flex>
+        <Button colorScheme="blue" onClick={selectHandler}>
+          Select Name
+        </Button>
+      </Flex> */}
 
-      <UnselectedStudents unselected={unselected} />
+      <UnselectedStudents unselected={unselected} studentGroupId={studentGroupId} />
 
       <AddExistingStudentsModal
         onClose={onClose}
@@ -135,7 +144,12 @@ const StudentGroup: React.FC = () => {
         isOpen={fullScreenDisplayIsOpen}
         selectHandler={selectHandler}
       >
-        <NameDisplay selectedStudent={selectedStudent} isFullScreen />
+        <NameDisplay
+          selectedStudent={selectedStudent}
+          isFullScreen
+          setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
+          selectHandler={selectHandler}
+        />
       </FullScreenDisplay>
     </PageContentsBox>
   )

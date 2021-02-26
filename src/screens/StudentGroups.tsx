@@ -13,9 +13,12 @@ import { PageContentsBox } from 'styles'
 
 const GroupBox = styled.div`
   display: flex;
+  padding: 1.5rem 0;
   flex-direction: column;
   align-items: center;
-  width: 90%;
+  width: 100%;
+  max-height: 60%;
+  overflow-y: auto;
 `
 
 const StudentGroups: React.FC = () => {
