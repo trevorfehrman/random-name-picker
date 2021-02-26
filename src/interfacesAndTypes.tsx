@@ -21,6 +21,7 @@ export interface IStudentInStudentGroup {
   studentGroupId: string
   studentGroupName: string
   selected: boolean
+  order: number
 }
 
 export type NameDisplayProps = {

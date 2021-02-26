@@ -56,7 +56,7 @@ const StudentGroup: React.FC = () => {
 
   React.useEffect(() => {
     console.log(unselectedStudentsDocuments)
-    setUnselected(unselectedStudentsDocuments)
+    setUnselected(unselectedStudentsDocuments.sort((a, b) => a.order - b.order))
   }, [unselectedStudentsDocuments])
 
   const backHandler = () => {
@@ -64,8 +64,7 @@ const StudentGroup: React.FC = () => {
   }
 
   const selectHandler = () => {
-    const randomIndex = Math.floor(Math.random() * unselected.length)
-    const selectedStudent = unselected[randomIndex]
+    const selectedStudent = unselected[0]
     setSelectedStudent(selectedStudent)
     if (unselected.length === 1) {
       resetSelectedStatus()
@@ -80,12 +79,18 @@ const StudentGroup: React.FC = () => {
   const updateBatch = useFirestore().batch()
 
   const resetSelectedStatus = () => {
+    const orderArray: number[] = []
+    for (let i = 1; i <= studentsInThisStudentGroupDocuments.length; i++) {
+      orderArray[i - 1] = i
+    }
+    console.log(orderArray)
     studentsInThisStudentGroupRef
       .get()
       .then(snapshot => {
         snapshot.docs.forEach(doc => {
           console.log(doc, 'made it here')
-          updateBatch.update(doc.ref, { selected: false })
+          const randomOrderValue = orderArray.splice(Math.floor(Math.random() * orderArray.length), 1)
+          updateBatch.update(doc.ref, { selected: false, order: randomOrderValue[0] })
         })
         return updateBatch.commit().catch(err => console.log(err))
       })
