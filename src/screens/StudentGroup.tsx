@@ -20,6 +20,7 @@ const StudentGroup: React.FC = () => {
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
+  const [isTimeToShuffle, setIsTimeToShuffle] = React.useState(false)
 
   const history = useHistory()
   const params: Params = useParams()
