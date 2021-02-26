@@ -56,7 +56,7 @@ const StudentGroup: React.FC = () => {
 
   React.useEffect(() => {
     console.log(unselectedStudentsDocuments)
-    setUnselected(unselectedStudentsDocuments.sort((a, b) => a.order - b.order))
+    unselectedStudentsDocuments && setUnselected(unselectedStudentsDocuments.sort((a, b) => a.order - b.order))
   }, [unselectedStudentsDocuments])
 
   const backHandler = () => {
