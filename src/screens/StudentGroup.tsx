@@ -35,9 +35,11 @@ type FormData = {
 }
 
 const StudentGroupNameForm = styled.form`
-  width: 22rem;
+  width: 16rem;
   max-width: 85%;
   text-align: right;
+  display: flex;
+  justify-content: flex-end;
 `
 
 const StudentGroup: React.FC = () => {
@@ -149,9 +151,8 @@ const StudentGroup: React.FC = () => {
     })
   }
 
-  const mySubmitHandler: (nextValue: string) => void = () => {
-    console.log('getting here')
-    handleSubmit(editStudentGroupNameHandler)
+  const mySubmitHandler = () => {
+    handleSubmit(editStudentGroupNameHandler)()
   }
 
   return (
@@ -170,8 +171,8 @@ const StudentGroup: React.FC = () => {
                   minWidth="200px"
                   textAlign="right"
                   color="blue.900"
-                  onBlur={handleSubmit(editStudentGroupNameHandler)}
-                  // onSubmit={handleSubmit(editStudentGroupNameHandler)}
+                  // onBlur={handleSubmit(editStudentGroupNameHandler)}
+                  onSubmit={mySubmitHandler}
                 >
                   <EditablePreview _hover={{ cursor: 'pointer' }} />
                   <EditableInput name="studentGroupName" ref={register({ maxLength: 22, required: true })} />
