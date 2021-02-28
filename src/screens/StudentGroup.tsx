@@ -1,8 +1,23 @@
 import * as React from 'react'
+import { useForm } from 'react-hook-form'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { Button, Flex, useDisclosure, Icon, IconButton } from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  useDisclosure,
+  Icon,
+  IconButton,
+  Input,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Box,
+  Editable,
+  EditablePreview,
+  EditableInput,
+} from '@chakra-ui/react'
 import { BiExpand } from 'react-icons/bi'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
@@ -13,6 +28,17 @@ import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import UnselectedStudents from 'components/UnselectedStudents'
+import styled from '@emotion/styled'
+
+type FormData = {
+  studentGroupName: string
+}
+
+const StudentGroupNameForm = styled.form`
+  width: 22rem;
+  max-width: 85%;
+  text-align: right;
+`
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -21,6 +47,17 @@ const StudentGroup: React.FC = () => {
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
   const [isTimeToShuffle, setIsTimeToShuffle] = React.useState(false)
+
+  const { handleSubmit, errors, register, formState } = useForm()
+
+  function validateName(value: string) {
+    console.log('this is running')
+    if (!value) {
+      return 'Name is required'
+    } else if (value !== 'Naruto') {
+      return "Jeez! You're not a fan 😱"
+    } else true
+  }
 
   const history = useHistory()
   const params: Params = useParams()
@@ -101,12 +138,70 @@ const StudentGroup: React.FC = () => {
     history.push(`/show-all-students/${studentGroupId}`)
   }
 
+  const editStudentGroupNameHandler = (values: FormData) => {
+    console.log(values)
+    // if (values.length > 22) {
+    //   console.log('hello?')
+    //   return
+    // }
+    studentGroupRef.update({ studentGroupName: values.studentGroupName }).catch(err => {
+      console.log(err)
+    })
+  }
+
+  const mySubmitHandler: (nextValue: string) => void = () => {
+    console.log('getting here')
+    handleSubmit(editStudentGroupNameHandler)
+  }
+
   return (
     <PageContentsBox>
       <HeadingBoxWithBackButton backHandler={backHandler}>
-        <EditableStudentGroupName studentGroupRef={studentGroupRef} studentGroupDocument={studentGroupDocument} />
+        {/* <EditableStudentGroupName studentGroupRef={studentGroupRef} studentGroupDocument={studentGroupDocument} /> */}
+        <Flex justify="flex-end">
+          <StudentGroupNameForm name="myForm" onSubmit={handleSubmit(editStudentGroupNameHandler)}>
+            <FormControl isInvalid={errors.studentGroupName}>
+              {studentGroupDocument && (
+                <Editable
+                  defaultValue={studentGroupDocument.studentGroupName}
+                  fontSize="1.2rem"
+                  fontWeight="bolder"
+                  w="100%"
+                  minWidth="200px"
+                  textAlign="right"
+                  color="blue.900"
+                  onBlur={handleSubmit(editStudentGroupNameHandler)}
+                  // onSubmit={handleSubmit(editStudentGroupNameHandler)}
+                >
+                  <EditablePreview _hover={{ cursor: 'pointer' }} />
+                  <EditableInput name="studentGroupName" ref={register({ maxLength: 22, required: true })} />
+                </Editable>
+                // <Input
+                //   name="studentGroupName"
+                //   variant="unstyled"
+                //   defaultValue={studentGroupDocument.studentGroupName}
+                //   maxWidth="90%"
+                //   textAlign="right"
+                //   border="none"
+                //   fontSize="1.3rem"
+                //   fontWeight="bold"
+                //   color="blue.900"
+                //   _after={{ backgroundColor: 'white' }}
+                //   _hover={{ border: '1px solid black' }}
+                //   ref={register({ maxLength: 22, required: true })}
+                //   onBlur={handleSubmit(editStudentGroupNameHandler)}
+                // />
+              )}
+              <FormErrorMessage>
+                {errors.studentGroupName?.type === 'maxLength' && <p>Please pick a name with 22 characters or less</p>}
+              </FormErrorMessage>
+              <FormErrorMessage>
+                {errors.studentGroupName?.type === 'required' && <p>Please put something</p>}
+              </FormErrorMessage>
+            </FormControl>
+          </StudentGroupNameForm>
+        </Flex>
       </HeadingBoxWithBackButton>
-      {/* <hr style={{ width: '85%', padding: '.5rem' }} /> */}
       <NewStudent
         openAddExistingModalHandler={onOpen}
         studentsRef={studentsRef}
