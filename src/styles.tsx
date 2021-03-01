@@ -14,7 +14,7 @@ export const StudentContainer = styled.div`
 export const FormBox = styled.div`
   width: 100%;
   max-width: 30rem;
-  padding: 0 0 1rem 0;
+  padding: 1rem 0;
 `
 
 export const PageContentsBox = styled.div`
@@ -24,7 +24,7 @@ export const PageContentsBox = styled.div`
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
 `
 
 export const NameDisplayBox = styled.div`

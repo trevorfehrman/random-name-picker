@@ -14,7 +14,7 @@ const BackButton: React.FC<BackButtonProps> = ({ backHandler }) => {
       icon={<Icon as={BiArrowBack} />}
       aria-label="back"
       position="absolute"
-      top="1rem"
+      top={0}
       left={0}
       border="1px solid black"
     />

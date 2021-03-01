@@ -2,7 +2,7 @@ import * as React from 'react'
 import 'firebase/firestore'
 
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
-import { Button } from '@chakra-ui/react'
+import { Button, Heading } from '@chakra-ui/react'
 
 import StudentGroupPreview from 'components/StudentGroupPreview'
 import { IStudentGroup } from 'interfacesAndTypes'
@@ -10,10 +10,10 @@ import NewStudentGroup from 'components/NewStudentGroup'
 import { useHistory } from 'react-router-dom'
 import styled from '@emotion/styled'
 import { PageContentsBox } from 'styles'
+import Header from 'components/Header'
 
 const GroupBox = styled.div`
   display: flex;
-  padding: 1.5rem 0;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -30,14 +30,10 @@ const StudentGroups: React.FC = () => {
     idField: 'docId',
   })
 
-  const manageStudentsHandler = () => {
-    history.push('/manage-students')
-  }
-
   return (
     <PageContentsBox>
+      <Header />
       <NewStudentGroup studentGroupsRef={studentGroupsRef} />
-      <Button onClick={manageStudentsHandler}>Manage Students</Button>
       <GroupBox>
         {studentGroupsDocuments.data?.map(doc => {
           return (

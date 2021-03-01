@@ -6,6 +6,7 @@ import Student from 'components/Student'
 import { useHistory } from 'react-router-dom'
 import { PageContentsBox } from 'styles'
 import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
+import Header from 'components/Header'
 
 const ManageStudents: React.FC = () => {
   const { data: user } = useUser()
@@ -24,10 +25,14 @@ const ManageStudents: React.FC = () => {
 
   return (
     <PageContentsBox>
-      <HeadingBoxWithBackButton backHandler={backHandler}>
+      <Header />
+      {/* <HeadingBoxWithBackButton backHandler={backHandler}>
         <Heading as="h1">All Students</Heading>
-      </HeadingBoxWithBackButton>
-      <Box width="90%" border="1px solid black" maxHeight="500px" minHeight="100px" padding="10px" overflowY="auto">
+      </HeadingBoxWithBackButton> */}
+      <Heading as="h1" size="lg" marginTop="1rem">
+        All Students
+      </Heading>
+      <Box width="100%" maxHeight="75vh" minHeight="6rem" overflowY="auto">
         {allStudentsDocuments?.map(doc => {
           return <Student key={doc.docId} studentName={doc.studentName} docId={doc.docId} />
         })}
