@@ -38,7 +38,7 @@ const StudentPreview: React.FC<StudentPreviewProps> = ({
     <Flex
       align="center"
       justify="space-between"
-      padding="10px"
+      padding=".6rem"
       onClick={selectHandler}
       backgroundColor={isSelected ? 'tomato' : 'null'}
       marginTop="3px"

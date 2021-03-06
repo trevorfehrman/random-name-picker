@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Heading, IconButton, useDisclosure } from '@chakra-ui/react'
-import { DeleteIcon } from '@chakra-ui/icons'
+import { Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
+// import { DeleteIcon } from '@chakra-ui/icons'
+import { BiTrash } from 'react-icons/bi'
 import styled from '@emotion/styled'
 import { useHistory } from 'react-router-dom'
 
@@ -15,9 +16,9 @@ const ButtonDiv = styled.div`
 const StudentGroupContainer = styled.div`
   border: 1px solid black;
   border-radius: 5px;
-  padding: 5px 0 0 8px;
-  width: 90%;
-  margin: 3px 0;
+  padding: 0.7rem 1.2rem;
+  width: 100%;
+  margin: 0.2rem 0;
   display: flex;
   justify-content: space-between;
   &:hover {
@@ -78,7 +79,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
           {studentGroupName}
         </Heading>
         <ButtonDiv>
-          <IconButton icon={<DeleteIcon />} onClick={openHandler} aria-label="delete">
+          <IconButton icon={<Icon as={BiTrash} />} onClick={openHandler} aria-label="delete">
             Delete
           </IconButton>
         </ButtonDiv>

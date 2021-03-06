@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useUser, useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire'
-import { Heading } from '@chakra-ui/react'
+import { Heading, Box } from '@chakra-ui/react'
 import { IStudentInStudentGroup, Params, IStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
 import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
@@ -32,16 +32,16 @@ const ShowAllStudents: React.FC = () => {
   return (
     <PageContentsBox>
       <HeadingBoxWithBackButton backHandler={backHandler}>
-        <Heading as="h1" marginTop="25px">
-          {`All Students `}
-        </Heading>
+        <Heading as="h1">{`All Students `}</Heading>
         <Heading as="h2" size="md">
           {`in ${studentGroupDoc?.studentGroupName}`}
         </Heading>
       </HeadingBoxWithBackButton>
-      {studentsInThisStudentGroupDocuments?.map(doc => {
-        return <StudentInGroup key={doc.docId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
-      })}
+      <Box w="100%" margin="1rem 0">
+        {studentsInThisStudentGroupDocuments?.map(doc => {
+          return <StudentInGroup key={doc.docId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+        })}
+      </Box>
     </PageContentsBox>
   )
 }
