@@ -50,7 +50,8 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
         studentId: student.studentId,
         studentGroupId: studentGroupDocument.docId,
         studentGroupName: studentGroupDocument.studentGroupName,
-        selected: false,
+        selected: true,
+        order: 1,
       })
     })
     return addBatch

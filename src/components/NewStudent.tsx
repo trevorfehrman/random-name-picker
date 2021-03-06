@@ -36,7 +36,8 @@ const NewStudent: React.FC<NewStudentProps> = ({
           studentName: studentInput,
           studentGroupId,
           studentGroupName: studentGroupDocument.studentGroupName,
-          selected: false,
+          selected: true,
+          order: 1,
         })
         .catch(err => console.log(err))
       setStudentInput('')
