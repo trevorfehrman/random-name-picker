@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Heading, IconButton } from '@chakra-ui/react'
-import { DeleteIcon } from '@chakra-ui/icons'
+import { Heading, Icon, IconButton } from '@chakra-ui/react'
+// import { DeleteIcon } from '@chakra-ui/icons'
+import { BiTrash } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import { StudentContainer } from 'styles'
 
@@ -27,7 +28,7 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInS
       <Heading as="h3" size="md">
         {studentName}
       </Heading>
-      <IconButton icon={<DeleteIcon />} aria-label="delete" onClick={removeHandler} />
+      <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={removeHandler} />
     </StudentContainer>
   )
 }

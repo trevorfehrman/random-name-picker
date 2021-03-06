@@ -1,8 +1,11 @@
 import * as React from 'react'
 import { Flex, Heading } from '@chakra-ui/react'
-import { NameDisplayProps } from 'interfacesAndTypes'
+import { IStudentInStudentGroup } from 'interfacesAndTypes'
 
-const NameDisplayFullScreen: React.FC<NameDisplayProps> = ({ selectedStudent }) => {
+type NameDisplayFullScreenProps = {
+  selectedStudent: IStudentInStudentGroup | null
+}
+const NameDisplayFullScreen: React.FC<NameDisplayFullScreenProps> = ({ selectedStudent }) => {
   return (
     <Flex h="100%" w="100%" justify="center" align="center">
       {selectedStudent === null ? (

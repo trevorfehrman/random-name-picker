@@ -27,4 +27,6 @@ export interface IStudentInStudentGroup {
 export type NameDisplayProps = {
   selectedStudent: IStudentInStudentGroup | null
   isFullScreen?: boolean
+  setFullScreenDisplayIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  selectHandler: () => void
 }

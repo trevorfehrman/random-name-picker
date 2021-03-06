@@ -7,16 +7,11 @@ type HeadingBoxWithBackButtonProps = {
 }
 const HeadingBoxWithBackButton: React.FC<HeadingBoxWithBackButtonProps> = ({ children, backHandler }) => {
   return (
-    <Flex
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      position="relative"
-      w="90%"
-      minHeight="60px"
-    >
+    <Flex flexDirection="column" justifyContent="flex-end" alignItems="flex-end" position="relative" w="100%">
       <BackButton backHandler={backHandler} />
+      {/* <Flex direction="column" w="100%" backgroundColor="blue.400" justify="center"> */}
       {children}
+      {/* </Flex> */}
     </Flex>
   )
 }

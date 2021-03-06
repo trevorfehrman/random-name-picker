@@ -13,6 +13,10 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
 }) => {
   const editStudentGroupNameHandler = (value: string) => {
     console.log(value)
+    if (value.length > 22) {
+      console.log('hello?')
+      return
+    }
     studentGroupRef.update({ studentGroupName: value }).catch(err => {
       console.log(err)
     })
@@ -26,10 +30,10 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
           onSubmit={editStudentGroupNameHandler}
           fontSize="1.4rem"
           fontWeight="bolder"
-          margin="15px auto 0 auto"
-          w="40%"
+          w="100%"
           minWidth="200px"
-          textAlign="center"
+          textAlign="right"
+          color="blue.900"
         >
           <EditablePreview _hover={{ cursor: 'pointer' }} />
           <EditableInput />
