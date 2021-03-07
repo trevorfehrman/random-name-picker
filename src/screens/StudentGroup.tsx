@@ -1,17 +1,8 @@
 import * as React from 'react'
-import { useForm } from 'react-hook-form'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import {
-  Flex,
-  useDisclosure,
-  FormControl,
-  FormErrorMessage,
-  Editable,
-  EditablePreview,
-  EditableInput,
-} from '@chakra-ui/react'
+import { Flex, useDisclosure } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
@@ -21,13 +12,6 @@ import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import UnselectedStudents from 'components/UnselectedStudents'
-import styled from '@emotion/styled'
-import Header from 'components/Header'
-
-type FormData = {
-  studentGroupName: string
-  studentGroup: string
-}
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -35,7 +19,6 @@ const StudentGroup: React.FC = () => {
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
-  const [isTimeToShuffle, setIsTimeToShuffle] = React.useState(false)
 
   const history = useHistory()
   const params: Params = useParams()
@@ -112,10 +95,6 @@ const StudentGroup: React.FC = () => {
         return updateBatch.commit().catch(err => console.log(err))
       })
       .catch(err => console.log(err))
-  }
-
-  const showAllHandler = () => {
-    history.push(`/show-all-students/${studentGroupId}`)
   }
 
   return (
