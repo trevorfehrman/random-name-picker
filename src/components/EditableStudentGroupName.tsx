@@ -28,10 +28,9 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
         <Editable
           defaultValue={studentGroupDocument.studentGroupName}
           onSubmit={editStudentGroupNameHandler}
-          fontSize="1.4rem"
           fontWeight="bolder"
           w="100%"
-          minWidth="200px"
+          minWidth="13rem"
           textAlign="right"
           color="blue.900"
         >

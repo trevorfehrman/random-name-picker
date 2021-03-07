@@ -38,6 +38,7 @@ type FormData = {
 }
 
 const StudentGroupNameForm = styled.form`
+  font-size: 2rem;
   width: 16rem;
   max-width: 90%;
   text-align: right;
@@ -215,8 +216,9 @@ const StudentGroup: React.FC = () => {
                   w="100%"
                   textAlign="right"
                   color="blue.900"
-                  fontSize="1.2rem"
-                  fontWeight="bolder"
+                  fontSize="1.7rem"
+                  fontWeight="500"
+                  overflowX="auto"
                   // onBlur={handleSubmit(editStudentGroupNameHandler)}
                   onSubmit={mySubmitHandler}
                 >
@@ -257,13 +259,6 @@ const StudentGroup: React.FC = () => {
           </StudentGroupNameForm>
         </Flex>
       </HeadingBoxWithBackButton>
-      <NewStudent
-        openAddExistingModalHandler={onOpen}
-        studentsRef={studentsRef}
-        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-        studentGroupDocument={studentGroupDocument}
-        studentGroupId={studentGroupId}
-      />
 
       <NameDisplay
         selectedStudent={selectedStudent}
@@ -279,6 +274,14 @@ const StudentGroup: React.FC = () => {
       </Flex> */}
 
       <UnselectedStudents unselected={unselected} studentGroupId={studentGroupId} />
+
+      <NewStudent
+        openAddExistingModalHandler={onOpen}
+        studentsRef={studentsRef}
+        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
+        studentGroupDocument={studentGroupDocument}
+        studentGroupId={studentGroupId}
+      />
 
       <AddExistingStudentsModal
         onClose={onClose}

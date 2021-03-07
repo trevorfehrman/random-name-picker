@@ -16,7 +16,7 @@ const BackButton: React.FC<BackButtonProps> = ({ backHandler }) => {
       position="absolute"
       top={0}
       left={0}
-      border="1px solid black"
+      border="1px solid #535353"
     />
   )
 }
