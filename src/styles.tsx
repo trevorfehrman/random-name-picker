@@ -1,11 +1,13 @@
 import styled from '@emotion/styled'
 
+// dark grey: #474747
+
 export const StudentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.2rem 1rem;
-  border: 1px solid black;
+  border: 1px solid #535353;
   border-radius: 5px;
   width: 100%;
   margin-top: 3px;
@@ -14,28 +16,29 @@ export const StudentContainer = styled.div`
 export const FormBox = styled.div`
   width: 100%;
   max-width: 30rem;
-  padding: 1rem 0;
+  padding: 2rem 0;
 `
 
 export const PageContentsBox = styled.div`
+  color: #535353;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100vh;
   overflow: hidden;
-  padding: 1.5rem 1rem;
+  padding: 2rem 1.5rem;
 `
 
 export const NameDisplayBox = styled.div`
   display: flex;
   position: relative;
-  min-height: 8rem;
+  min-height: 38vh;
   width: 100%;
   justify-content: center;
   align-items: center;
-  background-color: #c8eaff;
-  border: 1px solid black;
-  border-radius: 5px;
-  margin-bottom: 1rem;
+  background-color: #ebf8ff;
+  border: 1px solid #535353;
+  border-radius: 3px;
+  margin: 1.3rem 0;
+  overflow-x: auto;
 `

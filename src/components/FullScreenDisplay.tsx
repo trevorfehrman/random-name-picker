@@ -27,7 +27,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full" scrollBehavior="inside">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent margin="0" minHeight="100vh">
         <ModalHeader>{modalHeadingText}</ModalHeader>
         <ModalCloseButton />
         <ModalBody onClick={selectHandler}>{children}</ModalBody>

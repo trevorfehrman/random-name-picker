@@ -17,8 +17,8 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
   return (
     <NameDisplayBox onClick={selectHandler}>
       {selectedStudent === null ? (
-        <Heading as="h3" fontSize="1.5rem">
-          {'-click this box to select-'}
+        <Heading as="h3" fontSize="1.2rem" color="gray.700" fontWeight="400">
+          {'click this box to select'}
         </Heading>
       ) : (
         <Heading as="h1" fontSize="3rem">

@@ -9,7 +9,7 @@ margin-left: 1rem;
 :hover { color: #2B6CB0 }}
 `
 
-const Header = () => {
+const Header: React.FC = () => {
   const activeStyle = { color: '#2B6CB0', fontSize: '1.1rem' }
 
   return (

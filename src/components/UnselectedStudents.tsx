@@ -7,9 +7,7 @@ import { useHistory } from 'react-router-dom'
 
 const StudentBox = styled.div`
   width: 100%;
-  height: 32vh;
   min-height: 42%;
-  overflow-y: auto;
 `
 
 type UnselectedStudentsProps = {

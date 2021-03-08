@@ -57,7 +57,7 @@ const NewStudent: React.FC<NewStudentProps> = ({
           onChange={e => setStudentInput(e.target.value)}
           value={studentInput}
         ></Input>
-        <Flex justifyContent="flex-end">
+        <Flex justifyContent="flex-end" padding=".7rem 0">
           <Button onClick={openAddExistingModalHandler}>Add Existing</Button>
           <Button colorScheme="blue" aria-label="add" type="submit" ml="1rem">
             Add New
