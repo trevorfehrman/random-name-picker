@@ -104,13 +104,6 @@ const StudentGroup: React.FC = () => {
           <EditableStudentGroupName studentGroupDocument={studentGroupDocument} studentGroupRef={studentGroupRef} />
         </Flex>
       </HeadingBoxWithBackButton>
-      <NewStudent
-        openAddExistingModalHandler={onOpen}
-        studentsRef={studentsRef}
-        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-        studentGroupDocument={studentGroupDocument}
-        studentGroupId={studentGroupId}
-      />
 
       <NameDisplay
         selectedStudent={selectedStudent}
@@ -119,6 +112,14 @@ const StudentGroup: React.FC = () => {
       />
 
       <UnselectedStudents unselected={unselected} studentGroupId={studentGroupId} />
+
+      <NewStudent
+        openAddExistingModalHandler={onOpen}
+        studentsRef={studentsRef}
+        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
+        studentGroupDocument={studentGroupDocument}
+        studentGroupId={studentGroupId}
+      />
 
       <AddExistingStudentsModal
         onClose={onClose}
