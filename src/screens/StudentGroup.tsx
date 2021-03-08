@@ -11,7 +11,7 @@ import { PageContentsBox } from 'styles'
 import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
-import UnselectedStudents from 'components/UnselectedStudents'
+import StudentList from 'components/StudentList'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -111,7 +111,20 @@ const StudentGroup: React.FC = () => {
         selectHandler={selectHandler}
       />
 
-      <UnselectedStudents unselected={unselected} studentGroupId={studentGroupId} />
+      <StudentList
+        studentsInThisStudentGroup={studentsInThisStudentGroupDocuments?.sort((a, b) => {
+          let val1 = a.order
+          let val2 = b.order
+          if (a.selected) {
+            val1 += studentsInThisStudentGroupDocuments.length
+          }
+          if (b.selected) {
+            val2 += studentsInThisStudentGroupDocuments.length
+          }
+          return val1 - val2
+        })}
+        studentGroupId={studentGroupId}
+      />
 
       <NewStudent
         openAddExistingModalHandler={onOpen}

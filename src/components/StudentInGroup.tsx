@@ -1,16 +1,17 @@
 import * as React from 'react'
 import { Heading, Icon, IconButton } from '@chakra-ui/react'
-// import { DeleteIcon } from '@chakra-ui/icons'
 import { BiTrash } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import { StudentContainer } from 'styles'
+import { AnimatePresence } from 'framer-motion'
 
 type StudentInGroupProps = {
   studentName: string
   studentInStudentGroupId: string
+  selected: boolean
 }
 
-const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInStudentGroupId }) => {
+const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInStudentGroupId, selected }) => {
   const { data: user } = useUser()
 
   const studentsInStudentGroupsRef = useFirestore()
@@ -24,12 +25,19 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInS
   }
 
   return (
-    <StudentContainer>
-      <Heading as="h3" size="md">
-        {studentName}
-      </Heading>
-      <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={removeHandler} />
-    </StudentContainer>
+    <AnimatePresence>
+      <StudentContainer
+        layout
+        animate={{ backgroundColor: selected ? '#90CDF4' : '' }}
+        transition={{ duration: 1, type: 'spring' }}
+        exit={{ x: '100vw', transition: { duration: 2 } }}
+      >
+        <Heading as="h3" size="md">
+          {studentName}
+        </Heading>
+        <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={removeHandler} />
+      </StudentContainer>
+    </AnimatePresence>
   )
 }
 

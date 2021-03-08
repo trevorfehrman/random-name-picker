@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
+import { motion } from 'framer-motion'
 
 // dark grey: #474747
 
-export const StudentContainer = styled.div`
+export const StudentContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,6 +40,6 @@ export const NameDisplayBox = styled.div`
   background-color: #ebf8ff;
   border: 1px solid #535353;
   border-radius: 3px;
-  margin: 1.3rem 0;
+  margin: 2rem 0;
   overflow-x: auto;
 `
