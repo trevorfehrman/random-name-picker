@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { Heading, Icon, IconButton, transition } from '@chakra-ui/react'
-// import { DeleteIcon } from '@chakra-ui/icons'
+import { Heading, Icon, IconButton } from '@chakra-ui/react'
 import { BiTrash } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import { StudentContainer } from 'styles'

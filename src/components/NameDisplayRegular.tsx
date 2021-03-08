@@ -3,7 +3,6 @@ import { NameDisplayBox } from 'styles'
 import { Heading, IconButton, Icon } from '@chakra-ui/react'
 import { BiExpand } from 'react-icons/bi'
 import { NameDisplayProps } from 'interfacesAndTypes'
-import { motion } from 'framer-motion'
 
 const NameDisplayRegular: React.FC<NameDisplayProps> = ({
   selectedStudent,
