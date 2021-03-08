@@ -17,6 +17,7 @@ const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
+  const [selected, setSelected] = React.useState<IStudentInStudentGroup[]>([])
   const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
 
@@ -50,6 +51,15 @@ const StudentGroup: React.FC = () => {
     { idField: 'docId' },
   ).data
 
+  const selectedStudentsRef = studentsInStudentGroupsRef
+    .where('studentGroupId', '==', studentGroupId)
+    .where('selected', '==', true)
+
+  const selectedStudentsDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
+    selectedStudentsRef,
+    { idField: 'docId' },
+  ).data
+
   const studentsRef = teacherRef.collection('students')
   const studentDocuments = useFirestoreCollectionData<IStudent & { docId: string }>(studentsRef, { idField: 'docId' })
     .data
@@ -58,6 +68,11 @@ const StudentGroup: React.FC = () => {
     console.log(unselectedStudentsDocuments)
     unselectedStudentsDocuments && setUnselected(unselectedStudentsDocuments.sort((a, b) => a.order - b.order))
   }, [unselectedStudentsDocuments])
+
+  React.useEffect(() => {
+    console.log(selectedStudentsDocuments)
+    selectedStudentsDocuments && setSelected(selectedStudentsDocuments.sort((a, b) => a.order - b.order))
+  }, [selectedStudentsDocuments])
 
   const backHandler = () => {
     history.push('/')
@@ -111,7 +126,22 @@ const StudentGroup: React.FC = () => {
         selectHandler={selectHandler}
       />
 
-      <UnselectedStudents unselected={unselected} studentGroupId={studentGroupId} />
+      <UnselectedStudents
+        studentsInThisStudentGroup={studentsInThisStudentGroupDocuments?.sort((a, b) => {
+          let val1 = a.order
+          let val2 = b.order
+          if (a.selected) {
+            val1 += studentsInThisStudentGroupDocuments.length
+          }
+          if (b.selected) {
+            val2 += studentsInThisStudentGroupDocuments.length
+          }
+          return val1 - val2
+        })}
+        unselected={unselected}
+        selected={selected}
+        studentGroupId={studentGroupId}
+      />
 
       <NewStudent
         openAddExistingModalHandler={onOpen}

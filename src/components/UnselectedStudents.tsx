@@ -4,6 +4,7 @@ import { IStudentInStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
 import styled from '@emotion/styled'
 import { useHistory } from 'react-router-dom'
+import { AnimateSharedLayout, motion } from 'framer-motion'
 
 const StudentBox = styled.div`
   width: 100%;
@@ -12,10 +13,12 @@ const StudentBox = styled.div`
 
 type UnselectedStudentsProps = {
   unselected: IStudentInStudentGroup[]
+  studentsInThisStudentGroup: IStudentInStudentGroup[]
+  selected: IStudentInStudentGroup[]
   studentGroupId: string
 }
 
-const UnselectedStudents: React.FC<UnselectedStudentsProps> = ({ unselected, studentGroupId }) => {
+const UnselectedStudents: React.FC<UnselectedStudentsProps> = ({ studentGroupId, studentsInThisStudentGroup }) => {
   const history = useHistory()
 
   const showAllHandler = () => {
@@ -32,11 +35,31 @@ const UnselectedStudents: React.FC<UnselectedStudentsProps> = ({ unselected, stu
       </Flex>
 
       <StudentBox>
-        {unselected?.map(doc => {
-          return (
-            <StudentInGroup key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
-          )
-        })}
+        <AnimateSharedLayout>
+          <motion.div layout>
+            {studentsInThisStudentGroup?.map(doc => {
+              console.log(studentsInThisStudentGroup)
+              return (
+                <StudentInGroup
+                  key={doc.studentId}
+                  studentName={doc.studentName}
+                  studentInStudentGroupId={doc.docId}
+                  selected={doc.selected}
+                />
+              )
+            })}
+            {/* {unselected?.map(doc => {
+              return (
+                <StudentInGroup key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+              )
+            })}
+            {selected?.map(doc => {
+              return (
+                <StudentInGroup key={doc.studentId} studentName={doc.studentName} studentInStudentGroupId={doc.docId} />
+              )
+            })} */}
+          </motion.div>
+        </AnimateSharedLayout>
       </StudentBox>
     </Box>
   )

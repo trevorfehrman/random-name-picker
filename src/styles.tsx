@@ -1,8 +1,9 @@
 import styled from '@emotion/styled'
+import { motion } from 'framer-motion'
 
 // dark grey: #474747
 
-export const StudentContainer = styled.div`
+export const StudentContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
