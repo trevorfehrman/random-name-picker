@@ -8,10 +8,10 @@ export const StudentContainer = styled(motion.div)`
   align-items: center;
   justify-content: space-between;
   padding: 0.2rem 1rem;
-  border: 1px solid #535353;
+  border: 0.05rem solid #535353;
   border-radius: 5px;
   width: 100%;
-  margin-top: 3px;
+  margin-top: 0.2rem;
 `
 
 export const FormBox = styled.div`
