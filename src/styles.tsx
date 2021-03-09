@@ -7,8 +7,8 @@ export const StudentContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.2rem 1rem;
   border: 0.05rem solid #535353;
+  padding-left: 1.5rem;
   border-radius: 5px;
   width: 100%;
   margin-top: 0.2rem;

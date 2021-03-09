@@ -1,29 +1,20 @@
 import * as React from 'react'
-import { Heading, Flex, Button, Box, Icon } from '@chakra-ui/react'
+import { Flex, Box } from '@chakra-ui/react'
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
-import styled from '@emotion/styled'
-import { useHistory } from 'react-router-dom'
-import { AnimateSharedLayout, motion } from 'framer-motion'
+import { AnimateSharedLayout } from 'framer-motion'
 
 type StudentListProps = {
   studentsInThisStudentGroup: IStudentInStudentGroup[]
   studentGroupId: string
 }
 
-const StudentList: React.FC<StudentListProps> = ({ studentGroupId, studentsInThisStudentGroup }) => {
+const StudentList: React.FC<StudentListProps> = ({ studentsInThisStudentGroup }) => {
   const [isShowingAll, setIsShowingAll] = React.useState(false)
 
   return (
-    <Box width="100%" textAlign="center">
-      <Button w="10rem" marginBottom=".5rem" onClick={() => setIsShowingAll(!isShowingAll)}>
-        <Flex justify="space-between" w="100%">
-          {isShowingAll ? <ChevronUpIcon /> : <ChevronDownIcon />}
-          {isShowingAll ? <span>Show Some</span> : <span>Show All</span>}
-          {isShowingAll ? <ChevronUpIcon /> : <ChevronDownIcon />}
-        </Flex>
-      </Button>
+    <Box width="100%" textAlign="center" position="relative" marginBottom="1.5rem">
       <Box width="100%" maxHeight={isShowingAll ? '' : '16.21rem'} overflow="hidden" position="relative">
         <AnimateSharedLayout>
           {studentsInThisStudentGroup?.map(doc => {
@@ -38,48 +29,35 @@ const StudentList: React.FC<StudentListProps> = ({ studentGroupId, studentsInThi
             )
           })}
         </AnimateSharedLayout>
-
-        {!isShowingAll && (
-          <Box
-            backgroundImage="linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))"
-            w="100%"
-            height="8.5rem"
-            z-index={3}
-            position="absolute"
-            bottom={0}
-          ></Box>
-        )}
-        {isShowingAll ? (
-          <ChevronUpIcon
-            position="absolute"
-            bottom={0}
-            fontSize="3rem"
-            marginLeft="auto"
-            marginRight="auto"
-            left={0}
-            right={0}
-            textAlign="center"
-            onClick={() => setIsShowingAll(!isShowingAll)}
-            _hover={{
-              cursor: 'pointer',
-            }}
-          />
-        ) : (
-          <ChevronDownIcon
-            position="absolute"
-            bottom={0}
-            fontSize="3rem"
-            marginLeft="auto"
-            marginRight="auto"
-            left={0}
-            right={0}
-            textAlign="center"
-            onClick={() => setIsShowingAll(!isShowingAll)}
-            _hover={{
-              cursor: 'pointer',
-            }}
-          />
-        )}
+      </Box>
+      {!isShowingAll && (
+        <Box
+          backgroundImage="linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1))"
+          w="100%"
+          height="8.5rem"
+          z-index={3}
+          position="absolute"
+          bottom={0}
+        ></Box>
+      )}
+      <Box
+        position="absolute"
+        fontWeight="500"
+        backgroundColor="transparent"
+        left={0}
+        right={0}
+        textAlign="center"
+        w="10rem"
+        z-index={4}
+        onClick={() => setIsShowingAll(!isShowingAll)}
+        _hover={{ cursor: 'pointer' }}
+        margin={isShowingAll ? '.5rem auto 1rem auto' : '-0.7rem auto 1rem auto'}
+      >
+        <Flex justify="space-between" w="100%">
+          {isShowingAll ? <ChevronUpIcon /> : <ChevronDownIcon />}
+          {isShowingAll ? <span>Hide Most</span> : <span>Show All</span>}
+          {isShowingAll ? <ChevronUpIcon /> : <ChevronDownIcon />}
+        </Flex>
       </Box>
     </Box>
   )
