@@ -132,6 +132,7 @@ const StudentGroup: React.FC = () => {
         studentsInStudentGroupsRef={studentsInStudentGroupsRef}
         studentGroupDocument={studentGroupDocument}
         studentGroupId={studentGroupId}
+        studentsInThisGroupLength={studentsInThisStudentGroupDocuments?.length}
       />
 
       <AddExistingStudentsModal

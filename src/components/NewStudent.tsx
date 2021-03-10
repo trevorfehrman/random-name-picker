@@ -6,6 +6,7 @@ import firebase from 'firebase'
 type NewStudentProps = {
   studentsRef: firebase.firestore.CollectionReference
   studentsInStudentGroupsRef: firebase.firestore.CollectionReference
+  studentsInThisGroupLength: number
   studentGroupDocument: firebase.firestore.DocumentData
   studentGroupId: string
   openAddExistingModalHandler: () => void
@@ -16,6 +17,7 @@ const NewStudent: React.FC<NewStudentProps> = ({
   studentsRef,
   studentGroupDocument,
   studentsInStudentGroupsRef,
+  studentsInThisGroupLength,
   studentGroupId,
 }) => {
   const [studentInput, setStudentInput] = React.useState('')
@@ -36,8 +38,8 @@ const NewStudent: React.FC<NewStudentProps> = ({
           studentName: studentInput,
           studentGroupId,
           studentGroupName: studentGroupDocument.studentGroupName,
-          selected: true,
-          order: 1,
+          selected: false,
+          order: studentsInThisGroupLength + 1,
         })
         .catch(err => console.log(err))
       setStudentInput('')

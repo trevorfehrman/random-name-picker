@@ -43,6 +43,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
 
   const addExistingHandler = () => {
     console.log(selectedStudentsToAdd)
+    let studentsInThisStudentGroupLength = studentsInThisStudentGroupDocuments?.length
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
       addBatch.set(newStudentInStudentGroupRef, {
@@ -50,8 +51,8 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
         studentId: student.studentId,
         studentGroupId: studentGroupDocument.docId,
         studentGroupName: studentGroupDocument.studentGroupName,
-        selected: true,
-        order: 1,
+        selected: false,
+        order: studentsInThisStudentGroupLength++,
       })
     })
     return addBatch

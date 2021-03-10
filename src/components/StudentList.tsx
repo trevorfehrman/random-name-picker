@@ -1,10 +1,9 @@
 import * as React from 'react'
-import { Heading, Flex, Button, Box } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
 import styled from '@emotion/styled'
-import { useHistory } from 'react-router-dom'
-import { AnimateSharedLayout, motion } from 'framer-motion'
+import { AnimateSharedLayout } from 'framer-motion'
 
 const StudentBox = styled.div`
   width: 100%;
@@ -16,7 +15,7 @@ type StudentListProps = {
   studentGroupId: string
 }
 
-const StudentList: React.FC<StudentListProps> = ({ studentGroupId, studentsInThisStudentGroup }) => {
+const StudentList: React.FC<StudentListProps> = ({ studentsInThisStudentGroup }) => {
   return (
     <Box width="100%">
       <StudentBox>
