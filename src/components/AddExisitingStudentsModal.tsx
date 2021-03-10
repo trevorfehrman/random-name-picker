@@ -14,7 +14,6 @@ import { IStudent, IStudentInStudentGroup, IStudentGroup } from 'interfacesAndTy
 import StudentPreview from 'components/StudentPreview'
 import firebase from 'firebase'
 import { useFirestore } from 'reactfire'
-import NewStudent from 'components/NewStudent'
 
 interface IStudentToAdd {
   studentId: string
@@ -38,7 +37,6 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
   studentsInThisStudentGroupDocuments,
   studentsInStudentGroupsRef,
   studentGroupDocument,
-  studentsRef,
 }) => {
   const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
 
@@ -93,15 +91,9 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Existing Students</ModalHeader>
+        <ModalHeader>Add Students</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <NewStudent
-            studentsRef={studentsRef}
-            studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-            studentsInThisGroupLength={studentsInThisStudentGroupDocuments.length}
-            studentGroupDocument={studentGroupDocument}
-          />
           <Box border="1px solid black" maxHeight="50vh" minHeight="100px" padding="10px" overflowY="auto">
             {studentsNotInStudentGroup?.length > 0 ? studentsNotInStudentGroup : 'All students already in group!'}
           </Box>

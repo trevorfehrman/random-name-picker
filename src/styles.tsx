@@ -40,6 +40,6 @@ export const NameDisplayBox = styled.div`
   background-color: #ebf8ff;
   border: 1px solid #535353;
   border-radius: 3px;
-  margin: 2rem 0;
+  margin: 1.5rem 0;
   overflow-x: auto;
 `

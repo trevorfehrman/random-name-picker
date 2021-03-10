@@ -6,12 +6,12 @@ import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
-import NewStudent from 'components/NewStudent'
 import { PageContentsBox } from 'styles'
 import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
+import { AddIcon } from '@chakra-ui/icons'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -111,7 +111,8 @@ const StudentGroup: React.FC = () => {
         selectHandler={selectHandler}
       />
 
-      <Button alignSelf="flex-end" onClick={onOpen}>
+      <Button alignSelf="flex-end" marginBottom=".3rem" onClick={onOpen}>
+        <AddIcon marginRight=".5rem" />
         Add Students
       </Button>
 
