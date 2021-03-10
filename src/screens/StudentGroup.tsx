@@ -3,7 +3,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import { Flex, useDisclosure } from '@chakra-ui/react'
-import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes'
+import { IStudentGroup, IStudent, IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import NewStudent from 'components/NewStudent'
@@ -21,7 +21,7 @@ const StudentGroup: React.FC = () => {
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
 
   const history = useHistory()
-  const params: Params = useParams()
+  const params: GroupParams = useParams()
   const studentGroupId = params.groupId
 
   const { data: user } = useUser()

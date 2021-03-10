@@ -12,6 +12,10 @@ export const StudentContainer = styled(motion.div)`
   border-radius: 5px;
   width: 100%;
   margin-top: 0.2rem;
+  &:hover {
+    cursor: pointer;
+    background-color: #c3eaff;
+  }
 `
 
 export const FormBox = styled.div`

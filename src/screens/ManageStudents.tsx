@@ -21,7 +21,7 @@ const ManageStudents: React.FC = () => {
       <Heading as="h1" size="lg" marginTop="1rem">
         All Students
       </Heading>
-      <Box width="100%" maxHeight="75vh" minHeight="6rem" overflowY="auto">
+      <Box width="100%" minHeight="6rem">
         {allStudentsDocuments?.map(doc => {
           return <Student key={doc.docId} studentName={doc.studentName} docId={doc.docId} />
         })}

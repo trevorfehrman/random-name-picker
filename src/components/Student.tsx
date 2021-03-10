@@ -5,6 +5,7 @@ import { BiTrash } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
 import { StudentContainer } from 'styles'
+import { useHistory } from 'react-router-dom'
 
 type StudentProps = {
   studentName: string
@@ -16,13 +17,16 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
 
   const { data: user } = useUser()
 
+  const history = useHistory()
+
   const teacherRef = useFirestore().collection('teachers').doc(user.uid)
   const studentRef = teacherRef.collection('students').doc(docId)
   const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups').where('studentId', '==', docId)
 
   const deleteBatch = useFirestore().batch()
 
-  const deleteHandler = async () => {
+  const deleteHandler = async (event: React.SyntheticEvent) => {
+    event.stopPropagation()
     console.log('delete student from students collection and all instances from studentsInStudentGroups collection')
     deleteBatch.delete(studentRef)
     const snapshot = await studentsInStudentGroupsRef.get()
@@ -34,9 +38,13 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
     deleteBatch.commit()
   }
 
+  const goToStudentPageHandler = () => {
+    history.push(`/edit-student/${docId}`)
+  }
+
   return (
     <>
-      <StudentContainer>
+      <StudentContainer onClick={goToStudentPageHandler}>
         <Heading as="h3" size="md">
           {studentName}
         </Heading>
