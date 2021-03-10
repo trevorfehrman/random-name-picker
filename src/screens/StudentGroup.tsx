@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { Flex, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
@@ -111,6 +111,10 @@ const StudentGroup: React.FC = () => {
         selectHandler={selectHandler}
       />
 
+      <Button alignSelf="flex-end" onClick={onOpen}>
+        Add Students
+      </Button>
+
       <StudentList
         studentsInThisStudentGroup={studentsInThisStudentGroupDocuments?.sort((a, b) => {
           let val1 = a.order
@@ -126,15 +130,6 @@ const StudentGroup: React.FC = () => {
         studentGroupId={studentGroupId}
       />
 
-      <NewStudent
-        openAddExistingModalHandler={onOpen}
-        studentsRef={studentsRef}
-        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-        studentGroupDocument={studentGroupDocument}
-        studentGroupId={studentGroupId}
-        studentsInThisGroupLength={studentsInThisStudentGroupDocuments?.length}
-      />
-
       <AddExistingStudentsModal
         onClose={onClose}
         isOpen={isOpen}
@@ -142,6 +137,7 @@ const StudentGroup: React.FC = () => {
         studentsInThisStudentGroupDocuments={studentsInThisStudentGroupDocuments}
         studentsInStudentGroupsRef={studentsInStudentGroupsRef}
         studentGroupDocument={studentGroupDocument}
+        studentsRef={studentsRef}
       />
 
       <FullScreenDisplay

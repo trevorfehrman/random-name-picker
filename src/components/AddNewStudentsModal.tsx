@@ -9,12 +9,12 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react'
 import { IStudent, IStudentInStudentGroup, IStudentGroup } from 'interfacesAndTypes'
 import StudentPreview from 'components/StudentPreview'
 import firebase from 'firebase'
 import { useFirestore } from 'reactfire'
-import NewStudent from 'components/NewStudent'
 
 interface IStudentToAdd {
   studentId: string
@@ -22,9 +22,7 @@ interface IStudentToAdd {
 }
 
 type AddExistingStudentsModalProps = {
-  studentsRef: firebase.firestore.CollectionReference
-  onClose: () => void
-  isOpen: boolean
+  addNewModalIsOpen: boolean
   studentDocuments: IStudent[]
   studentsInThisStudentGroupDocuments: IStudentInStudentGroup[]
   studentsInStudentGroupsRef: firebase.firestore.CollectionReference
@@ -32,14 +30,14 @@ type AddExistingStudentsModalProps = {
 }
 
 const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
-  onClose,
-  isOpen,
+  addNewModalIsOpen,
   studentDocuments,
   studentsInThisStudentGroupDocuments,
   studentsInStudentGroupsRef,
   studentGroupDocument,
-  studentsRef,
 }) => {
+  const { onOpen, onClose } = useDisclosure()
+
   const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
 
   const addBatch = useFirestore().batch()
@@ -90,18 +88,12 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
     })
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={addNewModalIsOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Existing Students</ModalHeader>
+        <ModalHeader>Add New Students</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <NewStudent
-            studentsRef={studentsRef}
-            studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-            studentsInThisGroupLength={studentsInThisStudentGroupDocuments.length}
-            studentGroupDocument={studentGroupDocument}
-          />
           <Box border="1px solid black" maxHeight="50vh" minHeight="100px" padding="10px" overflowY="auto">
             {studentsNotInStudentGroup?.length > 0 ? studentsNotInStudentGroup : 'All students already in group!'}
           </Box>

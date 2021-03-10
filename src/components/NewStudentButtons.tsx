@@ -8,13 +8,19 @@ type NewStudentProps = {
   studentsInStudentGroupsRef: firebase.firestore.CollectionReference
   studentsInThisGroupLength: number
   studentGroupDocument: firebase.firestore.DocumentData
+  studentGroupId: string
+  openAddExistingModalHandler: () => void
+  openAddNewModalHandler: () => void
 }
 
 const NewStudent: React.FC<NewStudentProps> = ({
+  openAddExistingModalHandler,
+  openAddNewModalHandler,
   studentsRef,
   studentGroupDocument,
   studentsInStudentGroupsRef,
   studentsInThisGroupLength,
+  studentGroupId,
 }) => {
   const [studentInput, setStudentInput] = React.useState('')
 
@@ -32,7 +38,7 @@ const NewStudent: React.FC<NewStudentProps> = ({
         .add({
           studentId: studentResult.id,
           studentName: studentInput,
-          studentGroupId: studentGroupDocument.docId,
+          studentGroupId,
           studentGroupName: studentGroupDocument.studentGroupName,
           selected: false,
           order: studentsInThisGroupLength + 1,
@@ -46,21 +52,12 @@ const NewStudent: React.FC<NewStudentProps> = ({
 
   return (
     <FormBox>
-      <form onSubmit={addStudentHandler}>
-        <label htmlFor="student-name">Name:</label>
-        <Input
-          placeholder="Student name"
-          id="student-name"
-          aria-label="student-name"
-          onChange={e => setStudentInput(e.target.value)}
-          value={studentInput}
-        ></Input>
-        <Flex justifyContent="flex-end" padding=".7rem 0">
-          <Button colorScheme="blue" aria-label="add" type="submit" ml="1rem">
-            Add New
-          </Button>
-        </Flex>
-      </form>
+      <Flex justifyContent="center" padding=".7rem 0" maxWidth="25rem" justify="space-evenly">
+        <Button onClick={openAddExistingModalHandler}>Add Existing</Button>
+        <Button colorScheme="blue" aria-label="add" onClick={openAddNewModalHandler}>
+          Add New
+        </Button>
+      </Flex>
     </FormBox>
   )
 }
