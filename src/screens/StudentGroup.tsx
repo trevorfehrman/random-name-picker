@@ -55,7 +55,6 @@ const StudentGroup: React.FC = () => {
     .data
 
   React.useEffect(() => {
-    console.log(unselectedStudentsDocuments)
     unselectedStudentsDocuments && setUnselected(unselectedStudentsDocuments.sort((a, b) => a.order - b.order))
   }, [unselectedStudentsDocuments])
 
@@ -83,12 +82,10 @@ const StudentGroup: React.FC = () => {
     for (let i = 1; i <= studentsInThisStudentGroupDocuments.length; i++) {
       orderArray[i - 1] = i
     }
-    console.log(orderArray)
     studentsInThisStudentGroupRef
       .get()
       .then(snapshot => {
         snapshot.docs.forEach(doc => {
-          console.log(doc, 'made it here')
           const randomOrderValue = orderArray.splice(Math.floor(Math.random() * orderArray.length), 1)
           updateBatch.update(doc.ref, { selected: false, order: randomOrderValue[0] })
         })
@@ -117,17 +114,13 @@ const StudentGroup: React.FC = () => {
       </Button>
 
       <StudentList
-        studentsInThisStudentGroup={studentsInThisStudentGroupDocuments?.sort((a, b) => {
-          let val1 = a.order
-          let val2 = b.order
-          if (a.selected) {
-            val1 += studentsInThisStudentGroupDocuments.length
-          }
-          if (b.selected) {
-            val2 += studentsInThisStudentGroupDocuments.length
-          }
-          return val1 - val2
-        })}
+        studentsInThisStudentGroup={studentsInThisStudentGroupDocuments
+          ?.sort((a, b) => {
+            return a.order - b.order
+          })
+          .sort((a, b) => {
+            return +a.selected - +b.selected
+          })}
         studentGroupId={studentGroupId}
       />
 

@@ -43,7 +43,6 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
   const addBatch = useFirestore().batch()
 
   const addExistingHandler = () => {
-    console.log(selectedStudentsToAdd)
     let studentsInThisStudentGroupLength = studentsInThisStudentGroupDocuments?.length
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()

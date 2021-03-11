@@ -27,7 +27,6 @@ const NewStudent: React.FC<NewStudentProps> = ({
       const studentResult = await studentsRef.add({
         studentName: studentInput,
       })
-      console.log(studentResult)
       studentsInStudentGroupsRef
         .add({
           studentId: studentResult.id,

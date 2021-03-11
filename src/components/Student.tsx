@@ -23,7 +23,6 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
   const deleteBatch = useFirestore().batch()
 
   const deleteHandler = async () => {
-    console.log('delete student from students collection and all instances from studentsInStudentGroups collection')
     deleteBatch.delete(studentRef)
     const snapshot = await studentsInStudentGroupsRef.get()
     if (snapshot.docs.length > 0) {
