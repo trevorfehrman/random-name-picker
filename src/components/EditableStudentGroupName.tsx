@@ -23,7 +23,6 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
   const [errors, setErrors] = React.useState<string[]>([])
 
   const editStudentGroupNameHandler = (value: string) => {
-    console.log(value)
     studentGroupRef.update({ studentGroupName: value }).catch(err => {
       console.log(err)
     })

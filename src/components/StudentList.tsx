@@ -21,7 +21,6 @@ const StudentList: React.FC<StudentListProps> = ({ studentsInThisStudentGroup })
       <StudentBox>
         <AnimateSharedLayout>
           {studentsInThisStudentGroup?.map(doc => {
-            console.log(studentsInThisStudentGroup)
             return (
               <StudentInGroup
                 key={doc.studentId}

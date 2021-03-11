@@ -2,16 +2,16 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { Flex, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, Params } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
-import NewStudent from 'components/NewStudent'
 import { PageContentsBox } from 'styles'
 import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
+import { AddIcon } from '@chakra-ui/icons'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -55,7 +55,6 @@ const StudentGroup: React.FC = () => {
     .data
 
   React.useEffect(() => {
-    console.log(unselectedStudentsDocuments)
     unselectedStudentsDocuments && setUnselected(unselectedStudentsDocuments.sort((a, b) => a.order - b.order))
   }, [unselectedStudentsDocuments])
 
@@ -83,12 +82,10 @@ const StudentGroup: React.FC = () => {
     for (let i = 1; i <= studentsInThisStudentGroupDocuments.length; i++) {
       orderArray[i - 1] = i
     }
-    console.log(orderArray)
     studentsInThisStudentGroupRef
       .get()
       .then(snapshot => {
         snapshot.docs.forEach(doc => {
-          console.log(doc, 'made it here')
           const randomOrderValue = orderArray.splice(Math.floor(Math.random() * orderArray.length), 1)
           updateBatch.update(doc.ref, { selected: false, order: randomOrderValue[0] })
         })
@@ -111,28 +108,20 @@ const StudentGroup: React.FC = () => {
         selectHandler={selectHandler}
       />
 
-      <StudentList
-        studentsInThisStudentGroup={studentsInThisStudentGroupDocuments?.sort((a, b) => {
-          let val1 = a.order
-          let val2 = b.order
-          if (a.selected) {
-            val1 += studentsInThisStudentGroupDocuments.length
-          }
-          if (b.selected) {
-            val2 += studentsInThisStudentGroupDocuments.length
-          }
-          return val1 - val2
-        })}
-        studentGroupId={studentGroupId}
-      />
+      <Button alignSelf="flex-end" marginBottom=".3rem" onClick={onOpen}>
+        <AddIcon marginRight=".5rem" />
+        Add Students
+      </Button>
 
-      <NewStudent
-        openAddExistingModalHandler={onOpen}
-        studentsRef={studentsRef}
-        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-        studentGroupDocument={studentGroupDocument}
+      <StudentList
+        studentsInThisStudentGroup={studentsInThisStudentGroupDocuments
+          ?.sort((a, b) => {
+            return a.order - b.order
+          })
+          .sort((a, b) => {
+            return +a.selected - +b.selected
+          })}
         studentGroupId={studentGroupId}
-        studentsInThisGroupLength={studentsInThisStudentGroupDocuments?.length}
       />
 
       <AddExistingStudentsModal
@@ -142,6 +131,7 @@ const StudentGroup: React.FC = () => {
         studentsInThisStudentGroupDocuments={studentsInThisStudentGroupDocuments}
         studentsInStudentGroupsRef={studentsInStudentGroupsRef}
         studentGroupDocument={studentGroupDocument}
+        studentsRef={studentsRef}
       />
 
       <FullScreenDisplay

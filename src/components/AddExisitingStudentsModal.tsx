@@ -21,6 +21,7 @@ interface IStudentToAdd {
 }
 
 type AddExistingStudentsModalProps = {
+  studentsRef: firebase.firestore.CollectionReference
   onClose: () => void
   isOpen: boolean
   studentDocuments: IStudent[]
@@ -42,7 +43,6 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
   const addBatch = useFirestore().batch()
 
   const addExistingHandler = () => {
-    console.log(selectedStudentsToAdd)
     let studentsInThisStudentGroupLength = studentsInThisStudentGroupDocuments?.length
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
@@ -90,7 +90,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Add Existing Students</ModalHeader>
+        <ModalHeader>Add Students</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Box border="1px solid black" maxHeight="50vh" minHeight="100px" padding="10px" overflowY="auto">

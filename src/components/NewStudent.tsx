@@ -8,17 +8,13 @@ type NewStudentProps = {
   studentsInStudentGroupsRef: firebase.firestore.CollectionReference
   studentsInThisGroupLength: number
   studentGroupDocument: firebase.firestore.DocumentData
-  studentGroupId: string
-  openAddExistingModalHandler: () => void
 }
 
 const NewStudent: React.FC<NewStudentProps> = ({
-  openAddExistingModalHandler,
   studentsRef,
   studentGroupDocument,
   studentsInStudentGroupsRef,
   studentsInThisGroupLength,
-  studentGroupId,
 }) => {
   const [studentInput, setStudentInput] = React.useState('')
 
@@ -31,12 +27,11 @@ const NewStudent: React.FC<NewStudentProps> = ({
       const studentResult = await studentsRef.add({
         studentName: studentInput,
       })
-      console.log(studentResult)
       studentsInStudentGroupsRef
         .add({
           studentId: studentResult.id,
           studentName: studentInput,
-          studentGroupId,
+          studentGroupId: studentGroupDocument.docId,
           studentGroupName: studentGroupDocument.studentGroupName,
           selected: false,
           order: studentsInThisGroupLength + 1,
@@ -60,7 +55,6 @@ const NewStudent: React.FC<NewStudentProps> = ({
           value={studentInput}
         ></Input>
         <Flex justifyContent="flex-end" padding=".7rem 0">
-          <Button onClick={openAddExistingModalHandler}>Add Existing</Button>
           <Button colorScheme="blue" aria-label="add" type="submit" ml="1rem">
             Add New
           </Button>
