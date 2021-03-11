@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button, Input, Flex, FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
+import { Button, Input, FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
 import { FormBox } from 'styles'
 import firebase from 'firebase'
 import { useForm } from 'react-hook-form'
@@ -9,19 +9,23 @@ type NewStudentProps = {
   onClose: () => void
 }
 
+interface INewStudentValues {
+  name: string
+  profilePic: string
+  favoriteFood: string
+}
+
 const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
   const [studentInput, setStudentInput] = React.useState('')
 
   const { register, reset, handleSubmit, errors } = useForm()
 
-  const addStudentHandler = async (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    if (studentInput === '') {
-      return
-    }
+  const addStudentHandler = async (values: INewStudentValues) => {
+    console.log(values)
+    // e.preventDefault()
     try {
       const studentResult = studentsRef.add({
-        studentName: studentInput,
+        studentName: values.name,
       })
       console.log(studentResult)
       // studentsInStudentGroupsRef
@@ -35,15 +39,20 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
       //   })
       //   .catch(err => console.log(err))
       setStudentInput('')
+      reset({
+        studentName: '',
+        profilePic: '',
+        favoriteFood: '',
+      })
       onClose()
     } catch (err) {
       console.log(err)
     }
   }
 
-  const submitHandler = (values: string[]) => {
-    console.log(values)
-  }
+  // const submitHandler = (values: string[]) => {
+  //   console.log(values)
+  // }
 
   return (
     <FormBox>
@@ -63,7 +72,7 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
           </Button>
         </Flex>
       </form> */}
-      <form onSubmit={handleSubmit(submitHandler)}>
+      <form onSubmit={handleSubmit(addStudentHandler)}>
         <FormControl isInvalid={errors.name}>
           <FormLabel htmlFor="name">Name</FormLabel>
           <Input id="name" name="name" placeholder="Name" ref={register({ minLength: 5, required: true })} />
