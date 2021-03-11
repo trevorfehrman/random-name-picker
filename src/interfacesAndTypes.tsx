@@ -10,8 +10,12 @@ export interface IStudent {
   docId: string
 }
 
-export interface Params {
+export interface GroupParams {
   groupId: string
+}
+
+export interface StudentParams {
+  studentId: string
 }
 
 export interface IStudentInStudentGroup {

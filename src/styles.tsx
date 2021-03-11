@@ -7,11 +7,15 @@ export const StudentContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.2rem 1rem;
+  padding-left: 1rem;
   border: 1px solid #535353;
   border-radius: 5px;
   width: 100%;
   margin-top: 3px;
+  &:hover {
+    cursor: pointer;
+    background-color: #ebf8ff;
+  }
 `
 
 export const FormBox = styled.div`

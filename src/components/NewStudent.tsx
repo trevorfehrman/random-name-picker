@@ -1,22 +1,18 @@
 import * as React from 'react'
-import { Button, Input, Flex } from '@chakra-ui/react'
+import { Button, Input, Flex, FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
 import { FormBox } from 'styles'
 import firebase from 'firebase'
+import { useForm } from 'react-hook-form'
 
 type NewStudentProps = {
   studentsRef: firebase.firestore.CollectionReference
-  studentsInStudentGroupsRef: firebase.firestore.CollectionReference
-  studentsInThisGroupLength: number
-  studentGroupDocument: firebase.firestore.DocumentData
+  onClose: () => void
 }
 
-const NewStudent: React.FC<NewStudentProps> = ({
-  studentsRef,
-  studentGroupDocument,
-  studentsInStudentGroupsRef,
-  studentsInThisGroupLength,
-}) => {
+const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
   const [studentInput, setStudentInput] = React.useState('')
+
+  const { register, reset, handleSubmit, errors } = useForm()
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -24,28 +20,34 @@ const NewStudent: React.FC<NewStudentProps> = ({
       return
     }
     try {
-      const studentResult = await studentsRef.add({
+      const studentResult = studentsRef.add({
         studentName: studentInput,
       })
-      studentsInStudentGroupsRef
-        .add({
-          studentId: studentResult.id,
-          studentName: studentInput,
-          studentGroupId: studentGroupDocument.docId,
-          studentGroupName: studentGroupDocument.studentGroupName,
-          selected: false,
-          order: studentsInThisGroupLength + 1,
-        })
-        .catch(err => console.log(err))
+      console.log(studentResult)
+      // studentsInStudentGroupsRef
+      //   .add({
+      //     studentId: studentResult.id,
+      //     studentName: studentInput,
+      //     studentGroupId,
+      //     studentGroupName: studentGroupDocument.studentGroupName,
+      //     selected: true,
+      //     order: 1,
+      //   })
+      //   .catch(err => console.log(err))
       setStudentInput('')
+      onClose()
     } catch (err) {
       console.log(err)
     }
   }
 
+  const submitHandler = (values: string[]) => {
+    console.log(values)
+  }
+
   return (
     <FormBox>
-      <form onSubmit={addStudentHandler}>
+      {/* <form onSubmit={addStudentHandler}>
         <label htmlFor="student-name">Name:</label>
         <Input
           placeholder="Student name"
@@ -55,10 +57,35 @@ const NewStudent: React.FC<NewStudentProps> = ({
           value={studentInput}
         ></Input>
         <Flex justifyContent="flex-end" padding=".7rem 0">
+          <Button onClick={onClose}>Cancel</Button>
           <Button colorScheme="blue" aria-label="add" type="submit" ml="1rem">
             Add New
           </Button>
         </Flex>
+      </form> */}
+      <form onSubmit={handleSubmit(submitHandler)}>
+        <FormControl isInvalid={errors.name}>
+          <FormLabel htmlFor="name">Name</FormLabel>
+          <Input id="name" name="name" placeholder="Name" ref={register({ minLength: 5, required: true })} />
+          {errors.name && errors.name.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
+          {errors.name && errors.name.type === 'minLength' && <FormErrorMessage>Need more!</FormErrorMessage>}
+        </FormControl>
+        <FormControl isInvalid={errors.profilePic}>
+          <FormLabel htmlFor="profile-pic">Profile Pic</FormLabel>
+          <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
+          {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
+        </FormControl>
+        <FormControl isInvalid={errors.favoriteFood}>
+          <FormLabel htmlFor="favorite-food">Favorite Food</FormLabel>
+          <Input
+            id="favorite-food"
+            name="favoriteFood"
+            placeholder="Favorite Food"
+            ref={register({ required: true })}
+          />
+          {errors.favoriteFood && errors.favoriteFood.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
+        </FormControl>
+        <Button type="submit">Submit</Button>
       </form>
     </FormBox>
   )

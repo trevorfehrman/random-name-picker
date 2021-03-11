@@ -5,6 +5,7 @@ import { BiTrash } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
 import { StudentContainer } from 'styles'
+import { useHistory } from 'react-router-dom'
 
 type StudentProps = {
   studentName: string
@@ -15,6 +16,8 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
   const { onClose, onOpen, isOpen } = useDisclosure()
 
   const { data: user } = useUser()
+
+  const history = useHistory()
 
   const teacherRef = useFirestore().collection('teachers').doc(user.uid)
   const studentRef = teacherRef.collection('students').doc(docId)
@@ -33,9 +36,13 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
     deleteBatch.commit()
   }
 
+  const openEditStudentHandler = () => {
+    history.push(`/edit-student/${docId}`)
+  }
+
   return (
     <>
-      <StudentContainer>
+      <StudentContainer onClick={openEditStudentHandler}>
         <Heading as="h3" size="md">
           {studentName}
         </Heading>

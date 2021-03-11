@@ -2,13 +2,13 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { useUser, useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire'
 import { Heading, Box } from '@chakra-ui/react'
-import { IStudentInStudentGroup, Params, IStudentGroup } from 'interfacesAndTypes'
+import { IStudentInStudentGroup, GroupParams, IStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
 import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import { PageContentsBox } from 'styles'
 
 const ShowAllStudents: React.FC = () => {
-  const params: Params = useParams()
+  const params: GroupParams = useParams()
   const history = useHistory()
   const studentGroupId = params.groupId
   const { data: user } = useUser()

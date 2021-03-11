@@ -26,7 +26,7 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInS
 
   return (
     <AnimatePresence>
-      <StudentContainer layout animate={{ backgroundColor: selected ? '#90CDF4' : '' }}>
+      <StudentContainer layout style={{ backgroundColor: selected ? '#90CDF4' : '' }}>
         <Heading as="h3" size="md">
           {studentName}
         </Heading>
