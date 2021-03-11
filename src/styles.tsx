@@ -20,7 +20,7 @@ export const StudentContainer = styled(motion.div)`
 
 export const FormBox = styled.div`
   width: 100%;
-  max-width: 30rem;
+  max-width: 60rem;
   padding: 2rem 0;
 `
 
