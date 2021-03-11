@@ -5,19 +5,10 @@ import firebase from 'firebase'
 
 type NewStudentProps = {
   studentsRef: firebase.firestore.CollectionReference
-  studentsInStudentGroupsRef: firebase.firestore.CollectionReference
-  studentGroupDocument: firebase.firestore.DocumentData
-  studentGroupId: string
-  openAddExistingModalHandler: () => void
+  onClose: () => void
 }
 
-const NewStudent: React.FC<NewStudentProps> = ({
-  openAddExistingModalHandler,
-  studentsRef,
-  studentGroupDocument,
-  studentsInStudentGroupsRef,
-  studentGroupId,
-}) => {
+const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
   const [studentInput, setStudentInput] = React.useState('')
 
   const addStudentHandler = async (e: React.SyntheticEvent) => {
@@ -26,21 +17,22 @@ const NewStudent: React.FC<NewStudentProps> = ({
       return
     }
     try {
-      const studentResult = await studentsRef.add({
+      const studentResult = studentsRef.add({
         studentName: studentInput,
       })
       console.log(studentResult)
-      studentsInStudentGroupsRef
-        .add({
-          studentId: studentResult.id,
-          studentName: studentInput,
-          studentGroupId,
-          studentGroupName: studentGroupDocument.studentGroupName,
-          selected: true,
-          order: 1,
-        })
-        .catch(err => console.log(err))
+      // studentsInStudentGroupsRef
+      //   .add({
+      //     studentId: studentResult.id,
+      //     studentName: studentInput,
+      //     studentGroupId,
+      //     studentGroupName: studentGroupDocument.studentGroupName,
+      //     selected: true,
+      //     order: 1,
+      //   })
+      //   .catch(err => console.log(err))
       setStudentInput('')
+      onClose()
     } catch (err) {
       console.log(err)
     }
@@ -58,7 +50,7 @@ const NewStudent: React.FC<NewStudentProps> = ({
           value={studentInput}
         ></Input>
         <Flex justifyContent="flex-end" padding=".7rem 0">
-          <Button onClick={openAddExistingModalHandler}>Add Existing</Button>
+          <Button onClick={onClose}>Cancel</Button>
           <Button colorScheme="blue" aria-label="add" type="submit" ml="1rem">
             Add New
           </Button>

@@ -126,14 +126,6 @@ const StudentGroup: React.FC = () => {
         studentGroupId={studentGroupId}
       />
 
-      <NewStudent
-        openAddExistingModalHandler={onOpen}
-        studentsRef={studentsRef}
-        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-        studentGroupDocument={studentGroupDocument}
-        studentGroupId={studentGroupId}
-      />
-
       <AddExistingStudentsModal
         onClose={onClose}
         isOpen={isOpen}
