@@ -38,7 +38,12 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
   const addBatch = useFirestore().batch()
 
   const addExistingHandler = () => {
-    let studentsInThisStudentGroupLength = studentsInThisStudentGroupDocuments?.length
+    let lowestOrderNumber = 0
+    studentsInThisStudentGroupDocuments.forEach(student => {
+      if (student.order < lowestOrderNumber) {
+        lowestOrderNumber = student.order
+      }
+    })
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
       addBatch.set(newStudentInStudentGroupRef, {
@@ -51,7 +56,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
         studentGroupId: studentGroupDocument.docId,
         studentGroupName: studentGroupDocument.studentGroupName,
         selected: false,
-        order: ++studentsInThisStudentGroupLength,
+        order: --lowestOrderNumber,
       })
     })
     return addBatch

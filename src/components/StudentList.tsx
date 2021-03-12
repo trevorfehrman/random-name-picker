@@ -22,7 +22,7 @@ const StudentList: React.FC<StudentListProps> = ({ studentsInThisStudentGroup })
           return (
             <StudentInGroup
               key={doc.studentId}
-              studentName={doc.studentInfo.studentName}
+              student={doc}
               studentInStudentGroupId={doc.docId}
               selected={doc.selected}
             />

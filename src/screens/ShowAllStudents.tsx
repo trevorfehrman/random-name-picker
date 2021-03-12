@@ -40,12 +40,7 @@ const ShowAllStudents: React.FC = () => {
       <Box w="100%" margin="1rem 0">
         {studentsInThisStudentGroupDocuments?.map(doc => {
           return (
-            <StudentInGroup
-              selected={doc.selected}
-              key={doc.docId}
-              studentName={doc.studentInfo.studentName}
-              studentInStudentGroupId={doc.docId}
-            />
+            <StudentInGroup selected={doc.selected} key={doc.docId} student={doc} studentInStudentGroupId={doc.docId} />
           )
         })}
       </Box>

@@ -79,8 +79,8 @@ const StudentGroup: React.FC = () => {
 
   const resetSelectedStatus = () => {
     const orderArray: number[] = []
-    for (let i = 1; i <= studentsInThisStudentGroupDocuments.length; i++) {
-      orderArray[i - 1] = i
+    for (let i = 0; i <= studentsInThisStudentGroupDocuments.length; i++) {
+      orderArray[i] = i
     }
     studentsInThisStudentGroupRef
       .get()

@@ -1,16 +1,17 @@
 import * as React from 'react'
-import { Heading, Icon, IconButton } from '@chakra-ui/react'
+import { Heading, Icon, IconButton, Flex } from '@chakra-ui/react'
 import { BiTrash } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import { StudentContainer } from 'styles'
+import { IStudentInStudentGroup } from 'interfacesAndTypes'
 
 type StudentInGroupProps = {
-  studentName: string
+  student: IStudentInStudentGroup
   studentInStudentGroupId: string
   selected: boolean
 }
 
-const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInStudentGroupId, selected }) => {
+const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, studentInStudentGroupId, selected }) => {
   const { data: user } = useUser()
 
   const studentsInStudentGroupsRef = useFirestore()
@@ -25,10 +26,17 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInS
 
   return (
     <StudentContainer layout style={{ backgroundColor: selected ? '#90CDF4' : '' }}>
-      <Heading as="h3" size="md">
-        {studentName}
+      <Heading w="70%" as="h3" size="md">
+        {student.studentInfo.studentName}
       </Heading>
-      <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={removeHandler} />
+      <Flex justify="space-between" alignItems="center">
+        {student.order < 0 && !student.selected ? (
+          <Heading color="blue.500" as="h4" size="xs">
+            Recently Added
+          </Heading>
+        ) : null}
+        <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={removeHandler} />
+      </Flex>
     </StudentContainer>
   )
 }
