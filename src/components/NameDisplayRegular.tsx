@@ -22,7 +22,7 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
         </Heading>
       ) : (
         <Heading as="h1" fontSize="3rem">
-          {selectedStudent?.studentName}
+          {selectedStudent?.studentInfo.studentName}
         </Heading>
       )}
       <IconButton

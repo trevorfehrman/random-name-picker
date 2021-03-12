@@ -3,7 +3,6 @@ import { Heading, Icon, IconButton } from '@chakra-ui/react'
 import { BiTrash } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import { StudentContainer } from 'styles'
-import { AnimatePresence } from 'framer-motion'
 
 type StudentInGroupProps = {
   studentName: string
@@ -25,14 +24,12 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ studentName, studentInS
   }
 
   return (
-    <AnimatePresence>
-      <StudentContainer layout style={{ backgroundColor: selected ? '#90CDF4' : '' }}>
-        <Heading as="h3" size="md">
-          {studentName}
-        </Heading>
-        <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={removeHandler} />
-      </StudentContainer>
-    </AnimatePresence>
+    <StudentContainer layout style={{ backgroundColor: selected ? '#90CDF4' : '' }}>
+      <Heading as="h3" size="md">
+        {studentName}
+      </Heading>
+      <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={removeHandler} />
+    </StudentContainer>
   )
 }
 

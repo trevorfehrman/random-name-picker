@@ -25,7 +25,8 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
 
   const deleteBatch = useFirestore().batch()
 
-  const deleteHandler = async () => {
+  const deleteHandler = async (e: React.SyntheticEvent) => {
+    e.stopPropagation()
     deleteBatch.delete(studentRef)
     const snapshot = await studentsInStudentGroupsRef.get()
     if (snapshot.docs.length > 0) {
@@ -40,13 +41,18 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
     history.push(`/edit-student/${docId}`)
   }
 
+  const openModalHandler = (e: React.SyntheticEvent) => {
+    e.stopPropagation()
+    onOpen()
+  }
+
   return (
     <>
       <StudentContainer onClick={openEditStudentHandler}>
         <Heading as="h3" size="md">
           {studentName}
         </Heading>
-        <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={onOpen} />
+        <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={openModalHandler} />
       </StudentContainer>
       <ConfirmationModal
         buttonText="Confirm"

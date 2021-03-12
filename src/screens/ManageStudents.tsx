@@ -23,7 +23,7 @@ const ManageStudents: React.FC = () => {
     <PageContentsBox>
       <Header />
       <Heading as="h1" size="lg" margin="1rem 0">
-        All Students
+        Manage Students
       </Heading>
       <Flex width="100%" minHeight="6rem" flexDirection="column">
         <Button alignSelf="flex-end" marginBottom=".5rem" onClick={onOpen}>

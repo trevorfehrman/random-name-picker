@@ -43,7 +43,7 @@ const ShowAllStudents: React.FC = () => {
             <StudentInGroup
               selected={doc.selected}
               key={doc.docId}
-              studentName={doc.studentName}
+              studentName={doc.studentInfo.studentName}
               studentInStudentGroupId={doc.docId}
             />
           )

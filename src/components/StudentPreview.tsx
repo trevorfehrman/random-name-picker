@@ -1,33 +1,29 @@
 import * as React from 'react'
 import { Flex, Heading } from '@chakra-ui/react'
-
-interface IStudentToAdd {
-  studentId: string
-  studentName: string
-}
+import { IStudent, IStudentToAdd } from 'interfacesAndTypes'
 
 type StudentPreviewProps = {
-  studentName: string
-  studentId: string
+  student: IStudent
   selectedStudentsToAdd: IStudentToAdd[]
   setSelectedStudentsToAdd: React.Dispatch<React.SetStateAction<IStudentToAdd[]>>
 }
 
 const StudentPreview: React.FC<StudentPreviewProps> = ({
-  studentName,
-  studentId,
+  student,
   selectedStudentsToAdd,
   setSelectedStudentsToAdd,
 }) => {
   const [isSelected, setIsSelected] = React.useState(false)
 
+  const { studentName, favoriteFood, profilePic, docId } = student
+
   const selectHandler = () => {
     let updatedStudentsToAdd
     if (!isSelected) {
-      updatedStudentsToAdd = [...selectedStudentsToAdd, { studentId, studentName }]
+      updatedStudentsToAdd = [...selectedStudentsToAdd, { studentId: docId, studentName, profilePic, favoriteFood }]
     } else {
       updatedStudentsToAdd = selectedStudentsToAdd.filter(student => {
-        return student.studentId !== studentId
+        return student.studentId !== docId
       })
     }
     setSelectedStudentsToAdd(updatedStudentsToAdd)
