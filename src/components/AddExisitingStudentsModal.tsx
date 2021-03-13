@@ -38,6 +38,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
   const addBatch = useFirestore().batch()
 
   const addExistingHandler = () => {
+    // search through existing students in this group to find the lowest order value
     let lowestOrderNumber = 0
     studentsInThisStudentGroupDocuments.forEach(student => {
       if (student.order < lowestOrderNumber) {
@@ -56,6 +57,8 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
         studentGroupId: studentGroupDocument.docId,
         studentGroupName: studentGroupDocument.studentGroupName,
         selected: false,
+        // assign an order value one less than the lowestOrderNumber found above
+        // and decrement that value
         order: --lowestOrderNumber,
       })
     })
