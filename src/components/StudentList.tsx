@@ -3,7 +3,6 @@ import { Box } from '@chakra-ui/react'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
 import styled from '@emotion/styled'
-import { AnimateSharedLayout } from 'framer-motion'
 
 const StudentBox = styled.div`
   width: 100%;
@@ -19,18 +18,16 @@ const StudentList: React.FC<StudentListProps> = ({ studentsInThisStudentGroup })
   return (
     <Box width="100%">
       <StudentBox>
-        <AnimateSharedLayout>
-          {studentsInThisStudentGroup?.map(doc => {
-            return (
-              <StudentInGroup
-                key={doc.studentId}
-                studentName={doc.studentName}
-                studentInStudentGroupId={doc.docId}
-                selected={doc.selected}
-              />
-            )
-          })}
-        </AnimateSharedLayout>
+        {studentsInThisStudentGroup?.map(doc => {
+          return (
+            <StudentInGroup
+              key={doc.studentId}
+              student={doc}
+              studentInStudentGroupId={doc.docId}
+              selected={doc.selected}
+            />
+          )
+        })}
       </StudentBox>
     </Box>
   )

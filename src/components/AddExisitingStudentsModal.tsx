@@ -10,15 +10,10 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import { IStudent, IStudentInStudentGroup, IStudentGroup } from 'interfacesAndTypes'
+import { IStudent, IStudentInStudentGroup, IStudentGroup, IStudentToAdd } from 'interfacesAndTypes'
 import StudentPreview from 'components/StudentPreview'
 import firebase from 'firebase'
 import { useFirestore } from 'reactfire'
-
-interface IStudentToAdd {
-  studentId: string
-  studentName: string
-}
 
 type AddExistingStudentsModalProps = {
   studentsRef: firebase.firestore.CollectionReference
@@ -43,16 +38,25 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
   const addBatch = useFirestore().batch()
 
   const addExistingHandler = () => {
-    let studentsInThisStudentGroupLength = studentsInThisStudentGroupDocuments?.length
+    let lowestOrderNumber = 0
+    studentsInThisStudentGroupDocuments.forEach(student => {
+      if (student.order < lowestOrderNumber) {
+        lowestOrderNumber = student.order
+      }
+    })
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
       addBatch.set(newStudentInStudentGroupRef, {
-        studentName: student.studentName,
+        studentInfo: {
+          studentName: student.studentName,
+          profilePic: student.profilePic,
+          favoriteFood: student.favoriteFood,
+        },
         studentId: student.studentId,
         studentGroupId: studentGroupDocument.docId,
         studentGroupName: studentGroupDocument.studentGroupName,
         selected: false,
-        order: studentsInThisStudentGroupLength++,
+        order: --lowestOrderNumber,
       })
     })
     return addBatch
@@ -78,8 +82,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
       return (
         <StudentPreview
           key={doc.docId}
-          studentName={doc.studentName}
-          studentId={doc.docId}
+          student={doc}
           selectedStudentsToAdd={selectedStudentsToAdd}
           setSelectedStudentsToAdd={setSelectedStudentsToAdd}
         />
