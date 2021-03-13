@@ -11,10 +11,9 @@ margin-left: 1rem;
 
 const Header: React.FC = () => {
   const activeStyle = {
-    borderBottom: '1px solid #63B3ED',
-    color: '#63B3ED',
+    borderBottom: '1px solid #2B6CB0',
+    color: '#2B6CB0',
     fontSize: '1.1rem',
-    textShadow: '0 .5px 1px #173b61',
   }
 
   return (
