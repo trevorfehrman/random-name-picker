@@ -22,7 +22,7 @@ const ManageStudents: React.FC = () => {
   return (
     <PageContentsBox>
       <Header />
-      <Heading as="h1" size="lg" margin="1rem 0">
+      <Heading as="h1" margin=".5rem 0 2rem 0" letterSpacing="wide" color="blue.800" fontWeight="500">
         Manage Students
       </Heading>
       <Flex width="100%" minHeight="6rem" flexDirection="column">

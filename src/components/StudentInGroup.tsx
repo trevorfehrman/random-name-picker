@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Heading, Icon, IconButton, Flex } from '@chakra-ui/react'
-import { BiTrash } from 'react-icons/bi'
+import { BiX } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import { StudentContainer } from 'styles'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
@@ -35,7 +35,7 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, studentInStude
             Recently Added
           </Heading>
         ) : null}
-        <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={removeHandler} />
+        <IconButton icon={<Icon fontSize="1.3rem" as={BiX} />} aria-label="delete" onClick={removeHandler} />
       </Flex>
     </StudentContainer>
   )

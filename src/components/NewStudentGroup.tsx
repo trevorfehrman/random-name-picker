@@ -6,6 +6,7 @@ import { FormBox } from 'styles'
 import styled from '@emotion/styled'
 
 type NewStudentGroupProps = {
+  onClose: () => void
   studentGroupsRef: firebase.firestore.CollectionReference
 }
 
@@ -14,7 +15,7 @@ const NewStudentGroupForm = styled.form`
   flex-direction: column;
 `
 
-const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef }) => {
+const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef, onClose }) => {
   const [studentGroupNameInput, setStudentGroupNameInput] = React.useState('')
 
   const history = useHistory()
@@ -25,6 +26,7 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef }) =
       const result = await studentGroupsRef.add({
         studentGroupName: studentGroupNameInput,
       })
+      onClose()
       history.push(`/student-group/${result.id}`)
     } catch (err) {
       console.log(err)
