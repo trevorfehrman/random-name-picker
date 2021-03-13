@@ -41,7 +41,6 @@ export const NameDisplayBox = styled.div`
   width: 100%;
   justify-content: center;
   align-items: center;
-  background-color: #ebf8ff;
   border: 1px solid #535353;
   border-radius: 3px;
   margin: 1.5rem 0;

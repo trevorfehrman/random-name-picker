@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { Button, Flex, useDisclosure } from '@chakra-ui/react'
+import { Button, Flex, useDisclosure, Icon } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
@@ -11,7 +11,7 @@ import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
-import { AddIcon } from '@chakra-ui/icons'
+import { BiUserPlus } from 'react-icons/bi'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -109,7 +109,7 @@ const StudentGroup: React.FC = () => {
       />
 
       <Button alignSelf="flex-end" marginBottom=".3rem" onClick={onOpen}>
-        <AddIcon marginRight=".5rem" />
+        <Icon as={BiUserPlus} marginRight=".5rem" fontSize="2rem" />
         Add Students
       </Button>
 
