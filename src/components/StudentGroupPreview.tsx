@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
+import { Flex, Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
 // import { DeleteIcon } from '@chakra-ui/icons'
-import { BiTrash } from 'react-icons/bi'
+import { BiTrash, BiGroup } from 'react-icons/bi'
 import styled from '@emotion/styled'
 import { useHistory } from 'react-router-dom'
 
@@ -16,13 +16,22 @@ const ButtonDiv = styled.div`
 const StudentGroupContainer = styled.div`
   border: 1px solid black;
   border-radius: 5px;
-  padding: 0.7rem 1.2rem;
   width: 100%;
   margin: 0.2rem 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s;
   &:hover {
     cursor: pointer;
+    background-color: #bee3f8;
+    transform: translateY(-0.2rem);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  &:active {
+    background-color: #bee3f8;
+    transform: translateY(-0.1rem);
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.7);
   }
 `
 
@@ -75,9 +84,13 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
   return (
     <>
       <StudentGroupContainer onClick={openStudentGroupHandler}>
-        <Heading as="h2" size="lg">
-          {studentGroupName}
-        </Heading>
+        <Flex justify="flex-start" alignItems="center">
+          <Icon as={BiGroup} fontSize="2rem" margin="0 .5rem" color="blue.800" />
+          <Heading as="h2" size="md" color="blue.800">
+            {studentGroupName}
+          </Heading>
+        </Flex>
+
         <ButtonDiv>
           <IconButton icon={<Icon as={BiTrash} />} onClick={openHandler} aria-label="delete">
             Delete
