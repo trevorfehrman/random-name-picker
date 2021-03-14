@@ -10,18 +10,22 @@ margin-left: 1rem;
 `
 
 const Header: React.FC = () => {
-  const activeStyle = { color: '#2B6CB0', fontSize: '1.1rem' }
+  const activeStyle = {
+    borderBottom: '1px solid #2B6CB0',
+    color: '#2B6CB0',
+    fontSize: '1.1rem',
+  }
 
   return (
     <List display="flex" justifyContent="flex-end" width="100%">
       <ListItemStyled>
-        <NavLink to="/" exact activeStyle={activeStyle}>
-          Student Groups
+        <NavLink to="/" exact activeStyle={activeStyle} color="#63B3ED">
+          Groups
         </NavLink>
       </ListItemStyled>
       <ListItemStyled>
         <NavLink to="/manage-students" activeStyle={activeStyle}>
-          Manage Students
+          Students
         </NavLink>
       </ListItemStyled>
     </List>

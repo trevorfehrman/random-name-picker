@@ -5,10 +5,12 @@ import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 
 import StudentGroupPreview from 'components/StudentGroupPreview'
 import { IStudentGroup } from 'interfacesAndTypes'
-import NewStudentGroup from 'components/NewStudentGroup'
 import styled from '@emotion/styled'
 import { PageContentsBox } from 'styles'
 import Header from 'components/Header'
+import { Button, Heading, useDisclosure } from '@chakra-ui/react'
+import { AddIcon } from '@chakra-ui/icons'
+import CreateNewStudentGroupModal from 'components/CreateNewStudentGroupModal'
 
 const GroupBox = styled.div`
   display: flex;
@@ -22,6 +24,8 @@ const GroupBox = styled.div`
 const StudentGroups: React.FC = () => {
   const { data: user } = useUser()
 
+  const { isOpen, onClose, onOpen } = useDisclosure()
+
   const studentGroupsRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
   const studentGroupsDocuments = useFirestoreCollectionData<IStudentGroup & { docId: string }>(studentGroupsRef, {
     idField: 'docId',
@@ -30,7 +34,13 @@ const StudentGroups: React.FC = () => {
   return (
     <PageContentsBox>
       <Header />
-      <NewStudentGroup studentGroupsRef={studentGroupsRef} />
+      <Heading as="h1" margin=".5rem 0 2rem 0" letterSpacing="wide" color="blue.800" fontWeight="500">
+        Manage Groups
+      </Heading>
+      <Button onClick={onOpen} alignSelf="flex-end" marginBottom=".5rem">
+        <AddIcon marginRight=".5rem" />
+        New Student Group
+      </Button>
       <GroupBox>
         {studentGroupsDocuments.data?.map(doc => {
           return (
@@ -43,6 +53,7 @@ const StudentGroups: React.FC = () => {
           )
         })}
       </GroupBox>
+      <CreateNewStudentGroupModal isOpen={isOpen} onClose={onClose} />
     </PageContentsBox>
   )
 }
