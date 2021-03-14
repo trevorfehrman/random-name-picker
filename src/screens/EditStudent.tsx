@@ -59,6 +59,7 @@ const EditStudent: React.FC = () => {
       })
     }
     updateBatch.commit()
+    history.push('/manage-students')
   }
 
   return (

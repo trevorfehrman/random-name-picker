@@ -3,6 +3,18 @@ import { motion } from 'framer-motion'
 
 // dark grey: #474747
 
+export const StudentInGroupContainer = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1rem;
+  border: 1px solid #535353;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 3px;
+  color: #2a4365;
+`
+
 export const StudentContainer = styled(motion.div)`
   display: flex;
   align-items: center;
@@ -12,9 +24,13 @@ export const StudentContainer = styled(motion.div)`
   border-radius: 5px;
   width: 100%;
   margin-top: 3px;
+  color: #2a4365;
+  transition: all 0.3s;
   &:hover {
     cursor: pointer;
-    background-color: #ebf8ff;
+    transform: translateY(-0.2rem);
+    background-color: #bee3f8;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.6);
   }
 `
 
