@@ -25,6 +25,7 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef, onC
     try {
       const result = await studentGroupsRef.add({
         studentGroupName: studentGroupNameInput,
+        selectedStudent: null,
       })
       onClose()
       history.push(`/student-group/${result.id}`)
