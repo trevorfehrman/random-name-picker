@@ -3,6 +3,7 @@ import { NameDisplayBox } from 'styles'
 import { Heading, IconButton, Icon } from '@chakra-ui/react'
 import { BiExpand } from 'react-icons/bi'
 import { NameDisplayProps } from 'interfacesAndTypes'
+import StudentProfile from './StudentProfile'
 
 const NameDisplayRegular: React.FC<NameDisplayProps> = ({
   selectedStudent,
@@ -18,12 +19,13 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
     <NameDisplayBox onClick={selectHandler}>
       {selectedStudent === null ? (
         <Heading as="h3" fontSize="1.2rem" color="gray.700" fontWeight="400">
-          {'click this box to select'}
+          {'click here to select'}
         </Heading>
       ) : (
-        <Heading as="h1" fontSize="3rem">
-          {selectedStudent?.studentInfo.studentName}
-        </Heading>
+        <StudentProfile selectedStudent={selectedStudent} />
+        // <Heading as="h1" fontSize="3rem">
+        //   {selectedStudent?.studentInfo.studentName}
+        // </Heading>
       )}
       <IconButton
         icon={<Icon as={BiExpand} />}

@@ -52,12 +52,13 @@ export const PageContentsBox = styled.div`
 
 export const NameDisplayBox = styled.div`
   display: flex;
-  position: relative;
-  min-height: 38vh;
   width: 100%;
+  border: 1px solid black;
+  padding: 1.5rem;
+  min-height: 16rem;
+  position: relative;
   justify-content: center;
   align-items: center;
-  border: 1px solid #535353;
   border-radius: 3px;
   margin: 1.5rem 0;
   overflow-x: auto;
