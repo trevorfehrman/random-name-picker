@@ -9,6 +9,7 @@ type EditableStudentGroupNameProps = {
 }
 
 const StudentGroupNameForm = styled.form`
+  position: relative;
   width: 16rem;
   max-width: 90%;
   text-align: right;
@@ -64,7 +65,7 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
             fontWeight="bolder"
             onSubmit={submitHandler}
           >
-            <EditablePreview _hover={{ cursor: 'pointer' }} />
+            <EditablePreview _hover={{ cursor: 'pointer' }} zIndex={1} position="relative" />
             <EditableInput />
           </Editable>
         )}
