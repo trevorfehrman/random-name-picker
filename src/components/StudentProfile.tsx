@@ -17,8 +17,8 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
     >
       <Flex w="50%" justifyContent={{ base: 'center', md: 'flex-end' }}>
         <Image
-          boxSize={{ base: '12rem', sm: '17rem', md: '22rem', lg: '29rem' }}
-          minW={{ base: '12rem', md: '26rem', lg: '33rem' }}
+          boxSize={{ base: '12rem', sm: '17rem', md: '20rem', lg: '29rem' }}
+          minW={{ base: '12rem', sm: '17', md: '20rem', lg: '29rem' }}
           borderRadius="3px"
           boxShadow="1px 4px 6px rgba(0,0,0, 0.6)"
           src={selectedStudent?.studentInfo.profilePic}
