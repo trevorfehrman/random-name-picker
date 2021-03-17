@@ -55,11 +55,14 @@ export const NameDisplayBox = styled.div`
   width: 100%;
   border: 1px solid black;
   padding: 1.5rem;
-  min-height: 16rem;
+  min-height: 32rem;
   position: relative;
   justify-content: center;
   align-items: center;
   border-radius: 3px;
   margin: 1.5rem 0;
   overflow-x: auto;
+  @media (max-width: 500px) {
+    min-height: 19rem;
+  } ;
 `
