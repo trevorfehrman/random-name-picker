@@ -3,6 +3,18 @@ import { motion } from 'framer-motion'
 
 // dark grey: #474747
 
+export const StudentInGroupContainer = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1rem;
+  border: 1px solid #535353;
+  border-radius: 5px;
+  width: 100%;
+  margin-top: 3px;
+  color: #2a4365;
+`
+
 export const StudentContainer = styled(motion.div)`
   display: flex;
   align-items: center;
@@ -12,9 +24,13 @@ export const StudentContainer = styled(motion.div)`
   border-radius: 5px;
   width: 100%;
   margin-top: 3px;
+  color: #2a4365;
+  transition: all 0.3s ease-in;
   &:hover {
     cursor: pointer;
-    background-color: #ebf8ff;
+    transform: translateY(-0.2rem);
+    background-color: #bee3f8;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.6);
   }
 `
 
@@ -36,14 +52,17 @@ export const PageContentsBox = styled.div`
 
 export const NameDisplayBox = styled.div`
   display: flex;
-  position: relative;
-  min-height: 38vh;
   width: 100%;
+  border: 1px solid black;
+  padding: 1.5rem;
+  min-height: 32rem;
+  position: relative;
   justify-content: center;
   align-items: center;
-  background-color: #ebf8ff;
-  border: 1px solid #535353;
   border-radius: 3px;
   margin: 1.5rem 0;
   overflow-x: auto;
+  @media (max-width: 500px) {
+    min-height: 19rem;
+  } ;
 `

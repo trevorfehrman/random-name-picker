@@ -2,8 +2,9 @@ import * as React from 'react'
 import { Heading, Icon, IconButton, Flex } from '@chakra-ui/react'
 import { BiX } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
-import { StudentContainer } from 'styles'
+import { StudentInGroupContainer } from 'styles'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
+import { BiUser } from 'react-icons/bi'
 
 type StudentInGroupProps = {
   student: IStudentInStudentGroup
@@ -25,10 +26,14 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, studentInStude
   }
 
   return (
-    <StudentContainer layout style={{ backgroundColor: selected ? '#90CDF4' : '' }}>
-      <Heading w="70%" as="h3" size="md">
-        {student.studentInfo.studentName}
-      </Heading>
+    <StudentInGroupContainer layout style={{ backgroundColor: selected ? '#90CDF4' : '' }}>
+      <Flex w="70%">
+        <Icon as={BiUser} fontSize="1.5rem" marginRight=".5rem" />
+        <Heading as="h3" size="md">
+          {student.studentInfo.studentName}
+        </Heading>
+      </Flex>
+
       <Flex justify="space-between" alignItems="center">
         {student.order < 0 && !student.selected ? (
           <Heading color="blue.500" as="h4" size="xs">
@@ -37,7 +42,7 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, studentInStude
         ) : null}
         <IconButton icon={<Icon fontSize="1.3rem" as={BiX} />} aria-label="delete" onClick={removeHandler} />
       </Flex>
-    </StudentContainer>
+    </StudentInGroupContainer>
   )
 }
 
