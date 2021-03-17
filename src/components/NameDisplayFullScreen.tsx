@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Flex, Heading, Image } from '@chakra-ui/react'
+import { Flex, Heading } from '@chakra-ui/react'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
 import StudentProfile from 'components/StudentProfile'
 

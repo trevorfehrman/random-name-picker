@@ -25,7 +25,7 @@ export const StudentContainer = styled(motion.div)`
   width: 100%;
   margin-top: 3px;
   color: #2a4365;
-  transition: all 0.3s;
+  transition: all 0.3s ease-in;
   &:hover {
     cursor: pointer;
     transform: translateY(-0.2rem);
