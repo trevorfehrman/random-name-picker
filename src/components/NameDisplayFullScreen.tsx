@@ -10,7 +10,7 @@ const NameDisplayFullScreen: React.FC<NameDisplayFullScreenProps> = ({ selectedS
   return (
     <Flex w="100%" justify="center" align="center" height="100%">
       {selectedStudent === null ? (
-        <Heading as="h3" fontSize="3rem">
+        <Heading as="h3" fontSize="1.5rem">
           {'click to select'}
         </Heading>
       ) : (
