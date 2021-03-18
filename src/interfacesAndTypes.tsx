@@ -15,8 +15,7 @@ export interface IStudent {
 export interface INewStudentValues {
   studentName: string
   profilePic: string
-  favoriteFood: string
-  favoriteMovie: string
+  [key: string]: string
 }
 
 export interface IStudentToAdd {
@@ -27,8 +26,7 @@ export interface IStudentToAdd {
 }
 
 interface IStudentFacts {
-  favoriteFood: IStudentFact
-  favoriteMovie: IStudentFact
+  [key: string]: IStudentFact
 }
 
 interface IStudentFact {

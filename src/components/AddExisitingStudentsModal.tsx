@@ -47,11 +47,15 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
     })
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
+      const studentFacts = Object.values(student.studentFacts).filter(studentFact => {
+        return studentFact.value !== ''
+      })
+      console.log(studentFacts)
       addBatch.set(newStudentInStudentGroupRef, {
         studentInfo: {
           studentName: student.studentName,
           profilePic: student.profilePic,
-          studentFacts: Object.values(student.studentFacts),
+          studentFacts,
         },
         studentId: student.studentId,
         studentGroupId: studentGroupDocument.docId,

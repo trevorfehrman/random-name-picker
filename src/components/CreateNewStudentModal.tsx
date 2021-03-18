@@ -24,7 +24,7 @@ const CreateNewStudentModal: React.FC<CreateNewStudentModalProps> = ({ isOpen, o
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent maxHeight="90vh" overflowY="auto">
         <ModalHeader>Create New Student</ModalHeader>
         <ModalCloseButton />
         <ModalBody>

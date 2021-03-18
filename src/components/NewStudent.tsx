@@ -3,7 +3,8 @@ import { Button, Input, FormControl, FormErrorMessage, FormLabel } from '@chakra
 import { FormBox } from 'styles'
 import firebase from 'firebase'
 import { useForm } from 'react-hook-form'
-import { INewStudentValues } from 'interfacesAndTypes'
+import StudentFactInput from 'components/StudentFactInput'
+import { studentFactInputInfo } from 'my-constants'
 
 type NewStudentProps = {
   studentsRef: firebase.firestore.CollectionReference
@@ -11,32 +12,34 @@ type NewStudentProps = {
 }
 
 const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
-  const { register, reset, handleSubmit, errors } = useForm()
+  const [studentFactInputs, setStudentFactInputs] = React.useState(studentFactInputInfo)
 
-  const addStudentHandler = async (values: INewStudentValues) => {
-    const { studentName, profilePic, favoriteFood, favoriteMovie } = values
+  const { register, handleSubmit, errors } = useForm()
+
+  const addStudentHandler = async (values: Record<string, unknown>) => {
+    const { studentName, profilePic } = values
     console.log(values)
+    const studentFacts: Record<string, unknown> = {}
+    studentFactInputInfo.forEach(studentFact => {
+      studentFacts[studentFact.camelCase] = {
+        value: values[studentFact.camelCase],
+        title: studentFact.display,
+      }
+    })
+    console.log(studentFacts)
     try {
       const studentResult = studentsRef.add({
         studentName,
         profilePic,
-        studentFacts: {
-          favoriteFood: {
-            title: 'Favorite Food',
-            value: favoriteFood,
-          },
-          favoriteMovie: {
-            title: 'Favorite Movie',
-            value: favoriteMovie,
-          },
-        },
+        studentFacts,
       })
       console.log(studentResult)
-      reset({
-        studentName: '',
-        profilePic: '',
-        favoriteFood: '',
-      })
+      // reset({
+      //   studentName: '',
+      //   profilePic: '',
+      //   favoriteFood: '',
+
+      // })
       onClose()
     } catch (err) {
       console.log(err)
@@ -64,7 +67,17 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
           <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
           {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
         </FormControl>
-        <FormControl isInvalid={errors.favoriteFood}>
+        {studentFactInputs.map(studentFactInput => {
+          return (
+            <StudentFactInput
+              key={studentFactInput.camelCase}
+              register={register}
+              camelCase={studentFactInput.camelCase}
+              display={studentFactInput.display}
+            />
+          )
+        })}
+        {/* <FormControl isInvalid={errors.favoriteFood}>
           <FormLabel htmlFor="favorite-food">Favorite Food</FormLabel>
           <Input
             id="favorite-food"
@@ -85,7 +98,7 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
           {errors.favoriteMovie && errors.favoriteMovie.type === 'required' && (
             <FormErrorMessage>Oops!</FormErrorMessage>
           )}
-        </FormControl>
+        </FormControl> */}
         <Button type="submit">Submit</Button>
       </form>
     </FormBox>

@@ -7,8 +7,11 @@ import { PageContentsBox } from 'styles'
 import { Image, Box, Heading, FormControl, FormErrorMessage, FormLabel, Input, Button, Flex } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { INewStudentValues } from 'interfacesAndTypes'
+import StudentFactInput from 'components/StudentFactInput'
+import { studentFactInputInfo } from 'my-constants'
 
 const EditStudent: React.FC = () => {
+  const [studentFactInputs, setStudentFactInputs] = React.useState(studentFactInputInfo)
   const params: StudentParams = useParams()
   const history = useHistory()
   const studentId = params.studentId
@@ -34,29 +37,32 @@ const EditStudent: React.FC = () => {
   }
 
   React.useEffect(() => {
+    const resetObject: Record<string, unknown> = {}
+    studentFactInputInfo.forEach(studentFact => {
+      if (studentDocument?.studentFacts[studentFact.camelCase]) {
+        resetObject[studentFact.camelCase] = studentDocument?.studentFacts[studentFact.camelCase].value
+      }
+    })
+    console.log(resetObject)
     reset({
       studentName: studentDocument?.studentName,
       profilePic: studentDocument?.profilePic,
-      favoriteFood: studentDocument?.studentFacts.favoriteFood.value,
-      favoriteMovie: studentDocument?.studentFacts.favoriteMovie.value,
+      ...resetObject,
     })
   }, [reset, studentDocument])
 
   const updateBatch = useFirestore().batch()
 
   const submitHandler = async (values: INewStudentValues) => {
-    const { studentName, profilePic, favoriteFood, favoriteMovie } = values
-    const studentFacts = {
-      favoriteFood: {
-        title: 'Favorite Food',
-        value: favoriteFood,
-      },
-      favoriteMovie: {
-        title: 'Favorite Movie',
-        value: favoriteMovie,
-      },
-    }
+    const { studentName, profilePic } = values
 
+    const studentFacts: Record<string, unknown> = {}
+    studentFactInputInfo.forEach(studentFact => {
+      studentFacts[studentFact.camelCase] = {
+        value: values[studentFact.camelCase],
+        title: studentFact.display,
+      }
+    })
     updateBatch.update(studentRef, {
       studentName,
       profilePic,
@@ -118,7 +124,17 @@ const EditStudent: React.FC = () => {
               <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
               {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
             </FormControl>
-            <FormControl isInvalid={errors.favoriteFood}>
+            {studentFactInputs.map(studentFactInput => {
+              return (
+                <StudentFactInput
+                  key={studentFactInput.camelCase}
+                  register={register}
+                  camelCase={studentFactInput.camelCase}
+                  display={studentFactInput.display}
+                />
+              )
+            })}
+            {/* <FormControl isInvalid={errors.favoriteFood}>
               <FormLabel htmlFor="favorite-food">Favorite Food</FormLabel>
               <Input
                 id="favorite-food"
@@ -141,7 +157,7 @@ const EditStudent: React.FC = () => {
               {errors.favoriteMovie && errors.favoriteMovie.type === 'required' && (
                 <FormErrorMessage>Oops!</FormErrorMessage>
               )}
-            </FormControl>
+            </FormControl> */}
             <Button marginTop=".5rem" alignSelf="flex-end" type="submit">
               Submit Changes
             </Button>
