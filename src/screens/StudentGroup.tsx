@@ -3,7 +3,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import { Button, Flex, useDisclosure, Icon } from '@chakra-ui/react'
-import { IStudentGroup, IStudent, IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
+import { IStudentGroup, IStudent, IStudentInStudentGroup, ISelectedStudent, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import { PageContentsBox } from 'styles'
@@ -17,7 +17,7 @@ const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
-  const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
+  const [selectedStudent, setSelectedStudent] = React.useState<ISelectedStudent | null>(null)
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
 
   const history = useHistory()
@@ -64,13 +64,49 @@ const StudentGroup: React.FC = () => {
 
   const selectHandler = () => {
     const selectedStudent = unselected[0]
-    setSelectedStudent(selectedStudent)
+    console.log(selectedStudent)
+    let studentFacts = [...selectedStudent.studentInfo.studentFacts]
+    console.log(studentFacts)
+    const randomIndex = Math.floor(Math.random() * studentFacts.length)
+    const selectedFact = studentFacts.splice(randomIndex, 1)[0]
+    console.log(selectedFact)
+    if (studentFacts.length === 0) {
+      console.log(
+        studentDocuments.filter(student => {
+          return student.docId === selectedStudent.studentId
+        }),
+      )
+      const studentFactsReset = studentDocuments.filter(student => {
+        return student.docId === selectedStudent.studentId
+      })[0].studentFacts
+      studentFacts = Object.values(studentFactsReset)
+    }
+    const preparedSelectedStudent = {
+      ...selectedStudent,
+      studentInfo: {
+        studentName: selectedStudent.studentInfo.studentName,
+        profilePic: selectedStudent.studentInfo.profilePic,
+        selectedFact,
+      },
+    }
+    studentsInStudentGroupsRef
+      .doc(selectedStudent.docId)
+      .update({
+        studentInfo: {
+          ...selectedStudent.studentInfo,
+          studentFacts,
+        },
+      })
+      .catch(err => console.log(err))
+    setSelectedStudent(preparedSelectedStudent)
     if (unselected.length <= 1) {
       resetSelectedStatus()
     } else {
       studentsInStudentGroupsRef
         .doc(selectedStudent.docId)
-        .update({ selected: true })
+        .update({
+          selected: true,
+        })
         .catch(err => console.log(err))
     }
   }

@@ -9,20 +9,31 @@ export interface IStudent {
   studentId: string
   docId: string
   profilePic?: string
-  favoriteFood?: string
+  studentFacts: IStudentFacts
 }
 
 export interface INewStudentValues {
   studentName: string
   profilePic: string
   favoriteFood: string
+  favoriteMovie: string
 }
 
 export interface IStudentToAdd {
   studentId: string
   studentName: string
   profilePic?: string
-  favoriteFood?: string
+  studentFacts: IStudentFacts
+}
+
+interface IStudentFacts {
+  favoriteFood: IStudentFact
+  favoriteMovie: IStudentFact
+}
+
+interface IStudentFact {
+  value: string
+  title: string
 }
 
 export interface GroupParams {
@@ -43,14 +54,30 @@ export interface IStudentInStudentGroup {
   order: number
 }
 
+export interface ISelectedStudent {
+  docId: string
+  studentId: string
+  studentInfo: ISelectedStudentInfo
+  studentGroupId: string
+  studentGroupName: string
+  selected: boolean
+  order: number
+}
+
+interface ISelectedStudentInfo {
+  studentName: string
+  profilePic: string
+  selectedFact: IStudentFact
+}
+
 interface IStudentInfo {
   studentName: string
   profilePic: string
-  favoriteFood: string
+  studentFacts: IStudentFact[]
 }
 
 export type NameDisplayProps = {
-  selectedStudent: IStudentInStudentGroup | null
+  selectedStudent: ISelectedStudent | null
   isFullScreen?: boolean
   setFullScreenDisplayIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   selectHandler: () => void

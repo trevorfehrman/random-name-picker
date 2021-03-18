@@ -14,13 +14,22 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
   const { register, reset, handleSubmit, errors } = useForm()
 
   const addStudentHandler = async (values: INewStudentValues) => {
-    const { studentName, profilePic, favoriteFood } = values
+    const { studentName, profilePic, favoriteFood, favoriteMovie } = values
     console.log(values)
     try {
       const studentResult = studentsRef.add({
         studentName,
         profilePic,
-        favoriteFood,
+        studentFacts: {
+          favoriteFood: {
+            title: 'Favorite Food',
+            value: favoriteFood,
+          },
+          favoriteMovie: {
+            title: 'Favorite Movie',
+            value: favoriteMovie,
+          },
+        },
       })
       console.log(studentResult)
       reset({
@@ -64,6 +73,18 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
             ref={register({ required: true })}
           />
           {errors.favoriteFood && errors.favoriteFood.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
+        </FormControl>
+        <FormControl isInvalid={errors.favoriteMovie}>
+          <FormLabel htmlFor="favorite-movie">Favorite Movie</FormLabel>
+          <Input
+            id="favorite-movie"
+            name="favoriteMovie"
+            placeholder="Favorite Movie"
+            ref={register({ required: true })}
+          />
+          {errors.favoriteMovie && errors.favoriteMovie.type === 'required' && (
+            <FormErrorMessage>Oops!</FormErrorMessage>
+          )}
         </FormControl>
         <Button type="submit">Submit</Button>
       </form>

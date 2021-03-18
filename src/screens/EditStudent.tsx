@@ -37,24 +37,38 @@ const EditStudent: React.FC = () => {
     reset({
       studentName: studentDocument?.studentName,
       profilePic: studentDocument?.profilePic,
-      favoriteFood: studentDocument?.favoriteFood,
+      favoriteFood: studentDocument?.studentFacts.favoriteFood.value,
+      favoriteMovie: studentDocument?.studentFacts.favoriteMovie.value,
     })
   }, [reset, studentDocument])
 
   const updateBatch = useFirestore().batch()
 
   const submitHandler = async (values: INewStudentValues) => {
-    const { studentName, profilePic, favoriteFood } = values
+    const { studentName, profilePic, favoriteFood, favoriteMovie } = values
+    const studentFacts = {
+      favoriteFood: {
+        title: 'Favorite Food',
+        value: favoriteFood,
+      },
+      favoriteMovie: {
+        title: 'Favorite Movie',
+        value: favoriteMovie,
+      },
+    }
+
     updateBatch.update(studentRef, {
       studentName,
       profilePic,
-      favoriteFood,
+      studentFacts,
     })
+
+    const studentFactsArray = Object.values(studentFacts)
     const snapshot = await thisStudentInStudentGroupsRef.get()
     if (snapshot.docs.length > 0) {
       snapshot.docs.forEach(doc => {
         updateBatch.update(doc.ref, {
-          studentInfo: { studentName, profilePic, favoriteFood },
+          studentInfo: { studentName, profilePic, studentFacts: studentFactsArray },
         })
       })
     }
@@ -113,6 +127,18 @@ const EditStudent: React.FC = () => {
                 ref={register({ required: true })}
               />
               {errors.favoriteFood && errors.favoriteFood.type === 'required' && (
+                <FormErrorMessage>Oops!</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={errors.favoriteMovie}>
+              <FormLabel htmlFor="favorite-movie">Favorite Movie</FormLabel>
+              <Input
+                id="favorite-movie"
+                name="favoriteMovie"
+                placeholder="Favorite Movie"
+                ref={register({ required: true })}
+              />
+              {errors.favoriteMovie && errors.favoriteMovie.type === 'required' && (
                 <FormErrorMessage>Oops!</FormErrorMessage>
               )}
             </FormControl>

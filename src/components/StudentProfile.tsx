@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { Flex, Heading, Image } from '@chakra-ui/react'
-import { IStudentInStudentGroup } from 'interfacesAndTypes'
+import { ISelectedStudent } from 'interfacesAndTypes'
 
 type StudentProfileProps = {
-  selectedStudent: IStudentInStudentGroup
+  selectedStudent: ISelectedStudent
 }
 
 const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
@@ -46,14 +46,14 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
         </Heading>
         <Flex direction="column" justify="center" alignItems={{ base: 'center', sm: 'flex-start' }} w="100%">
           <Heading as="h2" fontSize={{ base: '1rem', md: '1.6rem', lg: '2.1rem' }} color="blue.500">
-            Favorite Food:
+            {selectedStudent.studentInfo.selectedFact.title}
           </Heading>
           <Heading
             as="h2"
             fontSize={{ base: '1.3rem', md: '2.2rem', lg: '2.9rem' }}
             textAlign={{ base: 'center', sm: 'left' }}
           >
-            {selectedStudent?.studentInfo.favoriteFood}
+            {selectedStudent?.studentInfo.selectedFact.value}
           </Heading>
         </Flex>
       </Flex>

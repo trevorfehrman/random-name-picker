@@ -51,7 +51,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
         studentInfo: {
           studentName: student.studentName,
           profilePic: student.profilePic,
-          favoriteFood: student.favoriteFood,
+          studentFacts: Object.values(student.studentFacts),
         },
         studentId: student.studentId,
         studentGroupId: studentGroupDocument.docId,

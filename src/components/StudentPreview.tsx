@@ -15,12 +15,12 @@ const StudentPreview: React.FC<StudentPreviewProps> = ({
 }) => {
   const [isSelected, setIsSelected] = React.useState(false)
 
-  const { studentName, favoriteFood, profilePic, docId } = student
+  const { studentName, studentFacts, profilePic, docId } = student
 
   const selectHandler = () => {
     let updatedStudentsToAdd
     if (!isSelected) {
-      updatedStudentsToAdd = [...selectedStudentsToAdd, { studentId: docId, studentName, profilePic, favoriteFood }]
+      updatedStudentsToAdd = [...selectedStudentsToAdd, { studentId: docId, studentName, profilePic, studentFacts }]
     } else {
       updatedStudentsToAdd = selectedStudentsToAdd.filter(student => {
         return student.studentId !== docId
