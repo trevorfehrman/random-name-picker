@@ -63,13 +63,13 @@ const StudentGroup: React.FC = () => {
   }
 
   const selectHandler = () => {
+    if (unselected.length === 0) {
+      return
+    }
     const selectedStudent = unselected[0]
-    console.log(selectedStudent)
     let studentFacts = [...selectedStudent.studentInfo.studentFacts]
-    console.log(studentFacts)
     const randomIndex = Math.floor(Math.random() * studentFacts.length)
     const selectedFact = studentFacts.splice(randomIndex, 1)[0]
-    console.log(selectedFact)
     if (studentFacts.length === 0) {
       const studentFactsReset = studentDocuments.filter(student => {
         return student.docId === selectedStudent.studentId
