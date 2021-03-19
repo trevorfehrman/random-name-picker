@@ -3,7 +3,7 @@ type IStudentFactInput = {
   camelCase: string
 }
 
-export const studentFactInputInfo: IStudentFactInput[] = [
+export const studentFactInputs: IStudentFactInput[] = [
   {
     display: 'Favorite Movie',
     camelCase: 'favoriteMovie',
@@ -23,5 +23,9 @@ export const studentFactInputInfo: IStudentFactInput[] = [
   {
     display: 'Cutest Pet',
     camelCase: 'cutestPet',
+  },
+  {
+    display: 'Signature Catch Phrase',
+    camelCase: 'signatureCatchPhrase',
   },
 ]

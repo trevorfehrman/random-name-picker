@@ -8,10 +8,9 @@ import { Image, Box, Heading, FormControl, FormErrorMessage, FormLabel, Input, B
 import { useForm } from 'react-hook-form'
 import { INewStudentValues } from 'interfacesAndTypes'
 import StudentFactInput from 'components/StudentFactInput'
-import { studentFactInputInfo } from 'my-constants'
+import { studentFactInputs } from 'my-constants'
 
 const EditStudent: React.FC = () => {
-  const [studentFactInputs, setStudentFactInputs] = React.useState(studentFactInputInfo)
   const params: StudentParams = useParams()
   const history = useHistory()
   const studentId = params.studentId
@@ -38,7 +37,7 @@ const EditStudent: React.FC = () => {
 
   React.useEffect(() => {
     const resetObject: Record<string, unknown> = {}
-    studentFactInputInfo.forEach(studentFact => {
+    studentFactInputs.forEach(studentFact => {
       if (studentDocument?.studentFacts[studentFact.camelCase]) {
         resetObject[studentFact.camelCase] = studentDocument?.studentFacts[studentFact.camelCase].value
       }
@@ -57,7 +56,7 @@ const EditStudent: React.FC = () => {
     const { studentName, profilePic } = values
 
     const studentFacts: Record<string, unknown> = {}
-    studentFactInputInfo.forEach(studentFact => {
+    studentFactInputs.forEach(studentFact => {
       studentFacts[studentFact.camelCase] = {
         value: values[studentFact.camelCase],
         title: studentFact.display,

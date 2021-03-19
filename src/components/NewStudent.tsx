@@ -4,7 +4,7 @@ import { FormBox } from 'styles'
 import firebase from 'firebase'
 import { useForm } from 'react-hook-form'
 import StudentFactInput from 'components/StudentFactInput'
-import { studentFactInputInfo } from 'my-constants'
+import { studentFactInputs } from 'my-constants'
 
 type NewStudentProps = {
   studentsRef: firebase.firestore.CollectionReference
@@ -12,15 +12,13 @@ type NewStudentProps = {
 }
 
 const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
-  const [studentFactInputs, setStudentFactInputs] = React.useState(studentFactInputInfo)
-
   const { register, handleSubmit, errors } = useForm()
 
   const addStudentHandler = async (values: Record<string, unknown>) => {
     const { studentName, profilePic } = values
     console.log(values)
     const studentFacts: Record<string, unknown> = {}
-    studentFactInputInfo.forEach(studentFact => {
+    studentFactInputs.forEach(studentFact => {
       studentFacts[studentFact.camelCase] = {
         value: values[studentFact.camelCase],
         title: studentFact.display,
