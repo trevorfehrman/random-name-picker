@@ -25,7 +25,7 @@ export interface IStudentToAdd {
   studentFacts: IStudentFacts
 }
 
-interface IStudentFacts {
+export interface IStudentFacts {
   [key: string]: IStudentFact
 }
 

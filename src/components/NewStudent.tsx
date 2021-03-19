@@ -32,12 +32,6 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
         studentFacts,
       })
       console.log(studentResult)
-      // reset({
-      //   studentName: '',
-      //   profilePic: '',
-      //   favoriteFood: '',
-
-      // })
       onClose()
     } catch (err) {
       console.log(err)
@@ -47,7 +41,7 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
   return (
     <FormBox>
       <form onSubmit={handleSubmit(addStudentHandler)}>
-        <FormControl isInvalid={errors.name}>
+        <FormControl isInvalid={errors.name} isRequired>
           <FormLabel htmlFor="studentName">Name</FormLabel>
           <Input
             id="studentName"
@@ -60,7 +54,7 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
             <FormErrorMessage>Need more!</FormErrorMessage>
           )}
         </FormControl>
-        <FormControl isInvalid={errors.profilePic}>
+        <FormControl isInvalid={errors.profilePic} isRequired>
           <FormLabel htmlFor="profile-pic">Profile Pic</FormLabel>
           <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
           {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}

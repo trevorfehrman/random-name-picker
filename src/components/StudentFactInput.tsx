@@ -13,7 +13,7 @@ const StudentFactInput: React.FC<StudentFactInputProps> = ({ register, camelCase
   return (
     <>
       <FormLabel htmlFor={camelCase}>{display}</FormLabel>
-      <Input id={camelCase} name={camelCase} placeholder={display} ref={register({ minLength: 5, required: true })} />
+      <Input id={camelCase} name={camelCase} placeholder={display} ref={register} />
     </>
   )
 }

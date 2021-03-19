@@ -71,15 +71,10 @@ const StudentGroup: React.FC = () => {
     const selectedFact = studentFacts.splice(randomIndex, 1)[0]
     console.log(selectedFact)
     if (studentFacts.length === 0) {
-      console.log(
-        studentDocuments.filter(student => {
-          return student.docId === selectedStudent.studentId
-        }),
-      )
       const studentFactsReset = studentDocuments.filter(student => {
         return student.docId === selectedStudent.studentId
       })[0].studentFacts
-      studentFacts = Object.values(studentFactsReset)
+      studentFacts = Object.values(studentFactsReset).filter(studentFact => studentFact.value !== '')
     }
     const preparedSelectedStudent = {
       ...selectedStudent,

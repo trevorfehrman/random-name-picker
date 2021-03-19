@@ -44,18 +44,21 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
         >
           {selectedStudent?.studentInfo.studentName}
         </Heading>
-        <Flex direction="column" justify="center" alignItems={{ base: 'center', sm: 'flex-start' }} w="100%">
-          <Heading as="h2" fontSize={{ base: '1rem', md: '1.6rem', lg: '2.1rem' }} color="blue.500">
-            {selectedStudent.studentInfo.selectedFact.title}
-          </Heading>
-          <Heading
-            as="h2"
-            fontSize={{ base: '1.3rem', md: '2.2rem', lg: '2.9rem' }}
-            textAlign={{ base: 'center', sm: 'left' }}
-          >
-            {selectedStudent?.studentInfo.selectedFact.value}
-          </Heading>
-        </Flex>
+        {selectedStudent?.studentInfo.selectedFact && selectedStudent?.studentInfo.selectedFact.value && (
+          <Flex direction="column" justify="center" alignItems={{ base: 'center', sm: 'flex-start' }} w="100%">
+            <Heading as="h2" fontSize={{ base: '1rem', md: '1.6rem', lg: '2.1rem' }} color="blue.500">
+              {selectedStudent.studentInfo.selectedFact.title}
+            </Heading>
+
+            <Heading
+              as="h2"
+              fontSize={{ base: '1.3rem', md: '2.2rem', lg: '2.9rem' }}
+              textAlign={{ base: 'center', sm: 'left' }}
+            >
+              {selectedStudent?.studentInfo.selectedFact.value}
+            </Heading>
+          </Flex>
+        )}
       </Flex>
     </Flex>
   )

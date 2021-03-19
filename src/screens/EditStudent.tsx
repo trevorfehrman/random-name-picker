@@ -6,7 +6,7 @@ import HeaderWithBackButton from 'components/HeadingBoxWithBackButton'
 import { PageContentsBox } from 'styles'
 import { Image, Box, Heading, FormControl, FormErrorMessage, FormLabel, Input, Button, Flex } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
-import { INewStudentValues } from 'interfacesAndTypes'
+import { INewStudentValues, IStudentFacts } from 'interfacesAndTypes'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs } from 'my-constants'
 
@@ -55,7 +55,7 @@ const EditStudent: React.FC = () => {
   const submitHandler = async (values: INewStudentValues) => {
     const { studentName, profilePic } = values
 
-    const studentFacts: Record<string, unknown> = {}
+    const studentFacts: IStudentFacts = {}
     studentFactInputs.forEach(studentFact => {
       studentFacts[studentFact.camelCase] = {
         value: values[studentFact.camelCase],
@@ -68,7 +68,7 @@ const EditStudent: React.FC = () => {
       studentFacts,
     })
 
-    const studentFactsArray = Object.values(studentFacts)
+    const studentFactsArray = Object.values(studentFacts).filter(studentFact => studentFact.value !== '')
     const snapshot = await thisStudentInStudentGroupsRef.get()
     if (snapshot.docs.length > 0) {
       snapshot.docs.forEach(doc => {
