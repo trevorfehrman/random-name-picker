@@ -4,7 +4,8 @@ import { FormBox } from 'styles'
 import firebase from 'firebase'
 import { useForm } from 'react-hook-form'
 import StudentFactInput from 'components/StudentFactInput'
-import { studentFactInputs } from 'my-constants'
+import { studentFactInputs, createStudentFactsObject } from 'student-facts'
+import { INewStudentValues } from 'interfacesAndTypes'
 
 type NewStudentProps = {
   studentsRef: firebase.firestore.CollectionReference
@@ -14,24 +15,15 @@ type NewStudentProps = {
 const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
   const { register, handleSubmit, errors } = useForm()
 
-  const addStudentHandler = async (values: Record<string, unknown>) => {
+  const addStudentHandler = async (values: INewStudentValues) => {
     const { studentName, profilePic } = values
-    console.log(values)
-    const studentFacts: Record<string, unknown> = {}
-    studentFactInputs.forEach(studentFact => {
-      studentFacts[studentFact.camelCase] = {
-        value: values[studentFact.camelCase],
-        title: studentFact.display,
-      }
-    })
-    console.log(studentFacts)
+    const studentFacts = createStudentFactsObject(values)
     try {
-      const studentResult = studentsRef.add({
+      studentsRef.add({
         studentName,
         profilePic,
         studentFacts,
       })
-      console.log(studentResult)
       onClose()
     } catch (err) {
       console.log(err)
@@ -54,11 +46,13 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
             <FormErrorMessage>Need more!</FormErrorMessage>
           )}
         </FormControl>
+
         <FormControl isInvalid={errors.profilePic} isRequired>
           <FormLabel htmlFor="profile-pic">Profile Pic</FormLabel>
           <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
           {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
         </FormControl>
+
         {studentFactInputs.map(studentFactInput => {
           return (
             <StudentFactInput
@@ -69,28 +63,7 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
             />
           )
         })}
-        {/* <FormControl isInvalid={errors.favoriteFood}>
-          <FormLabel htmlFor="favorite-food">Favorite Food</FormLabel>
-          <Input
-            id="favorite-food"
-            name="favoriteFood"
-            placeholder="Favorite Food"
-            ref={register({ required: true })}
-          />
-          {errors.favoriteFood && errors.favoriteFood.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
-        </FormControl>
-        <FormControl isInvalid={errors.favoriteMovie}>
-          <FormLabel htmlFor="favorite-movie">Favorite Movie</FormLabel>
-          <Input
-            id="favorite-movie"
-            name="favoriteMovie"
-            placeholder="Favorite Movie"
-            ref={register({ required: true })}
-          />
-          {errors.favoriteMovie && errors.favoriteMovie.type === 'required' && (
-            <FormErrorMessage>Oops!</FormErrorMessage>
-          )}
-        </FormControl> */}
+
         <Button type="submit">Submit</Button>
       </form>
     </FormBox>

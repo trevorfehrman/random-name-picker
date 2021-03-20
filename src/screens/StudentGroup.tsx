@@ -62,21 +62,21 @@ const StudentGroup: React.FC = () => {
     history.push('/')
   }
 
-  const selectHandler = () => {
+  const selectHandler = async () => {
     if (unselected.length === 0) {
       return
     }
+    // pick the first unselected student (the order has already been shuffled)
     const selectedStudent = unselected[0]
+    // pull a studentFact at random from the studentFacts array
     let studentFacts = [...selectedStudent.studentInfo.studentFacts]
     const randomIndex = Math.floor(Math.random() * studentFacts.length)
     const selectedFact = studentFacts.splice(randomIndex, 1)[0]
     if (studentFacts.length === 0) {
-      const studentFactsReset = studentDocuments.filter(student => {
-        return student.docId === selectedStudent.studentId
-      })[0].studentFacts
-      studentFacts = Object.values(studentFactsReset).filter(studentFact => studentFact.value !== '')
+      studentFacts = resetStudentFacts(selectedStudent)
     }
-    const preparedSelectedStudent = {
+    // add the selected studentFact to the student we're going to display
+    const selectedStudentToDisplay = {
       ...selectedStudent,
       studentInfo: {
         studentName: selectedStudent.studentInfo.studentName,
@@ -84,26 +84,35 @@ const StudentGroup: React.FC = () => {
         selectedFact,
       },
     }
-    studentsInStudentGroupsRef
-      .doc(selectedStudent.docId)
-      .update({
+    // update the studentFacts on firebase with either whatever's left or a refilled array
+    try {
+      await studentsInStudentGroupsRef.doc(selectedStudent.docId).update({
         studentInfo: {
           ...selectedStudent.studentInfo,
           studentFacts,
         },
       })
-      .catch(err => console.log(err))
-    setSelectedStudent(preparedSelectedStudent)
-    if (unselected.length <= 1) {
-      resetSelectedStatus()
-    } else {
-      studentsInStudentGroupsRef
-        .doc(selectedStudent.docId)
-        .update({
+      // if we're selecting the last student in the list, refresh all of the studentsInThisStudentGroup's selected status
+      if (unselected.length <= 1) {
+        await resetSelectedStatus()
+      } else {
+        // or just update this student's status
+        await studentsInStudentGroupsRef.doc(selectedStudent.docId).update({
           selected: true,
         })
-        .catch(err => console.log(err))
+      }
+      // if all of that works update the displayed student on the front end
+      setSelectedStudent(selectedStudentToDisplay)
+    } catch (err) {
+      console.log(err)
     }
+  }
+
+  const resetStudentFacts = (selectedStudent: IStudentInStudentGroup) => {
+    const studentFactsReset = studentDocuments.filter(student => {
+      return student.docId === selectedStudent.studentId
+    })[0].studentFacts
+    return Object.values(studentFactsReset).filter(studentFact => studentFact.value !== '')
   }
 
   const updateBatch = useFirestore().batch()
