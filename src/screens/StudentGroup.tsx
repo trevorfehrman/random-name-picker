@@ -17,7 +17,6 @@ const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
-  const [selectedStudent, setSelectedStudent] = React.useState<IStudentInStudentGroup | null>(null)
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
 
   const history = useHistory()
@@ -64,7 +63,7 @@ const StudentGroup: React.FC = () => {
 
   const selectHandler = () => {
     const selectedStudent = unselected[0]
-    setSelectedStudent(selectedStudent)
+    studentGroupRef.update({ selectedStudent }).catch(err => console.log(err))
     if (unselected.length <= 1) {
       resetSelectedStatus()
     } else {
@@ -103,7 +102,7 @@ const StudentGroup: React.FC = () => {
       </HeadingBoxWithBackButton>
 
       <NameDisplay
-        selectedStudent={selectedStudent}
+        selectedStudent={studentGroupDocument?.selectedStudent}
         setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
         selectHandler={selectHandler}
       />
@@ -141,7 +140,7 @@ const StudentGroup: React.FC = () => {
         selectHandler={selectHandler}
       >
         <NameDisplay
-          selectedStudent={selectedStudent}
+          selectedStudent={studentGroupDocument?.selectedStudent}
           isFullScreen
           setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
           selectHandler={selectHandler}

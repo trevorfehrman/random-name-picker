@@ -1,7 +1,7 @@
 export interface IStudentGroup {
   docId: string
   studentGroupName: string
-  students: IStudent[]
+  selectedStudent: IStudentInStudentGroup
 }
 
 export interface IStudent {
