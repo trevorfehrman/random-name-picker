@@ -12,6 +12,7 @@ import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
 import { BiUserPlus } from 'react-icons/bi'
+import { selectStudentFactAndRepopulateArrayIfLast } from 'helpers/student-group-helpers'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -69,12 +70,7 @@ const StudentGroup: React.FC = () => {
     // pick the first unselected student (the order has already been shuffled)
     const selectedStudent = unselected[0]
     // pull a studentFact at random from the studentFacts array
-    let studentFacts = [...selectedStudent.studentInfo.studentFacts]
-    const randomIndex = Math.floor(Math.random() * studentFacts.length)
-    const selectedFact = studentFacts.splice(randomIndex, 1)[0]
-    if (studentFacts.length === 0) {
-      studentFacts = resetStudentFacts(selectedStudent)
-    }
+    const { selectedFact, studentFacts } = selectStudentFactAndRepopulateArrayIfLast(selectedStudent, studentDocuments)
     // add the selected studentFact to the student we're going to display
     const selectedStudentToDisplay = {
       ...selectedStudent,
@@ -106,13 +102,6 @@ const StudentGroup: React.FC = () => {
     } catch (err) {
       console.log(err)
     }
-  }
-
-  const resetStudentFacts = (selectedStudent: IStudentInStudentGroup) => {
-    const studentFactsReset = studentDocuments.filter(student => {
-      return student.docId === selectedStudent.studentId
-    })[0].studentFacts
-    return Object.values(studentFactsReset).filter(studentFact => studentFact.value !== '')
   }
 
   const updateBatch = useFirestore().batch()

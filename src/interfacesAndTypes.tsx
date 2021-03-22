@@ -29,7 +29,7 @@ export interface IStudentFacts {
   [key: string]: IStudentFact
 }
 
-interface IStudentFact {
+export interface IStudentFact {
   value: string
   title: string
 }

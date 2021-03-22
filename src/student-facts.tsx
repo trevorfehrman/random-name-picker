@@ -30,6 +30,10 @@ export const studentFactInputs: IStudentFactInput[] = [
     display: 'Signature Catch Phrase',
     camelCase: 'signatureCatchPhrase',
   },
+  {
+    display: 'Favorite Ice Cream',
+    camelCase: 'favoriteIceCream',
+  },
 ]
 
 export const createStudentFactsObject: (values: INewStudentValues) => IStudentFacts = (values: INewStudentValues) => {
