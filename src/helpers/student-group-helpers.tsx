@@ -1,13 +1,42 @@
 import { IStudent, IStudentInStudentGroup, IStudentFact, ISelectedStudent } from 'interfacesAndTypes'
+import firebase from 'firebase'
 
-const resetStudentFacts: (selectedStudent: IStudentInStudentGroup, studentDocuments: IStudent[]) => IStudentFact[] = (
+export const updateStudentFactsOnFirebase: (
+  studentsInThisStudentGroupRef: firebase.firestore.CollectionReference,
   selectedStudent: IStudentInStudentGroup,
-  studentDocuments: IStudent[],
-) => {
-  const studentFactsReset = studentDocuments.filter(student => {
-    return student.docId === selectedStudent.studentId
-  })[0].studentFacts
-  return Object.values(studentFactsReset).filter(studentFact => studentFact.value !== '')
+  updatedStudentFacts: IStudentFact[],
+) => void = async (studentsInStudentGroupsRef, selectedStudent, updatedStudentFacts) => {
+  try {
+    await studentsInStudentGroupsRef.doc(selectedStudent.docId).update({
+      studentInfo: {
+        ...selectedStudent.studentInfo,
+        studentFacts: updatedStudentFacts,
+      },
+    })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export const resetSelectedStatusOnStudents: (
+  updateBatch: firebase.firestore.WriteBatch,
+  studentsInThisStudentGroupDocuments: IStudentInStudentGroup[],
+  studentsInThisStudentGroupRef: firebase.firestore.Query<firebase.firestore.DocumentData>,
+) => void = (updateBatch, studentsInThisStudentGroupDocuments, studentsInThisStudentGroupRef) => {
+  const orderArray: number[] = []
+  for (let i = 0; i <= studentsInThisStudentGroupDocuments.length; i++) {
+    orderArray[i] = i
+  }
+  studentsInThisStudentGroupRef
+    .get()
+    .then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        const randomOrderValue = orderArray.splice(Math.floor(Math.random() * orderArray.length), 1)
+        updateBatch.update(doc.ref, { selected: false, order: randomOrderValue[0] })
+      })
+      return updateBatch.commit().catch(err => console.log(err))
+    })
+    .catch(err => console.log(err))
 }
 
 export const addSelectedStudentFactAndRefillStudentFactsIfEmpty: (
@@ -25,6 +54,16 @@ export const addSelectedStudentFactAndRefillStudentFactsIfEmpty: (
   }
   const selectedStudentWithStudentFact = updateSelectedStudentObject(selectedStudent, selectedFact)
   return { updatedStudentFacts, selectedStudentWithStudentFact }
+}
+
+const resetStudentFacts: (selectedStudent: IStudentInStudentGroup, studentDocuments: IStudent[]) => IStudentFact[] = (
+  selectedStudent: IStudentInStudentGroup,
+  studentDocuments: IStudent[],
+) => {
+  const studentFactsReset = studentDocuments.filter(student => {
+    return student.docId === selectedStudent.studentId
+  })[0].studentFacts
+  return Object.values(studentFactsReset).filter(studentFact => studentFact.value !== '')
 }
 
 const updateSelectedStudentObject: (

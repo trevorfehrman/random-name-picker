@@ -12,7 +12,11 @@ import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
 import { BiUserPlus } from 'react-icons/bi'
-import { addSelectedStudentFactAndRefillStudentFactsIfEmpty } from 'helpers/student-group-helpers'
+import {
+  addSelectedStudentFactAndRefillStudentFactsIfEmpty,
+  resetSelectedStatusOnStudents,
+  updateStudentFactsOnFirebase,
+} from 'helpers/student-group-helpers'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -63,6 +67,8 @@ const StudentGroup: React.FC = () => {
     history.push('/')
   }
 
+  const updateBatch = useFirestore().batch()
+
   const selectStudentAndStudentFactHandler = async () => {
     if (unselected.length === 0) {
       return
@@ -73,14 +79,14 @@ const StudentGroup: React.FC = () => {
       studentDocuments,
     )
     try {
-      await studentsInStudentGroupsRef.doc(selectedStudent.docId).update({
-        studentInfo: {
-          ...selectedStudent.studentInfo,
-          studentFacts: updatedStudentFacts,
-        },
-      })
+      await updateStudentFactsOnFirebase(studentsInStudentGroupsRef, selectedStudent, updatedStudentFacts)
+
       if (unselected.length <= 1) {
-        await resetSelectedStatusOnStudents()
+        await resetSelectedStatusOnStudents(
+          updateBatch,
+          studentsInThisStudentGroupDocuments,
+          studentsInThisStudentGroupRef,
+        )
       } else {
         await studentsInStudentGroupsRef.doc(selectedStudent.docId).update({
           selected: true,
@@ -91,25 +97,6 @@ const StudentGroup: React.FC = () => {
     } catch (err) {
       console.log(err)
     }
-  }
-
-  const updateBatch = useFirestore().batch()
-
-  const resetSelectedStatusOnStudents = () => {
-    const orderArray: number[] = []
-    for (let i = 0; i <= studentsInThisStudentGroupDocuments.length; i++) {
-      orderArray[i] = i
-    }
-    studentsInThisStudentGroupRef
-      .get()
-      .then(snapshot => {
-        snapshot.docs.forEach(doc => {
-          const randomOrderValue = orderArray.splice(Math.floor(Math.random() * orderArray.length), 1)
-          updateBatch.update(doc.ref, { selected: false, order: randomOrderValue[0] })
-        })
-        return updateBatch.commit().catch(err => console.log(err))
-      })
-      .catch(err => console.log(err))
   }
 
   return (
