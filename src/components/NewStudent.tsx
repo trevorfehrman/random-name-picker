@@ -3,6 +3,8 @@ import { Button, Input, FormControl, FormErrorMessage, FormLabel } from '@chakra
 import { FormBox } from 'styles'
 import firebase from 'firebase'
 import { useForm } from 'react-hook-form'
+import StudentFactInput from 'components/StudentFactInput'
+import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 import { INewStudentValues } from 'interfacesAndTypes'
 
 type NewStudentProps = {
@@ -11,22 +13,16 @@ type NewStudentProps = {
 }
 
 const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
-  const { register, reset, handleSubmit, errors } = useForm()
+  const { register, handleSubmit, errors } = useForm()
 
   const addStudentHandler = async (values: INewStudentValues) => {
-    const { studentName, profilePic, favoriteFood } = values
-    console.log(values)
+    const { studentName, profilePic } = values
+    const studentFacts = createStudentFactsObject(values)
     try {
-      const studentResult = studentsRef.add({
+      studentsRef.add({
         studentName,
         profilePic,
-        favoriteFood,
-      })
-      console.log(studentResult)
-      reset({
-        studentName: '',
-        profilePic: '',
-        favoriteFood: '',
+        studentFacts,
       })
       onClose()
     } catch (err) {
@@ -37,7 +33,7 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
   return (
     <FormBox>
       <form onSubmit={handleSubmit(addStudentHandler)}>
-        <FormControl isInvalid={errors.name}>
+        <FormControl isInvalid={errors.name} isRequired>
           <FormLabel htmlFor="studentName">Name</FormLabel>
           <Input
             id="studentName"
@@ -50,21 +46,24 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
             <FormErrorMessage>Need more!</FormErrorMessage>
           )}
         </FormControl>
-        <FormControl isInvalid={errors.profilePic}>
+
+        <FormControl isInvalid={errors.profilePic} isRequired>
           <FormLabel htmlFor="profile-pic">Profile Pic</FormLabel>
           <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
           {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
         </FormControl>
-        <FormControl isInvalid={errors.favoriteFood}>
-          <FormLabel htmlFor="favorite-food">Favorite Food</FormLabel>
-          <Input
-            id="favorite-food"
-            name="favoriteFood"
-            placeholder="Favorite Food"
-            ref={register({ required: true })}
-          />
-          {errors.favoriteFood && errors.favoriteFood.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
-        </FormControl>
+
+        {studentFactInputs.map(studentFactInput => {
+          return (
+            <StudentFactInput
+              key={studentFactInput.camelCase}
+              register={register}
+              camelCase={studentFactInput.camelCase}
+              display={studentFactInput.display}
+            />
+          )
+        })}
+
         <Button type="submit">Submit</Button>
       </form>
     </FormBox>

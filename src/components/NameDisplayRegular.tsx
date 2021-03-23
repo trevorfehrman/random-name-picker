@@ -8,7 +8,8 @@ import StudentProfile from './StudentProfile'
 const NameDisplayRegular: React.FC<NameDisplayProps> = ({
   selectedStudent,
   setFullScreenDisplayIsOpen,
-  selectHandler,
+  selectStudentAndStudentFactHandler,
+  noStudentSelected,
 }) => {
   const expandHandler = (e: React.SyntheticEvent) => {
     e.stopPropagation()
@@ -16,8 +17,8 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
   }
 
   return (
-    <NameDisplayBox onClick={selectHandler}>
-      {selectedStudent === null ? (
+    <NameDisplayBox onClick={selectStudentAndStudentFactHandler}>
+      {selectedStudent === null || noStudentSelected ? (
         <Heading as="h3" fontSize="1.2rem" color="gray.700" fontWeight="400">
           {'click here to select'}
         </Heading>

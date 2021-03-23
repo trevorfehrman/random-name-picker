@@ -14,7 +14,7 @@ type FullScreenDisplayProps = {
   modalHeadingText: string
   onClose: () => void
   isOpen: boolean
-  selectHandler: () => void
+  selectStudentAndStudentFactHandler: () => void
 }
 
 const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
@@ -22,7 +22,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
   modalHeadingText,
   onClose,
   isOpen,
-  selectHandler,
+  selectStudentAndStudentFactHandler,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full" scrollBehavior="inside">
@@ -30,7 +30,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
       <ModalContent margin="0" minHeight="100vh">
         <ModalHeader>{modalHeadingText}</ModalHeader>
         <ModalCloseButton />
-        <ModalBody onClick={selectHandler}>{children}</ModalBody>
+        <ModalBody onClick={selectStudentAndStudentFactHandler}>{children}</ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>
             Close

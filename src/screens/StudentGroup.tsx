@@ -12,10 +12,16 @@ import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
 import { BiUserPlus } from 'react-icons/bi'
+import {
+  addSelectedStudentFactAndRefillStudentFactsIfEmpty,
+  resetSelectedStatusOnStudents,
+  updateStudentFactsOnFirebase,
+} from 'helpers/student-group-helpers'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const [noStudentSelected, setNoStudentSelected] = React.useState(true)
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
 
@@ -61,36 +67,36 @@ const StudentGroup: React.FC = () => {
     history.push('/')
   }
 
-  const selectHandler = () => {
-    const selectedStudent = unselected[0]
-    studentGroupRef.update({ selectedStudent }).catch(err => console.log(err))
-    if (unselected.length <= 1) {
-      resetSelectedStatus()
-    } else {
-      studentsInStudentGroupsRef
-        .doc(selectedStudent.docId)
-        .update({ selected: true })
-        .catch(err => console.log(err))
-    }
-  }
-
   const updateBatch = useFirestore().batch()
 
-  const resetSelectedStatus = () => {
-    const orderArray: number[] = []
-    for (let i = 0; i <= studentsInThisStudentGroupDocuments.length; i++) {
-      orderArray[i] = i
+  const selectStudentAndStudentFactHandler = async () => {
+    if (unselected.length === 0) {
+      return
     }
-    studentsInThisStudentGroupRef
-      .get()
-      .then(snapshot => {
-        snapshot.docs.forEach(doc => {
-          const randomOrderValue = orderArray.splice(Math.floor(Math.random() * orderArray.length), 1)
-          updateBatch.update(doc.ref, { selected: false, order: randomOrderValue[0] })
+    const selectedStudent = unselected[0]
+    const { selectedStudentWithStudentFact, updatedStudentFacts } = addSelectedStudentFactAndRefillStudentFactsIfEmpty(
+      selectedStudent,
+      studentDocuments,
+    )
+    try {
+      await updateStudentFactsOnFirebase(studentsInStudentGroupsRef, selectedStudent, updatedStudentFacts)
+
+      if (unselected.length <= 1) {
+        await resetSelectedStatusOnStudents(
+          updateBatch,
+          studentsInThisStudentGroupDocuments,
+          studentsInThisStudentGroupRef,
+        )
+      } else {
+        await studentsInStudentGroupsRef.doc(selectedStudent.docId).update({
+          selected: true,
         })
-        return updateBatch.commit().catch(err => console.log(err))
-      })
-      .catch(err => console.log(err))
+      }
+      await studentGroupRef.update({ selectedStudent: selectedStudentWithStudentFact })
+      setNoStudentSelected(false)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   return (
@@ -104,7 +110,8 @@ const StudentGroup: React.FC = () => {
       <NameDisplay
         selectedStudent={studentGroupDocument?.selectedStudent}
         setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
-        selectHandler={selectHandler}
+        selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
+        noStudentSelected={noStudentSelected}
       />
 
       <Button alignSelf="flex-end" marginBottom=".3rem" onClick={onOpen}>
@@ -137,13 +144,14 @@ const StudentGroup: React.FC = () => {
         modalHeadingText="FullScreenMode"
         onClose={() => setFullScreenDisplayIsOpen(false)}
         isOpen={fullScreenDisplayIsOpen}
-        selectHandler={selectHandler}
+        selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
       >
         <NameDisplay
           selectedStudent={studentGroupDocument?.selectedStudent}
           isFullScreen
           setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
-          selectHandler={selectHandler}
+          selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
+          noStudentSelected={noStudentSelected}
         />
       </FullScreenDisplay>
     </PageContentsBox>

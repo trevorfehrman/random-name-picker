@@ -7,6 +7,8 @@ import { PageContentsBox } from 'styles'
 import { Image, Box, Heading, FormControl, FormErrorMessage, FormLabel, Input, Button, Flex } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { INewStudentValues } from 'interfacesAndTypes'
+import StudentFactInput from 'components/StudentFactInput'
+import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 
 const EditStudent: React.FC = () => {
   const params: StudentParams = useParams()
@@ -34,27 +36,39 @@ const EditStudent: React.FC = () => {
   }
 
   React.useEffect(() => {
+    const resetObject: Record<string, unknown> = {}
+    studentFactInputs.forEach(studentFact => {
+      if (studentDocument?.studentFacts[studentFact.camelCase]) {
+        resetObject[studentFact.camelCase] = studentDocument?.studentFacts[studentFact.camelCase].value
+      }
+    })
+    console.log(resetObject)
     reset({
       studentName: studentDocument?.studentName,
       profilePic: studentDocument?.profilePic,
-      favoriteFood: studentDocument?.favoriteFood,
+      ...resetObject,
     })
   }, [reset, studentDocument])
 
   const updateBatch = useFirestore().batch()
 
   const submitHandler = async (values: INewStudentValues) => {
-    const { studentName, profilePic, favoriteFood } = values
+    // update the 'students' collection with a studentFacts object
+    const { studentName, profilePic } = values
+    const studentFacts = createStudentFactsObject(values)
     updateBatch.update(studentRef, {
       studentName,
       profilePic,
-      favoriteFood,
+      studentFacts,
     })
+
+    // update the 'studentsInStudentsGroup' collection with a studentFacts array (for easy random selection)
+    const studentFactsArray = Object.values(studentFacts).filter(studentFact => studentFact.value !== '')
     const snapshot = await thisStudentInStudentGroupsRef.get()
     if (snapshot.docs.length > 0) {
       snapshot.docs.forEach(doc => {
         updateBatch.update(doc.ref, {
-          studentInfo: { studentName, profilePic, favoriteFood },
+          studentInfo: { studentName, profilePic, studentFacts: studentFactsArray },
         })
       })
     }
@@ -99,23 +113,24 @@ const EditStudent: React.FC = () => {
                 <FormErrorMessage>Need more!</FormErrorMessage>
               )}
             </FormControl>
+
             <FormControl isInvalid={errors.profilePic}>
               <FormLabel htmlFor="profile-pic">Profile Pic</FormLabel>
               <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
               {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
             </FormControl>
-            <FormControl isInvalid={errors.favoriteFood}>
-              <FormLabel htmlFor="favorite-food">Favorite Food</FormLabel>
-              <Input
-                id="favorite-food"
-                name="favoriteFood"
-                placeholder="Favorite Food"
-                ref={register({ required: true })}
-              />
-              {errors.favoriteFood && errors.favoriteFood.type === 'required' && (
-                <FormErrorMessage>Oops!</FormErrorMessage>
-              )}
-            </FormControl>
+
+            {studentFactInputs.map(studentFactInput => {
+              return (
+                <StudentFactInput
+                  key={studentFactInput.camelCase}
+                  register={register}
+                  camelCase={studentFactInput.camelCase}
+                  display={studentFactInput.display}
+                />
+              )
+            })}
+
             <Button marginTop=".5rem" alignSelf="flex-end" type="submit">
               Submit Changes
             </Button>
