@@ -5,11 +5,12 @@ import StudentProfile from 'components/StudentProfile'
 
 type NameDisplayFullScreenProps = {
   selectedStudent: ISelectedStudent | null
+  noStudentSelected: boolean
 }
-const NameDisplayFullScreen: React.FC<NameDisplayFullScreenProps> = ({ selectedStudent }) => {
+const NameDisplayFullScreen: React.FC<NameDisplayFullScreenProps> = ({ selectedStudent, noStudentSelected }) => {
   return (
     <Flex w="100%" justify="center" align="center" height="100%">
-      {selectedStudent === null ? (
+      {selectedStudent === null || noStudentSelected ? (
         <Heading as="h3" fontSize="1.5rem">
           {'click to select'}
         </Heading>

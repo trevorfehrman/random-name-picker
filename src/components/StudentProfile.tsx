@@ -5,7 +5,6 @@ import { ISelectedStudent } from 'interfacesAndTypes'
 type StudentProfileProps = {
   selectedStudent: ISelectedStudent
 }
-
 const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
   return (
     <Flex

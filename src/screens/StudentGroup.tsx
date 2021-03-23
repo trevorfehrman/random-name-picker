@@ -3,7 +3,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import { Button, Flex, useDisclosure, Icon } from '@chakra-ui/react'
-import { IStudentGroup, IStudent, IStudentInStudentGroup, ISelectedStudent, GroupParams } from 'interfacesAndTypes'
+import { IStudentGroup, IStudent, IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import { PageContentsBox } from 'styles'
@@ -17,8 +17,8 @@ import { selectStudentFactAndRepopulateArrayIfLast } from 'helpers/student-group
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
+  const [noStudentSelected, setNoStudentSelected] = React.useState(true)
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
-  const [selectedStudent, setSelectedStudent] = React.useState<ISelectedStudent | null>(null)
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
 
   const history = useHistory()
@@ -67,17 +67,19 @@ const StudentGroup: React.FC = () => {
     if (unselected.length === 0) {
       return
     }
+
     // pick the first unselected student (the order has already been shuffled)
     const selectedStudent = unselected[0]
     // pull a studentFact at random from the studentFacts array
     const { selectedFact, studentFacts } = selectStudentFactAndRepopulateArrayIfLast(selectedStudent, studentDocuments)
     // add the selected studentFact to the student we're going to display
+    console.log(selectedFact)
     const selectedStudentToDisplay = {
       ...selectedStudent,
       studentInfo: {
         studentName: selectedStudent.studentInfo.studentName,
         profilePic: selectedStudent.studentInfo.profilePic,
-        selectedFact,
+        selectedFact: selectedFact === undefined ? null : selectedFact,
       },
     }
     // update the studentFacts on firebase with either whatever's left or a refilled array
@@ -98,7 +100,8 @@ const StudentGroup: React.FC = () => {
         })
       }
       // if all of that works update the displayed student on the front end
-      setSelectedStudent(selectedStudentToDisplay)
+      await studentGroupRef.update({ selectedStudent: selectedStudentToDisplay })
+      setNoStudentSelected(false)
     } catch (err) {
       console.log(err)
     }
@@ -132,9 +135,10 @@ const StudentGroup: React.FC = () => {
       </HeadingBoxWithBackButton>
 
       <NameDisplay
-        selectedStudent={selectedStudent}
+        selectedStudent={studentGroupDocument?.selectedStudent}
         setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
         selectHandler={selectHandler}
+        noStudentSelected={noStudentSelected}
       />
 
       <Button alignSelf="flex-end" marginBottom=".3rem" onClick={onOpen}>
@@ -170,10 +174,11 @@ const StudentGroup: React.FC = () => {
         selectHandler={selectHandler}
       >
         <NameDisplay
-          selectedStudent={selectedStudent}
+          selectedStudent={studentGroupDocument?.selectedStudent}
           isFullScreen
           setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
           selectHandler={selectHandler}
+          noStudentSelected={noStudentSelected}
         />
       </FullScreenDisplay>
     </PageContentsBox>

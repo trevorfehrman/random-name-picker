@@ -1,7 +1,7 @@
 export interface IStudentGroup {
   docId: string
   studentGroupName: string
-  students: IStudent[]
+  selectedStudent: ISelectedStudent
 }
 
 export interface IStudent {
@@ -79,4 +79,5 @@ export type NameDisplayProps = {
   isFullScreen?: boolean
   setFullScreenDisplayIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   selectHandler: () => void
+  noStudentSelected: boolean
 }
