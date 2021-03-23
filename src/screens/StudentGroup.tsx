@@ -12,7 +12,7 @@ import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
 import { BiUserPlus } from 'react-icons/bi'
-import { selectStudentFactAndRepopulateArrayIfLast } from 'helpers/student-group-helpers'
+import { addSelectedStudentFactAndRefillStudentFactsIfEmpty } from 'helpers/student-group-helpers'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -63,44 +63,30 @@ const StudentGroup: React.FC = () => {
     history.push('/')
   }
 
-  const selectHandler = async () => {
+  const selectStudentAndStudentFactHandler = async () => {
     if (unselected.length === 0) {
       return
     }
-
-    // pick the first unselected student (the order has already been shuffled)
     const selectedStudent = unselected[0]
-    // pull a studentFact at random from the studentFacts array
-    const { selectedFact, studentFacts } = selectStudentFactAndRepopulateArrayIfLast(selectedStudent, studentDocuments)
-    // add the selected studentFact to the student we're going to display
-    console.log(selectedFact)
-    const selectedStudentToDisplay = {
-      ...selectedStudent,
-      studentInfo: {
-        studentName: selectedStudent.studentInfo.studentName,
-        profilePic: selectedStudent.studentInfo.profilePic,
-        selectedFact: selectedFact === undefined ? null : selectedFact,
-      },
-    }
-    // update the studentFacts on firebase with either whatever's left or a refilled array
+    const { selectedStudentWithStudentFact, updatedStudentFacts } = addSelectedStudentFactAndRefillStudentFactsIfEmpty(
+      selectedStudent,
+      studentDocuments,
+    )
     try {
       await studentsInStudentGroupsRef.doc(selectedStudent.docId).update({
         studentInfo: {
           ...selectedStudent.studentInfo,
-          studentFacts,
+          studentFacts: updatedStudentFacts,
         },
       })
-      // if we're selecting the last student in the list, refresh all of the studentsInThisStudentGroup's selected status
       if (unselected.length <= 1) {
-        await resetSelectedStatus()
+        await resetSelectedStatusOnStudents()
       } else {
-        // or just update this student's status
         await studentsInStudentGroupsRef.doc(selectedStudent.docId).update({
           selected: true,
         })
       }
-      // if all of that works update the displayed student on the front end
-      await studentGroupRef.update({ selectedStudent: selectedStudentToDisplay })
+      await studentGroupRef.update({ selectedStudent: selectedStudentWithStudentFact })
       setNoStudentSelected(false)
     } catch (err) {
       console.log(err)
@@ -109,7 +95,7 @@ const StudentGroup: React.FC = () => {
 
   const updateBatch = useFirestore().batch()
 
-  const resetSelectedStatus = () => {
+  const resetSelectedStatusOnStudents = () => {
     const orderArray: number[] = []
     for (let i = 0; i <= studentsInThisStudentGroupDocuments.length; i++) {
       orderArray[i] = i
@@ -137,7 +123,7 @@ const StudentGroup: React.FC = () => {
       <NameDisplay
         selectedStudent={studentGroupDocument?.selectedStudent}
         setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
-        selectHandler={selectHandler}
+        selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
         noStudentSelected={noStudentSelected}
       />
 
@@ -171,13 +157,13 @@ const StudentGroup: React.FC = () => {
         modalHeadingText="FullScreenMode"
         onClose={() => setFullScreenDisplayIsOpen(false)}
         isOpen={fullScreenDisplayIsOpen}
-        selectHandler={selectHandler}
+        selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
       >
         <NameDisplay
           selectedStudent={studentGroupDocument?.selectedStudent}
           isFullScreen
           setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
-          selectHandler={selectHandler}
+          selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
           noStudentSelected={noStudentSelected}
         />
       </FullScreenDisplay>

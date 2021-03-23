@@ -65,7 +65,7 @@ export interface ISelectedStudent {
 interface ISelectedStudentInfo {
   studentName: string
   profilePic: string
-  selectedFact: IStudentFact
+  selectedFact: IStudentFact | null
 }
 
 interface IStudentInfo {
@@ -78,6 +78,6 @@ export type NameDisplayProps = {
   selectedStudent: ISelectedStudent | null
   isFullScreen?: boolean
   setFullScreenDisplayIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-  selectHandler: () => void
+  selectStudentAndStudentFactHandler: () => void
   noStudentSelected: boolean
 }

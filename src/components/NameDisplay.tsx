@@ -7,7 +7,7 @@ const NameDisplay: React.FC<NameDisplayProps> = ({
   selectedStudent,
   isFullScreen,
   setFullScreenDisplayIsOpen,
-  selectHandler,
+  selectStudentAndStudentFactHandler,
   noStudentSelected,
 }) => {
   return (
@@ -18,7 +18,7 @@ const NameDisplay: React.FC<NameDisplayProps> = ({
         <NameDisplayRegular
           selectedStudent={selectedStudent}
           setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
-          selectHandler={selectHandler}
+          selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
           noStudentSelected={noStudentSelected}
         />
       )}

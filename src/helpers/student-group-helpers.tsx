@@ -1,4 +1,4 @@
-import { IStudent, IStudentInStudentGroup, IStudentFact } from 'interfacesAndTypes'
+import { IStudent, IStudentInStudentGroup, IStudentFact, ISelectedStudent } from 'interfacesAndTypes'
 
 const resetStudentFacts: (selectedStudent: IStudentInStudentGroup, studentDocuments: IStudent[]) => IStudentFact[] = (
   selectedStudent: IStudentInStudentGroup,
@@ -10,18 +10,33 @@ const resetStudentFacts: (selectedStudent: IStudentInStudentGroup, studentDocume
   return Object.values(studentFactsReset).filter(studentFact => studentFact.value !== '')
 }
 
-export const selectStudentFactAndRepopulateArrayIfLast: (
+export const addSelectedStudentFactAndRefillStudentFactsIfEmpty: (
   selectedStudent: IStudentInStudentGroup,
   studentDocuments: IStudent[],
-) => { studentFacts: IStudentFact[]; selectedFact: IStudentFact } = (
+) => { updatedStudentFacts: IStudentFact[]; selectedStudentWithStudentFact: ISelectedStudent } = (
   selectedStudent: IStudentInStudentGroup,
   studentDocuments: IStudent[],
 ) => {
-  let studentFacts = [...selectedStudent.studentInfo.studentFacts]
-  const randomIndex = Math.floor(Math.random() * studentFacts.length)
-  const selectedFact = studentFacts.splice(randomIndex, 1)[0]
-  if (studentFacts.length === 0) {
-    studentFacts = resetStudentFacts(selectedStudent, studentDocuments)
+  let updatedStudentFacts = [...selectedStudent.studentInfo.studentFacts]
+  const randomIndex = Math.floor(Math.random() * updatedStudentFacts.length)
+  const selectedFact = updatedStudentFacts.splice(randomIndex, 1)[0]
+  if (updatedStudentFacts.length === 0) {
+    updatedStudentFacts = resetStudentFacts(selectedStudent, studentDocuments)
   }
-  return { studentFacts, selectedFact }
+  const selectedStudentWithStudentFact = updateSelectedStudentObject(selectedStudent, selectedFact)
+  return { updatedStudentFacts, selectedStudentWithStudentFact }
+}
+
+const updateSelectedStudentObject: (
+  selectedStudent: IStudentInStudentGroup,
+  selectedFact: IStudentFact,
+) => ISelectedStudent = (selectedStudent, selectedFact) => {
+  const selectedStudentWithStudentFact = {
+    ...selectedStudent,
+    studentInfo: {
+      ...selectedStudent.studentInfo,
+      selectedFact: selectedFact === undefined ? null : selectedFact,
+    },
+  }
+  return selectedStudentWithStudentFact
 }
