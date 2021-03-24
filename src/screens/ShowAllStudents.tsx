@@ -39,9 +39,7 @@ const ShowAllStudents: React.FC = () => {
       </HeadingBoxWithBackButton>
       <Box w="100%" margin="1rem 0">
         {studentsInThisStudentGroupDocuments?.map(doc => {
-          return (
-            <StudentInGroup selected={doc.selected} key={doc.docId} student={doc} studentInStudentGroupId={doc.docId} />
-          )
+          return <div key={doc.docId}>helo</div>
         })}
       </Box>
     </PageContentsBox>
