@@ -5,7 +5,6 @@ import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 import { IStudent } from 'interfacesAndTypes'
 import Student from 'components/Student'
 import { PageContentsBox } from 'styles'
-import Header from 'components/Header'
 import CreateNewStudentModal from 'components/CreateNewStudentModal'
 
 const ManageStudents: React.FC = () => {
@@ -21,8 +20,13 @@ const ManageStudents: React.FC = () => {
 
   return (
     <PageContentsBox>
-      <Header />
-      <Heading as="h1" margin=".5rem 0 2rem 0" letterSpacing="wide" color="blue.800" fontWeight="500">
+      <Heading
+        as="h1"
+        margin="1.5rem 0 2rem 0"
+        letterSpacing="wide"
+        color="var(--main-color-very-dark)"
+        fontWeight="500"
+      >
         Manage Students
       </Heading>
       <Flex width="100%" minHeight="6rem" flexDirection="column">

@@ -8,11 +8,11 @@ export const StudentInGroupContainer = styled(motion.div)`
   align-items: center;
   justify-content: space-between;
   padding-left: 1rem;
-  border: 1px solid #535353;
+  border: 1px solid var(--grey-dark);
   border-radius: 5px;
   width: 100%;
   margin-top: 3px;
-  color: #2a4365;
+  color: var(--main-color-very-dark);
 `
 
 export const StudentContainer = styled(motion.div)`
@@ -20,16 +20,16 @@ export const StudentContainer = styled(motion.div)`
   align-items: center;
   justify-content: space-between;
   padding-left: 1rem;
-  border: 1px solid #535353;
+  border: 1px solid var(--grey-dark);
   border-radius: 5px;
   width: 100%;
   margin-top: 3px;
-  color: #2a4365;
+  color: var(--main-color-very-dark);
   transition: all 0.3s ease-in;
   &:hover {
     cursor: pointer;
     transform: translateY(-0.2rem);
-    background-color: #bee3f8;
+    background-color: var(--main-color-very-light);
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.6);
   }
 `
@@ -41,19 +41,19 @@ export const FormBox = styled.div`
 `
 
 export const PageContentsBox = styled.div`
-  color: #535353;
+  color: var(--grey-dark);
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   overflow: auto;
-  padding: 2rem 1.5rem;
+  padding: 1rem;
 `
 
 export const NameDisplayBox = styled.div`
   display: flex;
   width: 100%;
-  border: 1px solid black;
+  border: 1px solid var(--grey-dark);
   padding: 1.5rem;
   min-height: 32rem;
   position: relative;

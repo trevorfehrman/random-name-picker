@@ -35,7 +35,7 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, selectedStuden
   }
 
   return (
-    <StudentInGroupContainer layout style={{ backgroundColor: student.selected ? '#90CDF4' : '' }}>
+    <StudentInGroupContainer layout style={{ backgroundColor: student.selected ? 'var(--main-color-light)' : '' }}>
       <Flex w="70%">
         <Icon as={BiUser} fontSize="1.5rem" marginRight=".5rem" />
         <Heading as="h3" size="md">
@@ -45,7 +45,7 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, selectedStuden
 
       <Flex justify="space-between" alignItems="center">
         {student.order < 0 && !student.selected ? (
-          <Heading color="blue.500" as="h4" size="xs">
+          <Heading color="var(--main-color-medium)" as="h4" size="xs">
             Recently Added
           </Heading>
         ) : null}

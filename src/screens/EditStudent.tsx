@@ -90,7 +90,7 @@ const EditStudent: React.FC = () => {
           <Image
             w="75%"
             margin="2rem auto"
-            border="1px solid #535353"
+            border="1px solid var(--grey-dark)"
             borderRadius="3px"
             boxShadow="2px 4px 6px"
             src={studentDocument?.profilePic}
