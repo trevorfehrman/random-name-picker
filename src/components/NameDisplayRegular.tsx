@@ -19,7 +19,7 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
   return (
     <NameDisplayBox onClick={selectStudentAndStudentFactHandler}>
       {selectedStudent === null || noStudentSelected ? (
-        <Heading as="h3" fontSize="1.2rem" color="gray.700" fontWeight="400">
+        <Heading as="h3" fontSize="1.2rem" color="var(--grey-dark)" fontWeight="400">
           {'click here to select'}
         </Heading>
       ) : (
@@ -36,7 +36,7 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
         right=".2rem"
         bottom=".2rem"
         size="sm"
-        border="1px solid black"
+        border="1px solid var(--grey-dark)"
       />
       {/* <Heading as="h6" size="sm" position="absolute" bottom={0}>
         -click this box to select-

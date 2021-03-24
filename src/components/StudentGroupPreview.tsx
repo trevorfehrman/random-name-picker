@@ -15,7 +15,7 @@ const ButtonDiv = styled.div`
 `
 
 const StudentGroupContainer = styled.div`
-  border: 1px solid black;
+  border: 1px solid var(--grey-dark);
   border-radius: 5px;
   width: 100%;
   margin: 0.7rem 0;
@@ -27,12 +27,12 @@ const StudentGroupContainer = styled.div`
   box-sizing: border-box;
   &:hover {
     cursor: pointer;
-    background-color: #dbedf8;
+    background-color: var(--main-color-very-light);
     transform: translateY(-0.2rem);
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   }
   &:active {
-    background-color: #bee3f8;
+    background-color: var(--main-color-light);
     transform: translateY(-0.1rem);
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.7);
   }
@@ -95,12 +95,12 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
     <>
       <StudentGroupContainer onClick={openStudentGroupHandler}>
         <Flex justify="flex-start" alignItems="center">
-          <Icon as={BiGroup} fontSize="2rem" margin="0 1rem 0 .5rem" color="blue.800" />
+          <Icon as={BiGroup} fontSize="2rem" margin="0 1rem 0 .5rem" color="var(--main-color-very-dark)" />
           <Flex direction="column">
-            <Heading as="h2" size="md" color="blue.800">
+            <Heading as="h2" size="md" color="var(--main-color-very-dark)">
               {studentGroupName}
             </Heading>
-            <Heading as="h2" size="md" color="blue.500">
+            <Heading as="h2" size="md" color="var(--main-color-medium)">
               {studentsInStudentGroupsDocuments?.length}{' '}
               {studentsInStudentGroupsDocuments?.length === 1 ? 'student' : 'students'}
             </Heading>
