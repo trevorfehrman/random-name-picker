@@ -24,6 +24,7 @@ const StudentGroupContainer = styled.div`
   align-items: center;
   transition: all 0.3s;
   padding: 0.8rem;
+  box-sizing: border-box;
   &:hover {
     cursor: pointer;
     background-color: #dbedf8;

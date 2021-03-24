@@ -7,16 +7,20 @@ import StudentGroup from 'screens/StudentGroup'
 import ShowAllStudents from 'screens/ShowAllStudents'
 import ManageStudents from 'screens/ManageStudents'
 import EditStudent from 'screens/EditStudent'
+import Header from 'components/Header'
 
 const AuthenticatedApp: React.FC = () => {
   return (
-    <Switch>
-      <Route path="/" exact component={StudentGroups} />
-      <Route path="/student-group/:groupId" component={StudentGroup} />
-      <Route path="/show-all-students/:groupId" component={ShowAllStudents} />
-      <Route path="/manage-students" component={ManageStudents} />
-      <Route path="/edit-student/:studentId" component={EditStudent} />
-    </Switch>
+    <>
+      <Header />
+      <Switch>
+        <Route path="/" exact component={StudentGroups} />
+        <Route path="/student-group/:groupId" component={StudentGroup} />
+        <Route path="/show-all-students/:groupId" component={ShowAllStudents} />
+        <Route path="/manage-students" component={ManageStudents} />
+        <Route path="/edit-student/:studentId" component={EditStudent} />
+      </Switch>
+    </>
   )
 }
 

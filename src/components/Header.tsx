@@ -4,22 +4,21 @@ import { NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
 
 const ListItemStyled = styled(ListItem)`
-color: #2A4365;
-margin-left: 1rem; 
-:hover { color: #2B6CB0 }}
+  color: #ffffff;
+  margin-left: 1rem;
 `
 
 const Header: React.FC = () => {
   const activeStyle = {
-    borderBottom: '1px solid #2B6CB0',
-    color: '#2B6CB0',
+    borderBottom: '1px solid white',
+    color: 'white',
     fontSize: '1.1rem',
   }
 
   return (
-    <List display="flex" justifyContent="flex-end" width="100%">
+    <List display="flex" justifyContent="flex-end" width="100%" backgroundColor="blue.500" padding="1rem">
       <ListItemStyled>
-        <NavLink to="/" exact activeStyle={activeStyle} color="#63B3ED">
+        <NavLink to="/" exact activeStyle={activeStyle}>
           Groups
         </NavLink>
       </ListItemStyled>

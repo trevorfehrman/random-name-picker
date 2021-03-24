@@ -47,7 +47,7 @@ export const PageContentsBox = styled.div`
   align-items: center;
   width: 100%;
   overflow: auto;
-  padding: 2rem 1.5rem;
+  padding: 1rem;
 `
 
 export const NameDisplayBox = styled.div`
