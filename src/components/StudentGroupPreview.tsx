@@ -6,8 +6,9 @@ import styled from '@emotion/styled'
 import { useHistory } from 'react-router-dom'
 
 import 'firebase/firestore'
-import { useFirestore } from 'reactfire'
+import { useFirestore, useFirestoreCollectionData } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
+import { IStudentInStudentGroup } from 'interfacesAndTypes'
 
 const ButtonDiv = styled.div`
   display: flex;
@@ -17,14 +18,15 @@ const StudentGroupContainer = styled.div`
   border: 1px solid black;
   border-radius: 5px;
   width: 100%;
-  margin: 0.2rem 0;
+  margin: 0.7rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s;
+  padding: 0.8rem;
   &:hover {
     cursor: pointer;
-    background-color: #bee3f8;
+    background-color: #dbedf8;
     transform: translateY(-0.2rem);
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
   }
@@ -54,6 +56,11 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
     .collection('studentsInStudentGroups')
     .where('studentGroupId', '==', studentGroupId)
 
+  const studentsInStudentGroupsDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
+    studentsInStudentGroupsRef,
+    { idField: 'docId' },
+  ).data
+
   const history = useHistory()
 
   const openStudentGroupHandler = () => {
@@ -76,6 +83,8 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
       .catch(err => console.log(err))
   }
 
+  console.log(studentsInStudentGroupsDocuments)
+
   const openHandler = (event: React.SyntheticEvent) => {
     event?.stopPropagation()
     onOpen()
@@ -85,10 +94,16 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
     <>
       <StudentGroupContainer onClick={openStudentGroupHandler}>
         <Flex justify="flex-start" alignItems="center">
-          <Icon as={BiGroup} fontSize="2rem" margin="0 .5rem" color="blue.800" />
-          <Heading as="h2" size="md" color="blue.800">
-            {studentGroupName}
-          </Heading>
+          <Icon as={BiGroup} fontSize="2rem" margin="0 1rem 0 .5rem" color="blue.800" />
+          <Flex direction="column">
+            <Heading as="h2" size="md" color="blue.800">
+              {studentGroupName}
+            </Heading>
+            <Heading as="h2" size="md" color="blue.500">
+              {studentsInStudentGroupsDocuments?.length}{' '}
+              {studentsInStudentGroupsDocuments?.length === 1 ? 'student' : 'students'}
+            </Heading>
+          </Flex>
         </Flex>
 
         <ButtonDiv>
