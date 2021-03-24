@@ -12,21 +12,15 @@ const StudentBox = styled.div`
 type StudentListProps = {
   studentsInThisStudentGroup: IStudentInStudentGroup[]
   studentGroupId: string
+  selectedStudentId: string
 }
 
-const StudentList: React.FC<StudentListProps> = ({ studentsInThisStudentGroup }) => {
+const StudentList: React.FC<StudentListProps> = ({ studentsInThisStudentGroup, selectedStudentId }) => {
   return (
     <Box width="100%">
       <StudentBox>
         {studentsInThisStudentGroup?.map(doc => {
-          return (
-            <StudentInGroup
-              key={doc.studentId}
-              student={doc}
-              studentInStudentGroupId={doc.docId}
-              selected={doc.selected}
-            />
-          )
+          return <StudentInGroup key={doc.studentId} student={doc} selectedStudentId={selectedStudentId} />
         })}
       </StudentBox>
     </Box>

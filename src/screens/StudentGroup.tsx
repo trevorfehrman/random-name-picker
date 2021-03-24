@@ -128,6 +128,7 @@ const StudentGroup: React.FC = () => {
             return +a.selected - +b.selected
           })}
         studentGroupId={studentGroupId}
+        selectedStudentId={studentGroupDocument?.selectedStudent?.studentId}
       />
 
       <AddExistingStudentsModal
