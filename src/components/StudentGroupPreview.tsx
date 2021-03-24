@@ -8,7 +8,6 @@ import { useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore, useFirestoreCollectionData } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
-import { IStudentInStudentGroup } from 'interfacesAndTypes'
 
 const ButtonDiv = styled.div`
   display: flex;
@@ -24,7 +23,6 @@ const StudentGroupContainer = styled.div`
   align-items: center;
   transition: all 0.3s;
   padding: 0.8rem;
-  box-sizing: border-box;
   &:hover {
     cursor: pointer;
     background-color: var(--main-color-very-light);
@@ -57,10 +55,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
     .collection('studentsInStudentGroups')
     .where('studentGroupId', '==', studentGroupId)
 
-  const studentsInStudentGroupsDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
-    studentsInStudentGroupsRef,
-    { idField: 'docId' },
-  ).data
+  const studentsInStudentGroupsDocuments = useFirestoreCollectionData(studentsInStudentGroupsRef).data
 
   const history = useHistory()
 
@@ -83,8 +78,6 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
       })
       .catch(err => console.log(err))
   }
-
-  console.log(studentsInStudentGroupsDocuments)
 
   const openHandler = (event: React.SyntheticEvent) => {
     event?.stopPropagation()
