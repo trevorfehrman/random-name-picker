@@ -1,9 +1,10 @@
 import React from 'react'
-import { FormLabel, Input, Button } from '@chakra-ui/react'
+import { FormLabel, Input } from '@chakra-ui/react'
 import firebase from 'firebase'
 import { useHistory } from 'react-router-dom'
 import { FormBox } from 'styles'
 import styled from '@emotion/styled'
+import SubmitButton from './UI/SubmitButton'
 
 type NewStudentGroupProps = {
   onClose: () => void
@@ -45,9 +46,7 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef, onC
           id="studentGroupName"
           isRequired
         ></Input>
-        <Button colorScheme="blue" alignSelf="flex-end" type="submit" marginTop=".5rem">
-          Create
-        </Button>
+        <SubmitButton text="create" />
       </NewStudentGroupForm>
     </FormBox>
   )

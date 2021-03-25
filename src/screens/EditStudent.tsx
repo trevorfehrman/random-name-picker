@@ -3,12 +3,13 @@ import { useFirestore, useUser, useFirestoreDocData } from 'reactfire'
 import { useParams, useHistory } from 'react-router-dom'
 import { StudentParams, IStudent } from 'interfacesAndTypes'
 import HeaderWithBackButton from 'components/HeadingBoxWithBackButton'
-import { PageContentsBox } from 'styles'
-import { Image, Box, Heading, FormControl, FormErrorMessage, FormLabel, Input, Button, Flex } from '@chakra-ui/react'
+import { FormBox, FormControlWithMargin, PageContentsBox } from 'styles'
+import { Image, Box, Heading, FormControl, FormErrorMessage, FormLabel, Input, Flex } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { INewStudentValues } from 'interfacesAndTypes'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'
+import SubmitButton from 'components/UI/SubmitButton'
 
 const EditStudent: React.FC = () => {
   const params: StudentParams = useParams()
@@ -88,7 +89,9 @@ const EditStudent: React.FC = () => {
       <Box>
         <Box>
           <Image
-            w="75%"
+            w="18rem"
+            h="18rem"
+            fit="cover"
             margin="2rem auto"
             border="1px solid var(--grey-dark)"
             borderRadius="3px"
@@ -96,46 +99,53 @@ const EditStudent: React.FC = () => {
             src={studentDocument?.profilePic}
           ></Image>
         </Box>
-        <form onSubmit={handleSubmit(submitHandler)}>
-          <Flex direction="column" justify="center" alignItems="center">
-            <FormControl isInvalid={errors.name}>
-              <FormLabel htmlFor="studentName">Name</FormLabel>
-              <Input
-                id="studentName"
-                name="studentName"
-                placeholder="Student Name"
-                ref={register({ minLength: 5, required: true })}
-              />
-              {errors.studentName && errors.studentName.type === 'required' && (
-                <FormErrorMessage>Oops!</FormErrorMessage>
-              )}
-              {errors.studentName && errors.studentName.type === 'minLength' && (
-                <FormErrorMessage>Need more!</FormErrorMessage>
-              )}
-            </FormControl>
-
-            <FormControl isInvalid={errors.profilePic}>
-              <FormLabel htmlFor="profile-pic">Profile Pic</FormLabel>
-              <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
-              {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
-            </FormControl>
-
-            {studentFactInputs.map(studentFactInput => {
-              return (
-                <StudentFactInput
-                  key={studentFactInput.camelCase}
-                  register={register}
-                  camelCase={studentFactInput.camelCase}
-                  display={studentFactInput.display}
+        <FormBox>
+          <form onSubmit={handleSubmit(submitHandler)}>
+            <Flex direction="column" justify="center" alignItems="center" _notLast={{ marginBottom: '1rem' }}>
+              <FormControlWithMargin isInvalid={errors.name}>
+                <FormLabel htmlFor="studentName">Name</FormLabel>
+                <Input
+                  id="studentName"
+                  name="studentName"
+                  placeholder="Student Name"
+                  ref={register({ minLength: 5, required: true })}
                 />
-              )
-            })}
+                {errors.studentName && errors.studentName.type === 'required' && (
+                  <FormErrorMessage>Oops!</FormErrorMessage>
+                )}
+                {errors.studentName && errors.studentName.type === 'minLength' && (
+                  <FormErrorMessage>Need more!</FormErrorMessage>
+                )}
+              </FormControlWithMargin>
 
-            <Button marginTop=".5rem" alignSelf="flex-end" type="submit">
-              Submit Changes
-            </Button>
-          </Flex>
-        </form>
+              <FormControlWithMargin isInvalid={errors.profilePic}>
+                <FormLabel htmlFor="profile-pic">Profile Pic</FormLabel>
+                <Input
+                  id="profile-pic"
+                  name="profilePic"
+                  placeholder="Profile Pic"
+                  ref={register({ required: true })}
+                />
+                {errors.profilePic && errors.profilePic.type === 'required' && (
+                  <FormErrorMessage>Oops!</FormErrorMessage>
+                )}
+              </FormControlWithMargin>
+
+              {studentFactInputs.map(studentFactInput => {
+                return (
+                  <StudentFactInput
+                    key={studentFactInput.camelCase}
+                    register={register}
+                    camelCase={studentFactInput.camelCase}
+                    display={studentFactInput.display}
+                  />
+                )
+              })}
+
+              <SubmitButton text="Submit Changes" />
+            </Flex>
+          </form>
+        </FormBox>
       </Box>
     </PageContentsBox>
   )

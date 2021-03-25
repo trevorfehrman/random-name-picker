@@ -1,18 +1,20 @@
 import * as React from 'react'
-import { Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
+import { Flex, Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
 // import { DeleteIcon } from '@chakra-ui/icons'
 import { BiTrash } from 'react-icons/bi'
 import { useFirestore, useUser } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
 import { StudentContainer } from 'styles'
 import { useHistory } from 'react-router-dom'
+import { Image } from '@chakra-ui/react'
+import { IStudent } from 'interfacesAndTypes'
 
 type StudentProps = {
-  studentName: string
+  student: IStudent
   docId: string
 }
 
-const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
+const Student: React.FC<StudentProps> = ({ student, docId }) => {
   const { onClose, onOpen, isOpen } = useDisclosure()
 
   const { data: user } = useUser()
@@ -49,9 +51,19 @@ const Student: React.FC<StudentProps> = ({ studentName, docId }) => {
   return (
     <>
       <StudentContainer onClick={openEditStudentHandler}>
-        <Heading as="h3" size="md">
-          {studentName}
-        </Heading>
+        <Flex align="center">
+          <Image
+            src={student?.profilePic}
+            fit="cover"
+            height="3.5rem"
+            w="3.5rem"
+            borderRadius="50%"
+            marginRight="1.5rem"
+          />
+          <Heading as="h3" size="md">
+            {student?.studentName}
+          </Heading>
+        </Flex>
         <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={openModalHandler} />
       </StudentContainer>
       <ConfirmationModal

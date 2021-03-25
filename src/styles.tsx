@@ -1,7 +1,12 @@
+import { FormControl } from '@chakra-ui/form-control'
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 
 // dark grey: #474747
+
+export const FormControlWithMargin = styled(FormControl)`
+  margin-bottom: 1.5rem;
+`
 
 export const StudentInGroupContainer = styled(motion.div)`
   display: flex;
@@ -11,7 +16,7 @@ export const StudentInGroupContainer = styled(motion.div)`
   border: 1px solid var(--grey-dark);
   border-radius: 5px;
   width: 100%;
-  margin-top: 3px;
+  margin-top: 0.5rem;
   color: var(--main-color-very-dark);
 `
 
@@ -19,11 +24,11 @@ export const StudentContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 1rem;
+  padding: 0.7rem;
   border: 1px solid var(--grey-dark);
   border-radius: 5px;
   width: 100%;
-  margin-top: 3px;
+  margin: 0.7rem 0;
   color: var(--main-color-very-dark);
   transition: all 0.3s ease-in;
   &:hover {
@@ -38,6 +43,7 @@ export const FormBox = styled.div`
   width: 100%;
   max-width: 30rem;
   padding: 2rem 0;
+  color: var(--main-color-very-dark);
 `
 
 export const PageContentsBox = styled.div`
@@ -64,5 +70,8 @@ export const NameDisplayBox = styled.div`
   overflow-x: auto;
   @media (max-width: 500px) {
     min-height: 19rem;
-  } ;
+  }
+  &:hover {
+    cursor: pointer;
+  }
 `

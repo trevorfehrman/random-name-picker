@@ -106,7 +106,14 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
         <ModalHeader>Add Students</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Box border="1px solid black" maxHeight="50vh" minHeight="100px" padding="10px" overflowY="auto">
+          <Box
+            border="1px solid var(--grey-dark)"
+            borderRadius="3px"
+            maxHeight="50vh"
+            minHeight="100px"
+            padding="10px"
+            overflowY="auto"
+          >
             {studentsNotInStudentGroup?.length > 0 ? studentsNotInStudentGroup : 'All students already in group!'}
           </Box>
         </ModalBody>
@@ -115,7 +122,12 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
           <Button variant="ghost" onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue" mr={3} onClick={addExistingHandler}>
+          <Button
+            colorScheme="orange"
+            mr={3}
+            onClick={addExistingHandler}
+            isDisabled={selectedStudentsToAdd.length === 0}
+          >
             Add To Group
           </Button>
         </ModalFooter>

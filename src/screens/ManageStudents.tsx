@@ -35,7 +35,7 @@ const ManageStudents: React.FC = () => {
           New Student
         </Button>
         {allStudentsDocuments?.map(doc => {
-          return <Student key={doc.docId} studentName={doc.studentName} docId={doc.docId} />
+          return <Student key={doc.docId} student={doc} docId={doc.docId} />
         })}
       </Flex>
       <CreateNewStudentModal onClose={onClose} isOpen={isOpen} />
