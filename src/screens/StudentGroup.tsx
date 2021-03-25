@@ -101,11 +101,7 @@ const StudentGroup: React.FC = () => {
 
   return (
     <PageContentsBox>
-      <HeadingBoxWithBackButton backHandler={backHandler}>
-        <Flex justify="flex-end" alignItems="flex-start">
-          <EditableStudentGroupName studentGroupDocument={studentGroupDocument} studentGroupRef={studentGroupRef} />
-        </Flex>
-      </HeadingBoxWithBackButton>
+      <EditableStudentGroupName studentGroupDocument={studentGroupDocument} studentGroupRef={studentGroupRef} />
 
       <NameDisplay
         selectedStudent={studentGroupDocument?.selectedStudent}

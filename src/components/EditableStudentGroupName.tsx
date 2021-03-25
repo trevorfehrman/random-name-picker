@@ -10,11 +10,8 @@ type EditableStudentGroupNameProps = {
 
 const StudentGroupNameForm = styled.form`
   position: relative;
-  width: 16rem;
-  max-width: 90%;
-  text-align: right;
   display: flex;
-  justify-content: flex-end;
+  width: 100%;
 `
 
 const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
@@ -53,19 +50,19 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
   }
   return (
     <StudentGroupNameForm>
-      <FormControl isInvalid={errors.length > 0} display="flex" flexDirection="column" alignItems="flex-end">
+      <FormControl isInvalid={errors.length > 0} display="flex" flexDirection="column" alignItems="center">
         {studentGroupDocument && (
           <Editable
             defaultValue={studentGroupDocument.studentGroupName}
             placeholder="Student Group Name"
-            w="100%"
-            textAlign="right"
             color="var(--main-color-very-dark)"
             fontSize="1.2rem"
             fontWeight="bolder"
             onSubmit={submitHandler}
+            width="100%"
+            textAlign="center"
           >
-            <EditablePreview _hover={{ cursor: 'pointer' }} zIndex={1} position="relative" />
+            <EditablePreview _hover={{ cursor: 'pointer' }} zIndex={1} position="relative" color="gray.600" />
             <EditableInput />
           </Editable>
         )}

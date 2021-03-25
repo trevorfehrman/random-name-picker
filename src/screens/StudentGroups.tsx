@@ -2,21 +2,22 @@ import * as React from 'react'
 import 'firebase/firestore'
 
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
-
-import StudentGroupPreview from 'components/StudentGroupPreview'
-import { IStudentGroup } from 'interfacesAndTypes'
 import styled from '@emotion/styled'
+
+import { IStudentGroup } from 'interfacesAndTypes'
 import { PageContentsBox } from 'styles'
-import { Button, Heading, useDisclosure } from '@chakra-ui/react'
+
+import { useDisclosure, IconButton } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
+
 import CreateNewStudentGroupModal from 'components/CreateNewStudentGroupModal'
+import StudentGroupPreview from 'components/StudentGroupPreview'
 
 const GroupBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-height: 60%;
   overflow-y: auto;
 `
 
@@ -31,14 +32,7 @@ const StudentGroups: React.FC = () => {
   })
 
   return (
-    <PageContentsBox>
-      <Heading as="h1" margin="1rem 0 2rem 0" letterSpacing="wide" color="var(--main-color-very-dark)" fontWeight="500">
-        Manage Groups
-      </Heading>
-      <Button onClick={onOpen} alignSelf="flex-end" marginBottom=".5rem">
-        <AddIcon marginRight=".5rem" />
-        New Student Group
-      </Button>
+    <PageContentsBox style={{ position: 'relative', height: '88vh' }}>
       <GroupBox>
         {studentGroupsDocuments.data?.map(doc => {
           return (
@@ -51,6 +45,14 @@ const StudentGroups: React.FC = () => {
           )
         })}
       </GroupBox>
+      <IconButton
+        style={{ position: 'absolute', bottom: '1.5rem', right: '1.5rem' }}
+        isRound
+        size="lg"
+        aria-label="Add Group"
+        onClick={onOpen}
+        icon={<AddIcon />}
+      ></IconButton>
       <CreateNewStudentGroupModal isOpen={isOpen} onClose={onClose} />
     </PageContentsBox>
   )

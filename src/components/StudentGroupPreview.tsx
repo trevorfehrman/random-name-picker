@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Flex, Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
+import { Flex, Heading, Icon, Badge, useDisclosure } from '@chakra-ui/react'
 // import { DeleteIcon } from '@chakra-ui/icons'
 import { BiTrash, BiGroup } from 'react-icons/bi'
 import styled from '@emotion/styled'
@@ -9,12 +9,8 @@ import 'firebase/firestore'
 import { useFirestore, useFirestoreCollectionData } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
 
-const ButtonDiv = styled.div`
-  display: flex;
-`
-
 const StudentGroupContainer = styled.div`
-  border: 1px solid var(--grey-dark);
+  border: 1px solid #d6d6d6;
   border-radius: 5px;
   width: 100%;
   margin: 0.7rem 0;
@@ -25,9 +21,7 @@ const StudentGroupContainer = styled.div`
   padding: 0.8rem;
   &:hover {
     cursor: pointer;
-    background-color: var(--main-color-very-light);
-    transform: translateY(-0.2rem);
-    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
+    border-color: #00b5d8;
   }
   &:active {
     background-color: var(--main-color-light);
@@ -87,24 +81,19 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
   return (
     <>
       <StudentGroupContainer onClick={openStudentGroupHandler}>
-        <Flex justify="flex-start" alignItems="center">
-          <Icon as={BiGroup} fontSize="2rem" margin="0 1rem 0 .5rem" color="var(--main-color-very-dark)" />
-          <Flex direction="column">
-            <Heading as="h2" size="md" color="var(--main-color-very-dark)">
-              {studentGroupName}
-            </Heading>
-            <Heading as="h2" size="md" color="var(--secondary-color-medium)" opacity=".9">
+        <Flex direction="column">
+          <Heading as="h2" size="md" color="gray.600" fontSize="2rem" marginBottom="1.4rem">
+            {studentGroupName}
+          </Heading>
+          {/* <Heading as="h2" size="md" color="cyan.200" opacity=".9">
               {studentsInStudentGroupsDocuments?.length}{' '}
               {studentsInStudentGroupsDocuments?.length === 1 ? 'student' : 'students'}
-            </Heading>
-          </Flex>
+            </Heading> */}
+          <Badge variant="solid" colorScheme="cyan" padding=".3rem" alignSelf="flex-start">
+            {studentsInStudentGroupsDocuments?.length}{' '}
+            {studentsInStudentGroupsDocuments?.length === 1 ? 'student' : 'students'}
+          </Badge>
         </Flex>
-
-        <ButtonDiv>
-          <IconButton icon={<Icon as={BiTrash} />} onClick={openHandler} aria-label="delete">
-            Delete
-          </IconButton>
-        </ButtonDiv>
       </StudentGroupContainer>
       <ConfirmationModal
         buttonText="Confirm"
