@@ -93,7 +93,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
             <Heading as="h2" size="md" color="var(--main-color-very-dark)">
               {studentGroupName}
             </Heading>
-            <Heading as="h2" size="md" color="var(--main-color-medium)">
+            <Heading as="h2" size="md" color="var(--secondary-color-medium)" opacity=".9">
               {studentsInStudentGroupsDocuments?.length}{' '}
               {studentsInStudentGroupsDocuments?.length === 1 ? 'student' : 'students'}
             </Heading>

@@ -45,7 +45,7 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, selectedStuden
 
       <Flex justify="space-between" alignItems="center">
         {student.order < 0 && !student.selected ? (
-          <Heading color="var(--main-color-medium)" as="h4" size="xs">
+          <Heading color="var(--main-color-medium)" as="h4" size="xs" marginRight=".3rem">
             Recently Added
           </Heading>
         ) : null}

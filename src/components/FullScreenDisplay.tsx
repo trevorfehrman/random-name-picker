@@ -32,7 +32,7 @@ const FullScreenDisplay: React.FC<FullScreenDisplayProps> = ({
         <ModalCloseButton />
         <ModalBody onClick={selectStudentAndStudentFactHandler}>{children}</ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={onClose}>
+          <Button colorScheme="orange" mr={3} onClick={onClose}>
             Close
           </Button>
         </ModalFooter>
