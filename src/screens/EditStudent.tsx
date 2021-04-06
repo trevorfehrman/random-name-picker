@@ -4,12 +4,13 @@ import { useParams, useHistory } from 'react-router-dom'
 import { StudentParams, IStudent } from 'interfacesAndTypes'
 import HeaderWithBackButton from 'components/HeadingBoxWithBackButton'
 import { FormBox, FormControlWithMargin, PageContentsBox } from 'styles'
-import { Image, Box, Heading, FormControl, FormErrorMessage, FormLabel, Input, Flex } from '@chakra-ui/react'
+import { Image, Box, Heading, FormErrorMessage, FormLabel, Input, Flex } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { INewStudentValues } from 'interfacesAndTypes'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 import SubmitButton from 'components/UI/SubmitButton'
+import { camelCase } from 'lodash'
 
 const EditStudent: React.FC = () => {
   const params: StudentParams = useParams()
@@ -38,9 +39,10 @@ const EditStudent: React.FC = () => {
 
   React.useEffect(() => {
     const resetObject: Record<string, unknown> = {}
-    studentFactInputs.forEach(studentFact => {
-      if (studentDocument?.studentFacts[studentFact.camelCase]) {
-        resetObject[studentFact.camelCase] = studentDocument?.studentFacts[studentFact.camelCase].value
+    studentFactInputs.forEach(studentFactInput => {
+      const camelCaseStudentFactInput = camelCase(studentFactInput)
+      if (studentDocument?.studentFacts[camelCaseStudentFactInput]) {
+        resetObject[camelCaseStudentFactInput] = studentDocument?.studentFacts[camelCaseStudentFactInput].value
       }
     })
     console.log(resetObject)
@@ -133,12 +135,7 @@ const EditStudent: React.FC = () => {
 
               {studentFactInputs.map(studentFactInput => {
                 return (
-                  <StudentFactInput
-                    key={studentFactInput.camelCase}
-                    register={register}
-                    camelCase={studentFactInput.camelCase}
-                    display={studentFactInput.display}
-                  />
+                  <StudentFactInput key={studentFactInput} register={register} studentFactInput={studentFactInput} />
                 )
               })}
 

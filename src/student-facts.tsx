@@ -1,39 +1,14 @@
 import { IStudentFacts, INewStudentValues } from 'interfacesAndTypes'
+import { camelCase } from 'lodash'
 
-type IStudentFactInput = {
-  display: string
-  camelCase: string
-}
-
-export const studentFactInputs: IStudentFactInput[] = [
-  {
-    display: 'Favorite Movie',
-    camelCase: 'favoriteMovie',
-  },
-  {
-    display: 'Favorite Food',
-    camelCase: 'favoriteFood',
-  },
-  {
-    display: 'Favorite TV Show',
-    camelCase: 'favoriteTVShow',
-  },
-  {
-    display: 'Best Vacation',
-    camelCase: 'bestVacation',
-  },
-  {
-    display: 'Cutest Pet',
-    camelCase: 'cutestPet',
-  },
-  {
-    display: 'Signature Catch Phrase',
-    camelCase: 'signatureCatchPhrase',
-  },
-  {
-    display: 'Favorite Ice Cream',
-    camelCase: 'favoriteIceCream',
-  },
+export const studentFactInputs = [
+  'Favorite Movie',
+  'Favorite Food',
+  'Favorite TV Show',
+  'Best Vacation',
+  'Cutest Pet',
+  'Signature Catch Phrase',
+  'Favorite Ice Cream',
 ]
 
 export const createStudentFactsObject: (values: INewStudentValues) => IStudentFacts = (values: INewStudentValues) => {
@@ -44,10 +19,11 @@ export const createStudentFactsObject: (values: INewStudentValues) => IStudentFa
   //      title: "Favorite Food",
   //   }
   // and push that value into the studentFacts object
-  studentFactInputs.forEach(studentFact => {
-    studentFacts[studentFact.camelCase] = {
-      value: values[studentFact.camelCase],
-      title: studentFact.display,
+  studentFactInputs.forEach(studentFactInput => {
+    const camelCaseStudentFactInput = camelCase(studentFactInput)
+    studentFacts[camelCaseStudentFactInput] = {
+      value: values[camelCaseStudentFactInput],
+      title: studentFactInput,
     }
   })
   return studentFacts

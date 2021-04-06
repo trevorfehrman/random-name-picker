@@ -1,21 +1,28 @@
 import * as React from 'react'
 import { FormLabel, Input } from '@chakra-ui/react'
 import { FormControlWithMargin } from 'styles'
+import { camelCase } from 'lodash'
 
 type StudentFactInputProps = {
   // the type described in the error for register was so long it wasn't even all displayed
   /* eslint-disable  @typescript-eslint/no-explicit-any */
   register: any
-  camelCase: string
-  display: string
+  studentFactInput: string
 }
 
-const StudentFactInput: React.FC<StudentFactInputProps> = ({ register, camelCase, display }) => {
+const StudentFactInput: React.FC<StudentFactInputProps> = ({ register, studentFactInput }) => {
+  const camelCaseStudentFactInput = camelCase(studentFactInput)
+
   return (
     <>
       <FormControlWithMargin>
-        <FormLabel htmlFor={camelCase}>{display}</FormLabel>
-        <Input id={camelCase} name={camelCase} placeholder={display} ref={register} />
+        <FormLabel htmlFor={camelCaseStudentFactInput}>{studentFactInput}</FormLabel>
+        <Input
+          id={camelCaseStudentFactInput}
+          name={camelCaseStudentFactInput}
+          placeholder={studentFactInput}
+          ref={register}
+        />
       </FormControlWithMargin>
     </>
   )

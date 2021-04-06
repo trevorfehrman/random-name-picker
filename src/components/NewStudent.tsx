@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Flex, Input, FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
+import { Flex, Input, FormErrorMessage, FormLabel } from '@chakra-ui/react'
 import { FormBox, FormControlWithMargin } from 'styles'
 import firebase from 'firebase'
 import { useForm } from 'react-hook-form'
@@ -56,14 +56,7 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
           </FormControlWithMargin>
 
           {studentFactInputs.map(studentFactInput => {
-            return (
-              <StudentFactInput
-                key={studentFactInput.camelCase}
-                register={register}
-                camelCase={studentFactInput.camelCase}
-                display={studentFactInput.display}
-              />
-            )
+            return <StudentFactInput key={studentFactInput} register={register} studentFactInput={studentFactInput} />
           })}
 
           <SubmitButton text="Submit" />
