@@ -1,16 +1,15 @@
 import * as React from 'react'
 import { useFirestore, useUser, useFirestoreDocData } from 'reactfire'
 import { useParams, useHistory } from 'react-router-dom'
-import { StudentParams, IStudent } from 'interfacesAndTypes'
 import HeaderWithBackButton from 'components/HeadingBoxWithBackButton'
-import { FormBox, FormControlWithMargin, PageContentsBox } from 'styles'
 import { Image, Box, Heading, FormErrorMessage, FormLabel, Input, Flex } from '@chakra-ui/react'
+import { camelCase } from 'lodash'
 import { useForm } from 'react-hook-form'
-import { INewStudentValues } from 'interfacesAndTypes'
+import { INewStudentValues, StudentParams, IStudent } from 'interfacesAndTypes'
+import { FormBox, FormControlWithMargin, PageContentsBox } from 'styles'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 import SubmitButton from 'components/UI/SubmitButton'
-import { camelCase } from 'lodash'
 
 const EditStudent: React.FC = () => {
   const params: StudentParams = useParams()
