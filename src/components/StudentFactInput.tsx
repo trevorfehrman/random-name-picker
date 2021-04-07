@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { FormLabel, Input } from '@chakra-ui/react'
 import { FormControlWithMargin } from 'styles'
-import { camelCase } from 'lodash'
 
 type StudentFactInputProps = {
   // the type described in the error for register was so long it wasn't even all displayed
@@ -11,18 +10,13 @@ type StudentFactInputProps = {
 }
 
 const StudentFactInput: React.FC<StudentFactInputProps> = ({ register, studentFactInput }) => {
-  const camelCaseStudentFactInput = camelCase(studentFactInput)
+  // const camelCaseStudentFactInput = camelCase(studentFactInput)
 
   return (
     <>
       <FormControlWithMargin>
-        <FormLabel htmlFor={camelCaseStudentFactInput}>{studentFactInput}</FormLabel>
-        <Input
-          id={camelCaseStudentFactInput}
-          name={camelCaseStudentFactInput}
-          placeholder={studentFactInput}
-          ref={register}
-        />
+        <FormLabel htmlFor={studentFactInput}>{studentFactInput}</FormLabel>
+        <Input id={studentFactInput} name={studentFactInput} placeholder={studentFactInput} ref={register} />
       </FormControlWithMargin>
     </>
   )

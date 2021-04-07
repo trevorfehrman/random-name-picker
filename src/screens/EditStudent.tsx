@@ -41,7 +41,7 @@ const EditStudent: React.FC = () => {
     studentFactInputs.forEach(studentFactInput => {
       const camelCaseStudentFactInput = camelCase(studentFactInput)
       if (studentDocument?.studentFacts[camelCaseStudentFactInput]) {
-        resetObject[camelCaseStudentFactInput] = studentDocument?.studentFacts[camelCaseStudentFactInput].value
+        resetObject[studentFactInput] = studentDocument?.studentFacts[camelCaseStudentFactInput].value
       }
     })
     console.log(resetObject)

@@ -22,7 +22,7 @@ export const createStudentFactsObject: (values: INewStudentValues) => IStudentFa
   studentFactInputs.forEach(studentFactInput => {
     const camelCaseStudentFactInput = camelCase(studentFactInput)
     studentFacts[camelCaseStudentFactInput] = {
-      value: values[camelCaseStudentFactInput],
+      value: values[studentFactInput],
       title: studentFactInput,
     }
   })
