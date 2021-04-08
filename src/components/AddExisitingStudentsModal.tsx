@@ -10,7 +10,7 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import { IStudent, IStudentInStudentGroup, IStudentGroup, IStudentToAdd } from 'interfacesAndTypes'
+import { IStudent, IStudentInStudentGroup, IStudentGroup, IStudentToAdd, IStudentFact } from 'interfacesAndTypes'
 import StudentPreview from 'components/StudentPreview'
 import firebase from 'firebase'
 import { useFirestore } from 'reactfire'
@@ -51,8 +51,12 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
     let lowestOrderNumber = findLowestOrderNumber()
     selectedStudentsToAdd.forEach(student => {
       const newStudentInStudentGroupRef = studentsInStudentGroupsRef.doc()
-      const studentFacts = Object.values(student.studentFacts).filter(studentFact => {
-        return studentFact.value !== ''
+      const studentFacts: IStudentFact[] = []
+      Object.keys(student.studentFacts).forEach(key => {
+        if (student.studentFacts[key] !== '') {
+          studentFacts.push({ title: key, value: student.studentFacts[key] })
+        }
+        return studentFacts
       })
       addBatch.set(newStudentInStudentGroupRef, {
         studentInfo: {

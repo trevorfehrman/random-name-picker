@@ -3,7 +3,6 @@ import { useFirestore, useUser, useFirestoreDocData } from 'reactfire'
 import { useParams, useHistory } from 'react-router-dom'
 import HeaderWithBackButton from 'components/HeadingBoxWithBackButton'
 import { Image, Box, Heading, FormErrorMessage, FormLabel, Input, Flex } from '@chakra-ui/react'
-import { camelCase } from 'lodash'
 import { useForm } from 'react-hook-form'
 import { INewStudentValues, StudentParams, IStudent } from 'interfacesAndTypes'
 import { FormBox, FormControlWithMargin, PageContentsBox } from 'styles'
@@ -39,9 +38,8 @@ const EditStudent: React.FC = () => {
   React.useEffect(() => {
     const resetObject: Record<string, unknown> = {}
     studentFactInputs.forEach(studentFactInput => {
-      const camelCaseStudentFactInput = camelCase(studentFactInput)
-      if (studentDocument?.studentFacts[camelCaseStudentFactInput]) {
-        resetObject[studentFactInput] = studentDocument?.studentFacts[camelCaseStudentFactInput].value
+      if (studentDocument?.studentFacts[studentFactInput]) {
+        resetObject[studentFactInput] = studentDocument?.studentFacts[studentFactInput]
       }
     })
     console.log(resetObject)
@@ -65,7 +63,16 @@ const EditStudent: React.FC = () => {
     })
 
     // update the 'studentsInStudentsGroup' collection with a studentFacts array (for easy random selection)
-    const studentFactsArray = Object.values(studentFacts).filter(studentFact => studentFact.value !== '')
+    const studentFactsArray: { [key: string]: string }[] = []
+    Object.keys(studentFacts).forEach(key => {
+      if (studentFacts[key] !== '') {
+        studentFactsArray.push({
+          title: key,
+          value: studentFacts[key],
+        })
+      }
+    })
+    console.log(studentFactsArray)
     const snapshot = await thisStudentInStudentGroupsRef.get()
     if (snapshot.docs.length > 0) {
       snapshot.docs.forEach(doc => {
