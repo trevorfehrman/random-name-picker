@@ -43,7 +43,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
         >
           {selectedStudent?.studentInfo.studentName}
         </Heading>
-        {selectedStudent && selectedStudent.studentInfo?.selectedFact && (
+        {selectedStudent?.studentInfo?.selectedFact && (
           <Flex direction="column" justify="center" alignItems={{ base: 'center', sm: 'flex-start' }} w="100%">
             <Heading
               as="h2"
