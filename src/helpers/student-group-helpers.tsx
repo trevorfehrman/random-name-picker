@@ -63,14 +63,23 @@ const resetStudentFacts: (selectedStudent: IStudentInStudentGroup, studentDocume
   const studentFactsReset = studentDocuments.filter(student => {
     return student.docId === selectedStudent.studentId
   })[0].studentFacts
-  return Object.values(studentFactsReset).filter(studentFact => studentFact.value !== '')
+  const updatedStudentFactsReset: IStudentFact[] = []
+  Object.keys(studentFactsReset).forEach(key => {
+    if (studentFactsReset[key] !== '') {
+      updatedStudentFactsReset.push({
+        title: key,
+        value: studentFactsReset[key],
+      })
+    }
+  })
+  return updatedStudentFactsReset
 }
 
 const updateSelectedStudentObject: (
   selectedStudent: IStudentInStudentGroup,
   selectedFact: IStudentFact,
 ) => ISelectedStudent = (selectedStudent, selectedFact) => {
-  const selectedStudentWithStudentFact = {
+  const selectedStudentWithStudentFact: ISelectedStudent = {
     ...selectedStudent,
     studentInfo: {
       ...selectedStudent.studentInfo,
