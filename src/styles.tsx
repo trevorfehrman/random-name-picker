@@ -17,7 +17,7 @@ export const StudentInGroupContainer = styled(motion.div)`
   border-radius: 5px;
   width: 100%;
   margin-top: 0.5rem;
-  color: var(--main-color-very-dark);
+  color: var(--grey-dark);
 `
 
 export const StudentContainer = styled(motion.div)`
@@ -29,7 +29,7 @@ export const StudentContainer = styled(motion.div)`
   border-radius: 5px;
   width: 100%;
   margin: 0.7rem 0;
-  color: var(--main-color-very-dark);
+  color: var(--grey-dark);
   transition: all 0.3s ease-in;
   &:hover {
     cursor: pointer;
@@ -43,7 +43,7 @@ export const FormBox = styled.div`
   width: 100%;
   max-width: 30rem;
   padding: 2rem 0;
-  color: var(--main-color-very-dark);
+  color: var(--grey-dark);
 `
 
 export const PageContentsBox = styled.div`
@@ -52,8 +52,10 @@ export const PageContentsBox = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100vh;
   overflow: auto;
   padding: 1rem;
+  position: relative;
 `
 
 export const NameDisplayBox = styled.div`

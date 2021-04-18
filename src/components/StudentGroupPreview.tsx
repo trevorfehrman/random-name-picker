@@ -1,7 +1,5 @@
 import * as React from 'react'
-import { Flex, Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
-// import { DeleteIcon } from '@chakra-ui/icons'
-import { BiTrash, BiGroup } from 'react-icons/bi'
+import { Flex, Heading, useDisclosure, Box } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 import { useHistory } from 'react-router-dom'
 
@@ -9,20 +7,16 @@ import 'firebase/firestore'
 import { useFirestore, useFirestoreCollectionData } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
 
-const ButtonDiv = styled.div`
-  display: flex;
-`
-
 const StudentGroupContainer = styled.div`
-  border: 1px solid var(--grey-dark);
+  border: 1px solid var(--grey-light);
   border-radius: 5px;
   width: 100%;
-  margin: 0.7rem 0;
+  margin: 1.1rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s;
-  padding: 0.8rem;
+  padding: 1.1rem 0.8rem;
   &:hover {
     cursor: pointer;
     background-color: var(--main-color-very-light);
@@ -88,23 +82,32 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
     <>
       <StudentGroupContainer onClick={openStudentGroupHandler}>
         <Flex justify="flex-start" alignItems="center">
-          <Icon as={BiGroup} fontSize="2rem" margin="0 1rem 0 .5rem" color="var(--main-color-very-dark)" />
           <Flex direction="column">
-            <Heading as="h2" size="md" color="var(--main-color-very-dark)">
+            <Heading as="h2" fontSize="1.4rem" paddingBottom=".8rem">
               {studentGroupName}
             </Heading>
-            <Heading as="h2" size="md" color="var(--secondary-color-medium)" opacity=".9">
+            <Box
+              fontSize="var(--font-size-small)"
+              color="var(--white)"
+              bg="var(--main-color-medium)"
+              opacity=".9"
+              padding=".2rem .3rem"
+              borderRadius="3px"
+              textAlign="center"
+              width="7.3rem"
+              textTransform="uppercase"
+            >
               {studentsInStudentGroupsDocuments?.length}{' '}
               {studentsInStudentGroupsDocuments?.length === 1 ? 'student' : 'students'}
-            </Heading>
+            </Box>
           </Flex>
         </Flex>
 
-        <ButtonDiv>
+        {/* <ButtonDiv>
           <IconButton icon={<Icon as={BiTrash} />} onClick={openHandler} aria-label="delete">
             Delete
           </IconButton>
-        </ButtonDiv>
+        </ButtonDiv> */}
       </StudentGroupContainer>
       <ConfirmationModal
         buttonText="Confirm"

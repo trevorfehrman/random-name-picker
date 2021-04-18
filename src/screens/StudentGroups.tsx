@@ -7,7 +7,7 @@ import StudentGroupPreview from 'components/StudentGroupPreview'
 import { IStudentGroup } from 'interfacesAndTypes'
 import styled from '@emotion/styled'
 import { PageContentsBox } from 'styles'
-import { Button, Heading, useDisclosure } from '@chakra-ui/react'
+import { Button, useDisclosure } from '@chakra-ui/react'
 import { AddIcon } from '@chakra-ui/icons'
 import CreateNewStudentGroupModal from 'components/CreateNewStudentGroupModal'
 
@@ -16,8 +16,6 @@ const GroupBox = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-height: 60%;
-  overflow-y: auto;
 `
 
 const StudentGroups: React.FC = () => {
@@ -32,13 +30,10 @@ const StudentGroups: React.FC = () => {
 
   return (
     <PageContentsBox>
-      <Heading as="h1" margin="1rem 0 2rem 0" letterSpacing="wide" color="var(--main-color-very-dark)" fontWeight="500">
+      {/* <Heading as="h1" margin="1rem 0 2rem 0" letterSpacing="wide" color="var(--main-color-very-dark)" fontWeight="500">
         Manage Groups
-      </Heading>
-      <Button onClick={onOpen} alignSelf="flex-end" marginBottom=".5rem">
-        <AddIcon marginRight=".5rem" />
-        New Student Group
-      </Button>
+      </Heading> */}
+
       <GroupBox>
         {studentGroupsDocuments.data?.map(doc => {
           return (
@@ -50,6 +45,20 @@ const StudentGroups: React.FC = () => {
             />
           )
         })}
+        <Button
+          onClick={onOpen}
+          alignSelf="flex-end"
+          marginBottom=".5rem"
+          position="fixed"
+          right="1.1rem"
+          bottom="1.1rem"
+          width="4.4rem"
+          height="4.4rem"
+          borderRadius="50%"
+          backgroundColor="var(--main-color-medium)"
+        >
+          <AddIcon color="white" font-size="1.5rem" />
+        </Button>
       </GroupBox>
       <CreateNewStudentGroupModal isOpen={isOpen} onClose={onClose} />
     </PageContentsBox>
