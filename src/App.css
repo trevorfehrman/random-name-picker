@@ -44,7 +44,7 @@
 } */
 
 /* cyan */
-* {
+/* * {
   box-sizing: border-box;
   --main-color-very-dark: #065666;
   --main-color-dark: #0987a0;
@@ -56,6 +56,31 @@
   --grey-medium: #a0aec0;
   --grey-light: #e2e8f0;
   --white: #fff;
+} */
+
+/* Custom Blue */
+* {
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+
+  --main-color-very-dark: #072e4b;
+  --main-color-dark: #0e4d7a;
+  --main-color-medium: #0077cc;
+  --main-color-light: #3b95d4;
+  --main-color-very-light: #b1deff;
+
+  --secondary-color-medium: #e9792f;
+
+  --grey-dark: #4a5568;
+  --grey-medium: #a0aec0;
+  --grey-light: #e2e8f0;
+
+  --white: #fff;
+
+  --font-size-medium: 16px;
+  --font-size-large: 18px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 24px;
 }
 
 /* orange */
