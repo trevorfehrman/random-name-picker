@@ -1,8 +1,7 @@
-import { List, ListItem } from '@chakra-ui/react'
 import * as React from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from '@emotion/styled'
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, Tab } from '@chakra-ui/react'
 
 const TabStyled = styled(Tab)`
   width: 100%;
@@ -16,7 +15,7 @@ const TabStyled = styled(Tab)`
 
 const Header: React.FC = () => {
   const selectedStyles = {
-    borderBottom: '3px solid var(--main-color-medium)',
+    borderBottom: '2px solid var(--main-color-medium)',
     borderBottomColor: 'var(--main-color-medium)',
   }
   return (
