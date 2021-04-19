@@ -7,9 +7,9 @@ import StudentGroupPreview from 'components/StudentGroupPreview'
 import { IStudentGroup } from 'interfacesAndTypes'
 import styled from '@emotion/styled'
 import { PageContentsBox } from 'styles'
-import { Button, useDisclosure } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { useDisclosure } from '@chakra-ui/react'
 import CreateNewStudentGroupModal from 'components/CreateNewStudentGroupModal'
+import PlusButton from 'components/UI/PlusButton'
 
 const GroupBox = styled.div`
   display: flex;
@@ -45,20 +45,7 @@ const StudentGroups: React.FC = () => {
             />
           )
         })}
-        <Button
-          onClick={onOpen}
-          alignSelf="flex-end"
-          marginBottom=".5rem"
-          position="fixed"
-          right="1.1rem"
-          bottom="1.1rem"
-          width="4.4rem"
-          height="4.4rem"
-          borderRadius="50%"
-          backgroundColor="var(--main-color-medium)"
-        >
-          <AddIcon color="white" font-size="1.5rem" />
-        </Button>
+        <PlusButton onOpen={onOpen} />
       </GroupBox>
       <CreateNewStudentGroupModal isOpen={isOpen} onClose={onClose} />
     </PageContentsBox>

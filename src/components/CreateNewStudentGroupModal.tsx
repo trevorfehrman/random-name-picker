@@ -24,10 +24,18 @@ const CreateNewStudentGroupModal: React.FC<CreateNewStudentGroupModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Create New Student Group</ModalHeader>
+      <ModalContent height="12.5rem" width="85%" alignSelf="center" borderRadius="3px">
+        <ModalHeader
+          paddingBottom="0"
+          paddingLeft=".8rem"
+          paddingTop=".5rem"
+          color="var(--grey-dark)"
+          fontSize="1.4rem"
+        >
+          New Student Group
+        </ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody paddingTop="0">
           <NewStudentGroup studentGroupsRef={studentGroupsRef} onClose={onClose} />
         </ModalBody>
 

@@ -55,10 +55,10 @@ const Student: React.FC<StudentProps> = ({ student, docId }) => {
           <Image
             src={student?.profilePic}
             fit="cover"
-            height="3.5rem"
-            w="3.5rem"
+            height="4.5rem"
+            w="4.5rem"
             borderRadius="50%"
-            marginRight="1.5rem"
+            marginRight="1.2rem"
           />
           <Heading as="h3" size="md">
             {student?.studentName}

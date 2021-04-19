@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { Heading, Flex, Button, useDisclosure } from '@chakra-ui/react'
-import { AddIcon } from '@chakra-ui/icons'
+import { Flex, useDisclosure } from '@chakra-ui/react'
 import { useFirestore, useFirestoreCollectionData, useUser } from 'reactfire'
 import { IStudent } from 'interfacesAndTypes'
 import Student from 'components/Student'
 import { PageContentsBox } from 'styles'
 import CreateNewStudentModal from 'components/CreateNewStudentModal'
+import PlusButton from 'components/UI/PlusButton'
 
 const ManageStudents: React.FC = () => {
   const { data: user } = useUser()
@@ -20,24 +20,12 @@ const ManageStudents: React.FC = () => {
 
   return (
     <PageContentsBox>
-      <Heading
-        as="h1"
-        margin="1.5rem 0 2rem 0"
-        letterSpacing="wide"
-        color="var(--main-color-very-dark)"
-        fontWeight="500"
-      >
-        Manage Students
-      </Heading>
       <Flex width="100%" minHeight="6rem" flexDirection="column">
-        <Button alignSelf="flex-end" marginBottom=".5rem" onClick={onOpen}>
-          <AddIcon marginRight=".5rem" />
-          New Student
-        </Button>
         {allStudentsDocuments?.map(doc => {
           return <Student key={doc.docId} student={doc} docId={doc.docId} />
         })}
       </Flex>
+      <PlusButton onOpen={onOpen} />
       <CreateNewStudentModal onClose={onClose} isOpen={isOpen} />
     </PageContentsBox>
   )

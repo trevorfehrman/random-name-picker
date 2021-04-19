@@ -3,7 +3,13 @@ import React from 'react'
 
 const SubmitButton: React.FC<{ text: string }> = ({ text }) => {
   return (
-    <Button colorScheme="orange" alignSelf="flex-end" type="submit" marginTop=".5rem">
+    <Button
+      backgroundColor="var(--main-color-medium)"
+      color="var(--white)"
+      alignSelf="flex-end"
+      type="submit"
+      marginTop=".5rem"
+    >
       {text}
     </Button>
   )
