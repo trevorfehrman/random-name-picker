@@ -24,11 +24,11 @@ export const StudentContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.7rem;
-  border: 1px solid var(--grey-dark);
-  border-radius: 5px;
+  padding: 1rem;
+  border: 1px solid var(--grey-light);
+  border-radius: 3px;
   width: 100%;
-  margin: 0.7rem 0;
+  margin: 1rem 0;
   color: var(--grey-dark);
   transition: all 0.3s ease-in;
   &:hover {
@@ -54,7 +54,7 @@ export const PageContentsBox = styled.div`
   width: 100%;
   height: 100vh;
   overflow: auto;
-  padding: 1rem;
+  padding: 1.3rem;
   position: relative;
 `
 

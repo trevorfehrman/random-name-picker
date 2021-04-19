@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormLabel, Input, Heading, Box } from '@chakra-ui/react'
+import { FormLabel, Input, Box } from '@chakra-ui/react'
 import firebase from 'firebase'
 import { useHistory } from 'react-router-dom'
 import { FormBox } from 'styles'
@@ -39,8 +39,8 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef, onC
   return (
     <FormBox>
       <NewStudentGroupForm onSubmit={submitHandler}>
-        <Box margin=".5rem 0">
-          <FormLabel color="var(--main-color-medium)" htmlFor="studentGroupName" marginTop="0">
+        <Box margin=".5rem 0 .8rem 0">
+          <FormLabel color="var(--main-color-medium)" htmlFor="studentGroupName" marginTop="0" marginBottom=".1rem">
             Name
           </FormLabel>
           <Input

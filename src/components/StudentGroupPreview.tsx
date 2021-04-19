@@ -73,10 +73,10 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
       .catch(err => console.log(err))
   }
 
-  const openHandler = (event: React.SyntheticEvent) => {
-    event?.stopPropagation()
-    onOpen()
-  }
+  // const openHandler = (event: React.SyntheticEvent) => {
+  //   event?.stopPropagation()
+  //   onOpen()
+  // }
 
   return (
     <>
