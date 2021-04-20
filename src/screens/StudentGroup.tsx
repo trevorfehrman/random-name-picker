@@ -6,7 +6,7 @@ import { Button, Flex, useDisclosure, Icon } from '@chakra-ui/react'
 import { IStudentGroup, IStudent, IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
-import { PageContentsBox } from 'styles'
+import { BodyBox } from 'styles'
 import HeadingBoxWithBackButton from 'components/HeadingBoxWithBackButton'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import NameDisplay from 'components/NameDisplay'
@@ -103,7 +103,7 @@ const StudentGroup: React.FC = () => {
   return (
     <>
       <Header />
-      <PageContentsBox>
+      <BodyBox>
         <HeadingBoxWithBackButton backHandler={backHandler}>
           <Flex justify="flex-end" alignItems="flex-start">
             <EditableStudentGroupName studentGroupDocument={studentGroupDocument} studentGroupRef={studentGroupRef} />
@@ -158,7 +158,7 @@ const StudentGroup: React.FC = () => {
             noStudentSelected={noStudentSelected}
           />
         </FullScreenDisplay>
-      </PageContentsBox>
+      </BodyBox>
     </>
   )
 }

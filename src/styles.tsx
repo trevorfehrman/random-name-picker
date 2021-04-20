@@ -46,7 +46,7 @@ export const FormBox = styled.div`
   color: var(--grey-dark);
 `
 
-export const PageContentsBox = styled.div`
+export const BodyBox = styled.div`
   color: var(--grey-dark);
   display: flex;
   flex-direction: column;
