@@ -15,7 +15,9 @@ const StudentFactInput: React.FC<StudentFactInputProps> = ({ register, studentFa
   return (
     <>
       <FormControlWithMargin>
-        <FormLabel htmlFor={studentFactInput}>{studentFactInput}</FormLabel>
+        <FormLabel color="var(--main-color-medium)" htmlFor={studentFactInput}>
+          {studentFactInput}
+        </FormLabel>
         <Input id={studentFactInput} name={studentFactInput} placeholder={studentFactInput} ref={register} />
       </FormControlWithMargin>
     </>

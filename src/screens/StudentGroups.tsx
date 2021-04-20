@@ -10,6 +10,7 @@ import { PageContentsBox } from 'styles'
 import { useDisclosure } from '@chakra-ui/react'
 import CreateNewStudentGroupModal from 'components/CreateNewStudentGroupModal'
 import PlusButton from 'components/UI/PlusButton'
+import Header from 'components/Header'
 
 const GroupBox = styled.div`
   display: flex;
@@ -29,26 +30,29 @@ const StudentGroups: React.FC = () => {
   })
 
   return (
-    <PageContentsBox>
-      {/* <Heading as="h1" margin="1rem 0 2rem 0" letterSpacing="wide" color="var(--main-color-very-dark)" fontWeight="500">
+    <>
+      <Header />
+      <PageContentsBox>
+        {/* <Heading as="h1" margin="1rem 0 2rem 0" letterSpacing="wide" color="var(--main-color-very-dark)" fontWeight="500">
         Manage Groups
       </Heading> */}
 
-      <GroupBox>
-        {studentGroupsDocuments.data?.map(doc => {
-          return (
-            <StudentGroupPreview
-              key={doc.docId}
-              studentGroupId={doc.docId}
-              studentGroupName={doc.studentGroupName}
-              userId={user.uid}
-            />
-          )
-        })}
-        <PlusButton onOpen={onOpen} />
-      </GroupBox>
-      <CreateNewStudentGroupModal isOpen={isOpen} onClose={onClose} />
-    </PageContentsBox>
+        <GroupBox>
+          {studentGroupsDocuments.data?.map(doc => {
+            return (
+              <StudentGroupPreview
+                key={doc.docId}
+                studentGroupId={doc.docId}
+                studentGroupName={doc.studentGroupName}
+                userId={user.uid}
+              />
+            )
+          })}
+          <PlusButton onOpen={onOpen} />
+        </GroupBox>
+        <CreateNewStudentGroupModal isOpen={isOpen} onClose={onClose} />
+      </PageContentsBox>
+    </>
   )
 }
 

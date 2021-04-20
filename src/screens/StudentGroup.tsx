@@ -17,6 +17,7 @@ import {
   resetSelectedStatusOnStudents,
   updateStudentFactsOnFirebase,
 } from 'helpers/student-group-helpers'
+import Header from 'components/Header'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -100,62 +101,65 @@ const StudentGroup: React.FC = () => {
   }
 
   return (
-    <PageContentsBox>
-      <HeadingBoxWithBackButton backHandler={backHandler}>
-        <Flex justify="flex-end" alignItems="flex-start">
-          <EditableStudentGroupName studentGroupDocument={studentGroupDocument} studentGroupRef={studentGroupRef} />
-        </Flex>
-      </HeadingBoxWithBackButton>
+    <>
+      <Header />
+      <PageContentsBox>
+        <HeadingBoxWithBackButton backHandler={backHandler}>
+          <Flex justify="flex-end" alignItems="flex-start">
+            <EditableStudentGroupName studentGroupDocument={studentGroupDocument} studentGroupRef={studentGroupRef} />
+          </Flex>
+        </HeadingBoxWithBackButton>
 
-      <NameDisplay
-        selectedStudent={studentGroupDocument?.selectedStudent}
-        setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
-        selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
-        noStudentSelected={noStudentSelected}
-      />
-
-      <Button alignSelf="flex-end" marginBottom=".3rem" onClick={onOpen}>
-        <Icon as={BiUserPlus} marginRight=".5rem" fontSize="2rem" />
-        Add Students
-      </Button>
-
-      <StudentList
-        studentsInThisStudentGroup={studentsInThisStudentGroupDocuments
-          ?.sort((a, b) => {
-            return a.order - b.order
-          })
-          .sort((a, b) => {
-            return +a.selected - +b.selected
-          })}
-        studentGroupId={studentGroupId}
-        selectedStudentId={studentGroupDocument?.selectedStudent?.studentId}
-      />
-
-      <AddExistingStudentsModal
-        onClose={onClose}
-        isOpen={isOpen}
-        studentDocuments={studentDocuments}
-        studentsInThisStudentGroupDocuments={studentsInThisStudentGroupDocuments}
-        studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-        studentGroupDocument={studentGroupDocument}
-        studentsRef={studentsRef}
-      />
-
-      <FullScreenDisplay
-        modalHeadingText="FullScreenMode"
-        onClose={() => setFullScreenDisplayIsOpen(false)}
-        isOpen={fullScreenDisplayIsOpen}
-        selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
-      >
         <NameDisplay
           selectedStudent={studentGroupDocument?.selectedStudent}
-          isFullScreen
           setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
           selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
           noStudentSelected={noStudentSelected}
         />
-      </FullScreenDisplay>
-    </PageContentsBox>
+
+        <Button alignSelf="flex-end" marginBottom=".3rem" onClick={onOpen}>
+          <Icon as={BiUserPlus} marginRight=".5rem" fontSize="2rem" />
+          Add Students
+        </Button>
+
+        <StudentList
+          studentsInThisStudentGroup={studentsInThisStudentGroupDocuments
+            ?.sort((a, b) => {
+              return a.order - b.order
+            })
+            .sort((a, b) => {
+              return +a.selected - +b.selected
+            })}
+          studentGroupId={studentGroupId}
+          selectedStudentId={studentGroupDocument?.selectedStudent?.studentId}
+        />
+
+        <AddExistingStudentsModal
+          onClose={onClose}
+          isOpen={isOpen}
+          studentDocuments={studentDocuments}
+          studentsInThisStudentGroupDocuments={studentsInThisStudentGroupDocuments}
+          studentsInStudentGroupsRef={studentsInStudentGroupsRef}
+          studentGroupDocument={studentGroupDocument}
+          studentsRef={studentsRef}
+        />
+
+        <FullScreenDisplay
+          modalHeadingText="FullScreenMode"
+          onClose={() => setFullScreenDisplayIsOpen(false)}
+          isOpen={fullScreenDisplayIsOpen}
+          selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
+        >
+          <NameDisplay
+            selectedStudent={studentGroupDocument?.selectedStudent}
+            isFullScreen
+            setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
+            selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
+            noStudentSelected={noStudentSelected}
+          />
+        </FullScreenDisplay>
+      </PageContentsBox>
+    </>
   )
 }
 

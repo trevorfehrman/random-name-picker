@@ -6,6 +6,7 @@ import Student from 'components/Student'
 import { PageContentsBox } from 'styles'
 import CreateNewStudentModal from 'components/CreateNewStudentModal'
 import PlusButton from 'components/UI/PlusButton'
+import Header from 'components/Header'
 
 const ManageStudents: React.FC = () => {
   const { data: user } = useUser()
@@ -19,15 +20,18 @@ const ManageStudents: React.FC = () => {
   }).data
 
   return (
-    <PageContentsBox>
-      <Flex width="100%" minHeight="6rem" flexDirection="column">
-        {allStudentsDocuments?.map(doc => {
-          return <Student key={doc.docId} student={doc} docId={doc.docId} />
-        })}
-      </Flex>
-      <PlusButton onOpen={onOpen} />
-      <CreateNewStudentModal onClose={onClose} isOpen={isOpen} />
-    </PageContentsBox>
+    <>
+      <Header />
+      <PageContentsBox>
+        <Flex width="100%" minHeight="6rem" flexDirection="column">
+          {allStudentsDocuments?.map(doc => {
+            return <Student key={doc.docId} student={doc} docId={doc.docId} />
+          })}
+        </Flex>
+        <PlusButton onOpen={onOpen} />
+        <CreateNewStudentModal onClose={onClose} isOpen={isOpen} />
+      </PageContentsBox>
+    </>
   )
 }
 
