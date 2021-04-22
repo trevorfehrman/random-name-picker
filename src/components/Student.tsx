@@ -27,6 +27,8 @@ const Student: React.FC<StudentProps> = ({ student, docId }) => {
 
   const deleteBatch = useFirestore().batch()
 
+  // TODO if the last unselected student gets deleted from a group the selected status of
+  // the remaining students in that group needs to be reset
   const deleteHandler = async (e: React.SyntheticEvent) => {
     e.stopPropagation()
     deleteBatch.delete(studentRef)

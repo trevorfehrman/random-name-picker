@@ -12,11 +12,8 @@ export const StudentInGroupContainer = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-left: 1rem;
-  border: 1px solid var(--grey-dark);
   border-radius: 5px;
   width: 100%;
-  margin-top: 0.5rem;
   color: var(--grey-dark);
 `
 
@@ -40,16 +37,17 @@ export const StudentContainer = styled(motion.div)`
 `
 
 export const FormBox = styled.div`
-  width: 100%;
+  width: 95%;
   max-width: 30rem;
   padding: 0;
   color: var(--grey-dark);
 `
 
-export const PageContentsBox = styled.div`
+export const BodyBox = styled.div`
   color: var(--grey-dark);
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
   height: 100vh;
@@ -59,20 +57,10 @@ export const PageContentsBox = styled.div`
 `
 
 export const NameDisplayBox = styled.div`
-  display: flex;
-  width: 100%;
-  border: 1px solid var(--grey-dark);
-  padding: 1.5rem;
-  min-height: 32rem;
   position: relative;
-  justify-content: center;
-  align-items: center;
-  border-radius: 3px;
-  margin: 1.5rem 0;
-  overflow-x: auto;
-  @media (max-width: 500px) {
-    min-height: 19rem;
-  }
+  margin: auto;
+  width: 100%;
+  height: 100%;
   &:hover {
     cursor: pointer;
   }

@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 import { INewStudentValues } from 'interfacesAndTypes'
-import SubmitButton from './UI/SubmitButton'
+import FooterWithButtons from 'components/UI/FooterWithButtons'
 
 type NewStudentProps = {
   studentsRef: firebase.firestore.CollectionReference
@@ -32,11 +32,13 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
   }
 
   return (
-    <FormBox>
-      <form onSubmit={handleSubmit(addStudentHandler)}>
-        <Flex direction="column" justify="center" align="center">
+    <form onSubmit={handleSubmit(addStudentHandler)}>
+      <FormBox>
+        <Flex direction="column" justify="center" align="center" height="100%" overflowY="hidden">
           <FormControlWithMargin isInvalid={errors.name} isRequired>
-            <FormLabel htmlFor="studentName">Name</FormLabel>
+            <FormLabel color="var(--main-color-medium)" htmlFor="studentName">
+              Name
+            </FormLabel>
             <Input
               id="studentName"
               name="studentName"
@@ -50,7 +52,9 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
           </FormControlWithMargin>
 
           <FormControlWithMargin isInvalid={errors.profilePic} isRequired>
-            <FormLabel htmlFor="profile-pic">Profile Pic</FormLabel>
+            <FormLabel color="var(--main-color-medium)" htmlFor="profile-pic">
+              Profile Pic
+            </FormLabel>
             <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
             {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
           </FormControlWithMargin>
@@ -59,10 +63,11 @@ const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
             return <StudentFactInput key={studentFactInput} register={register} studentFactInput={studentFactInput} />
           })}
 
-          <SubmitButton text="Submit" />
+          {/* <SubmitButton text="Submit" /> */}
         </Flex>
-      </form>
-    </FormBox>
+      </FormBox>
+      <FooterWithButtons onCancel={onClose} submitText={'CREATE'} />
+    </form>
   )
 }
 

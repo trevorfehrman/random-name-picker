@@ -24,12 +24,13 @@ const CreateNewStudentModal: React.FC<CreateNewStudentModalProps> = ({ isOpen, o
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent maxHeight="90vh" overflowY="auto">
-        <ModalHeader>Create New Student</ModalHeader>
+      <ModalContent maxHeight="80vh" width="85%" color="var(--grey-dark)" alignSelf="center">
+        <ModalHeader>New Student</ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
+        <ModalBody overflowY="scroll">
           <NewStudent studentsRef={studentsRef} onClose={onClose} />
         </ModalBody>
+        {/* <FooterWithButtons onCancel={onCancel} onSubmit={onSubmit} submitText="CREATE" /> */}
 
         <ModalFooter></ModalFooter>
       </ModalContent>

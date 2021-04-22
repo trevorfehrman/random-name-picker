@@ -8,56 +8,44 @@ type StudentProfileProps = {
 const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
   return (
     <Flex
-      height={{ base: '19rem', sm: 'null' }}
-      direction={{ base: 'column', sm: 'row' }}
-      justify="center"
+      height="100%"
+      direction="column"
+      justify="flex-start"
       alignItems="center"
       w="100%"
+      margin="auto"
+      maxWidth="28rem"
+      maxHeight="33rem"
     >
-      <Flex w="50%" justifyContent={{ base: 'center', md: 'flex-end' }}>
+      <Heading as="h2" letterSpacing=".1em" fontSize="1.4rem" textAlign="center" alignSelf="flex-end">
+        {selectedStudent?.studentInfo.studentName}
+      </Heading>
+      <Flex justifyContent="center" w="85vw" h="85vw" maxWidth="28rem" maxHeight="28rem">
         <Image
-          boxSize={{ base: '12rem', sm: '17rem', md: '20rem', lg: '29rem' }}
-          minW={{ base: '12rem', sm: '17', md: '20rem', lg: '29rem' }}
-          borderRadius="3px"
-          boxShadow="1px 4px 6px rgba(0,0,0, 0.6)"
+          boxSize="100%"
+          borderRadius="5px"
           src={selectedStudent?.studentInfo.profilePic}
           position="relative"
           objectFit="cover"
-          marginBottom={{ base: '.2rem', md: '0' }}
+          marginBottom=".2rem"
         />
       </Flex>
       <Flex
         direction="column"
         // w={{ base: '16rem', md: '26rem', lg: '33rem' }}
-        w={{ base: '12rem', md: '50%' }}
-        height="50%"
-        align={{ base: 'center', sm: 'flex-start' }}
-        justify={{ base: 'flex-start', md: 'space-evenly' }}
-        padding={{ base: '0', sm: '0 0 0 3rem' }}
+        justify="flex-start"
+        padding="0"
+        alignSelf="flex-start"
+        alignItems="flex-start"
+        minHeight="5.5rem"
       >
-        <Heading
-          as="h2"
-          fontSize={{ base: '2rem', sm: '2.5rem', md: '4rem', lg: '5.5rem' }}
-          margin={{ base: '.5rem 0', md: '0' }}
-          textAlign={{ base: 'center', sm: 'left' }}
-        >
-          {selectedStudent?.studentInfo.studentName}
-        </Heading>
         {selectedStudent?.studentInfo?.selectedFact && (
-          <Flex direction="column" justify="center" alignItems={{ base: 'center', sm: 'flex-start' }} w="100%">
-            <Heading
-              as="h2"
-              fontSize={{ base: '1rem', md: '1.6rem', lg: '2.1rem' }}
-              color="var(--secondary-color-medium)"
-            >
+          <Flex direction="column" justify="flex-start" alignItems="flex-start" lineHeight="28px">
+            <Heading as="h2" fontSize="1.1rem" color="var(--main-color-medium)" width="100%">
               {selectedStudent.studentInfo.selectedFact.title}
             </Heading>
 
-            <Heading
-              as="h2"
-              fontSize={{ base: '1.3rem', md: '2.2rem', lg: '2.9rem' }}
-              textAlign={{ base: 'center', sm: 'left' }}
-            >
+            <Heading as="h2" fontSize="1.5rem" letterSpacing=".05em">
               {selectedStudent.studentInfo.selectedFact.value}
             </Heading>
           </Flex>
