@@ -7,6 +7,7 @@ import StudentGroups from 'screens/StudentGroups'
 import StudentGroup from 'screens/StudentGroup'
 import ManageStudents from 'screens/ManageStudents'
 import EditStudent from 'screens/EditStudent'
+import ManageGroup from 'screens/ManageGroup'
 
 const AuthenticatedApp: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const AuthenticatedApp: React.FC = () => {
         <Route path="/student-group/:groupId" component={StudentGroup} />
         <Route path="/manage-students" component={ManageStudents} />
         <Route path="/edit-student/:studentId" component={EditStudent} />
+        <Route path="/manage-group/:studentGroupId" component={ManageGroup} />
       </Switch>
     </>
   )
