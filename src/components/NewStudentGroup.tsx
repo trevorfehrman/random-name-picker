@@ -1,14 +1,13 @@
 import React from 'react'
 import { FormLabel, Input, Box } from '@chakra-ui/react'
-import firebase from 'firebase'
 import { useHistory } from 'react-router-dom'
 import { FormBox } from 'styles'
 import styled from '@emotion/styled'
 import SubmitButton from './UI/SubmitButton'
+import { useStudentGroups } from 'helpers/firestoreHooks'
 
 type NewStudentGroupProps = {
   onClose: () => void
-  studentGroupsRef: firebase.firestore.CollectionReference
 }
 
 const NewStudentGroupForm = styled.form`
@@ -16,8 +15,10 @@ const NewStudentGroupForm = styled.form`
   flex-direction: column;
 `
 
-const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ studentGroupsRef, onClose }) => {
+const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ onClose }) => {
   const [studentGroupNameInput, setStudentGroupNameInput] = React.useState('')
+
+  const { studentGroupsRef } = useStudentGroups()
 
   const history = useHistory()
 

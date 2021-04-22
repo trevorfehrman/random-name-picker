@@ -2,12 +2,13 @@ import * as React from 'react'
 import { Flex, Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
 // import { DeleteIcon } from '@chakra-ui/icons'
 import { BiTrash } from 'react-icons/bi'
-import { useFirestore, useUser } from 'reactfire'
+import { useFirestore } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
 import { StudentContainer } from 'styles'
 import { useHistory } from 'react-router-dom'
 import { Image } from '@chakra-ui/react'
 import { IStudent } from 'interfacesAndTypes'
+import { useStudents, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 
 type StudentProps = {
   student: IStudent
@@ -17,13 +18,12 @@ type StudentProps = {
 const Student: React.FC<StudentProps> = ({ student, docId }) => {
   const { onClose, onOpen, isOpen } = useDisclosure()
 
-  const { data: user } = useUser()
-
   const history = useHistory()
 
-  const teacherRef = useFirestore().collection('teachers').doc(user.uid)
-  const studentRef = teacherRef.collection('students').doc(docId)
-  const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups').where('studentId', '==', docId)
+  const { studentsRef } = useStudents()
+  const thisStudentRef = studentsRef.doc(docId)
+  const studentsInStudentGroupsRef = useStudentsInStudentGroups()
+  const allGroupsWithThisStudentRef = studentsInStudentGroupsRef.where('studentId', '==', docId)
 
   const deleteBatch = useFirestore().batch()
 
@@ -31,8 +31,8 @@ const Student: React.FC<StudentProps> = ({ student, docId }) => {
   // the remaining students in that group needs to be reset
   const deleteHandler = async (e: React.SyntheticEvent) => {
     e.stopPropagation()
-    deleteBatch.delete(studentRef)
-    const snapshot = await studentsInStudentGroupsRef.get()
+    deleteBatch.delete(thisStudentRef)
+    const snapshot = await allGroupsWithThisStudentRef.get()
     if (snapshot.docs.length > 0) {
       snapshot.docs.forEach(doc => {
         deleteBatch.delete(doc.ref)

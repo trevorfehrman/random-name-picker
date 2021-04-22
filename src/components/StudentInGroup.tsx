@@ -3,6 +3,7 @@ import { Heading } from '@chakra-ui/react'
 import { useFirestore, useUser } from 'reactfire'
 import { StudentInGroupContainer } from 'styles'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
+import { useStudentGroup } from 'helpers/firestoreHooks'
 
 type StudentInGroupProps = {
   student: IStudentInStudentGroup
@@ -18,11 +19,7 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, selectedStuden
     .collection('studentsInStudentGroups')
     .doc(student.docId)
 
-  const studentGroupRef = useFirestore()
-    .collection('teachers')
-    .doc(user.uid)
-    .collection('studentGroups')
-    .doc(student.studentGroupId)
+  const { studentGroupRef } = useStudentGroup(student.studentGroupId)
 
   const removeHandler = () => {
     console.log(student.studentId, selectedStudentId)

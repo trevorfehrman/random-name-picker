@@ -8,7 +8,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import { useFirestore, useUser } from 'reactfire'
 import NewStudentGroup from './NewStudentGroup'
 
 type CreateNewStudentGroupModalProps = {
@@ -17,10 +16,6 @@ type CreateNewStudentGroupModalProps = {
 }
 
 const CreateNewStudentGroupModal: React.FC<CreateNewStudentGroupModalProps> = ({ isOpen, onClose }) => {
-  const { data: user } = useUser()
-
-  const studentGroupsRef = useFirestore().collection('teachers').doc(user.uid).collection('studentGroups')
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -36,7 +31,7 @@ const CreateNewStudentGroupModal: React.FC<CreateNewStudentGroupModalProps> = ({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody paddingTop="0">
-          <NewStudentGroup studentGroupsRef={studentGroupsRef} onClose={onClose} />
+          <NewStudentGroup onClose={onClose} />
         </ModalBody>
 
         <ModalFooter></ModalFooter>

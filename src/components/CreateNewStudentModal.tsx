@@ -9,7 +9,6 @@ import {
   ModalCloseButton,
 } from '@chakra-ui/react'
 import NewStudent from 'components/NewStudent'
-import { useFirestore, useUser } from 'reactfire'
 
 type CreateNewStudentModalProps = {
   isOpen: boolean
@@ -17,10 +16,6 @@ type CreateNewStudentModalProps = {
 }
 
 const CreateNewStudentModal: React.FC<CreateNewStudentModalProps> = ({ isOpen, onClose }) => {
-  const { data: user } = useUser()
-
-  const studentsRef = useFirestore().collection('teachers').doc(user.uid).collection('students')
-
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -28,7 +23,7 @@ const CreateNewStudentModal: React.FC<CreateNewStudentModalProps> = ({ isOpen, o
         <ModalHeader>New Student</ModalHeader>
         <ModalCloseButton />
         <ModalBody overflowY="scroll">
-          <NewStudent studentsRef={studentsRef} onClose={onClose} />
+          <NewStudent onClose={onClose} />
         </ModalBody>
         {/* <FooterWithButtons onCancel={onCancel} onSubmit={onSubmit} submitText="CREATE" /> */}
 
