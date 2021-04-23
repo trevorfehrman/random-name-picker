@@ -105,7 +105,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent width="90%" alignSelf="center">
         <ModalHeader>Add Students</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -126,7 +126,8 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
             Cancel
           </Button>
           <Button
-            colorScheme="orange"
+            backgroundColor="var(--main-color-medium)"
+            color="var(--white)"
             mr={3}
             onClick={addExistingHandler}
             isDisabled={selectedStudentsToAdd.length === 0}

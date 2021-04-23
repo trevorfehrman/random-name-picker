@@ -1,12 +1,13 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { useStudentsInThisStudentGroup } from 'helpers/firestoreHooks'
+import { useStudentsInThisStudentGroup, useStudentGroup, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import { BodyBox } from 'styles'
-import { Button, IconButton, useDisclosure, Flex, Box, Checkbox, Heading } from '@chakra-ui/react'
+import { Button, IconButton, useDisclosure, Flex, Box, Checkbox, Heading, CheckboxGroup } from '@chakra-ui/react'
 import StudentToManage from 'components/StudentToManage'
 import { DeleteIcon } from '@chakra-ui/icons'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
+import { useFirestore } from 'reactfire'
 
 type ManageGroupParams = {
   studentGroupId: string
@@ -17,17 +18,49 @@ const ManageGroup: React.FC = () => {
   const params: ManageGroupParams = useParams()
   const history = useHistory()
   const studentGroupId = params.studentGroupId
+  const [selectedStudents, setSelectedStudents] = React.useState<string[]>([])
 
   const { studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(studentGroupId)
+
+  const { studentGroupRef } = useStudentGroup(studentGroupId)
+
+  const studentsInStudentGroupsRef = useStudentsInStudentGroups()
 
   const backHandler = () => {
     history.push(`/student-group/${studentGroupId}`)
   }
 
+  const selectAllHandler = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    const selection: string[] = []
+    if (selectedStudents.length < studentsInThisStudentGroupDocuments.length) {
+      studentsInThisStudentGroupDocuments.forEach(studentInThisGroup => {
+        selection.push(studentInThisGroup.docId)
+      })
+    }
+    setSelectedStudents(selection)
+  }
+
+  console.log(selectedStudents)
+
+  const removeBatch = useFirestore().batch()
+
+  const removeHandler = () => {
+    selectedStudents.forEach(selectedStudentId => {
+      removeBatch.delete(studentsInStudentGroupsRef.doc(selectedStudentId))
+    })
+    removeBatch.commit().then(() => {
+      setSelectedStudents([])
+    })
+  }
+
   return (
     <>
       <BodyBox>
-        <EditableStudentGroupName studentGroupId={studentGroupId} />
+        <Flex>
+          <EditableStudentGroupName studentGroupId={studentGroupId} />
+        </Flex>
+
         <Button
           backgroundColor="var(--white)"
           color="var(--main-color-medium)"
@@ -41,21 +74,39 @@ const ManageGroup: React.FC = () => {
         >
           + ADD STUDENTS
         </Button>
-        <Flex width="100%" margin="1rem 0">
-          <Checkbox margin="0 1rem 0 .5rem" />
-          <Heading as="h3" size="md">
-            Select All
-          </Heading>
-        </Flex>
+
         <Flex
           direction="column"
           justifyContent="flex-start"
           alignItems="flex-start"
           width="100%"
-          _last={{ marginBottom: '5rem' }}
+          _last={{ marginBottom: '7rem' }}
         >
+          {studentsInThisStudentGroupDocuments?.length > 1 ? (
+            <>
+              <Checkbox
+                spacing="1rem"
+                margin="1rem 0 .5rem 0"
+                onClick={selectAllHandler}
+                isChecked={selectedStudents.length === studentsInThisStudentGroupDocuments?.length}
+              >
+                <Heading as="h3" size="md" fontWeight="700">
+                  Select All
+                </Heading>
+              </Checkbox>
+              <hr style={{ width: '100%' }} />
+            </>
+          ) : null}
+
           {studentsInThisStudentGroupDocuments?.map(studentInThisGroup => {
-            return <StudentToManage key={studentInThisGroup.docId} student={studentInThisGroup} />
+            return (
+              <StudentToManage
+                key={studentInThisGroup.docId}
+                student={studentInThisGroup}
+                selectedStudents={selectedStudents}
+                onCheck={setSelectedStudents}
+              />
+            )
           })}
         </Flex>
       </BodyBox>
@@ -82,18 +133,21 @@ const ManageGroup: React.FC = () => {
           BACK TO GROUP
         </Button>
       </Flex>
-      <IconButton
-        icon={<DeleteIcon fontSize="2rem" />}
-        width="4.8rem"
-        height="4.8rem"
-        position="absolute"
-        bottom="6.5rem"
-        right="1.5rem"
-        borderRadius="50%"
-        backgroundColor="var(--main-color-medium)"
-        aria-label="trash button"
-        color="var(--white)"
-      ></IconButton>
+      {selectedStudents.length > 0 ? (
+        <IconButton
+          icon={<DeleteIcon fontSize="2rem" />}
+          width="4rem"
+          height="4rem"
+          position="absolute"
+          bottom="6rem"
+          right="1rem"
+          borderRadius="50%"
+          backgroundColor="var(--main-color-medium)"
+          aria-label="trash button"
+          color="var(--white)"
+          onClick={removeHandler}
+        ></IconButton>
+      ) : null}
       <AddExistingStudentsModal onClose={onClose} isOpen={isOpen} studentGroupId={studentGroupId} />
     </>
   )

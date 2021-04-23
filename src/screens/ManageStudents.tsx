@@ -6,6 +6,15 @@ import CreateNewStudentModal from 'components/CreateNewStudentModal'
 import PlusButton from 'components/UI/PlusButton'
 import Header from 'components/Header'
 import { useStudents } from 'helpers/firestoreHooks'
+import styled from '@emotion/styled'
+
+const StudentBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 7rem;
+`
 
 const ManageStudents: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -16,14 +25,14 @@ const ManageStudents: React.FC = () => {
     <Box height="100vh" overflowY="hidden">
       <Header />
       <BodyBox>
-        <Flex width="100%" minHeight="6rem" flexDirection="column">
+        <StudentBox>
           {studentDocuments?.map(doc => {
             return <Student key={doc.docId} student={doc} />
           })}
-        </Flex>
-        <PlusButton onOpen={onOpen} />
+        </StudentBox>
         <CreateNewStudentModal onClose={onClose} isOpen={isOpen} />
       </BodyBox>
+      <PlusButton onOpen={onOpen} />
     </Box>
   )
 }

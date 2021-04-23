@@ -21,14 +21,6 @@ const StudentInGroup: React.FC<StudentInGroupProps> = ({ student, selectedStuden
 
   const { studentGroupRef } = useStudentGroup(student.studentGroupId)
 
-  const removeHandler = () => {
-    console.log(student.studentId, selectedStudentId)
-    if (student.studentId === selectedStudentId) {
-      studentGroupRef.update({ selectedStudent: null })
-    }
-    studentsInStudentGroupsRef.delete()
-  }
-
   return (
     <StudentInGroupContainer layout style={{ color: student.selected ? 'var(--main-color-light)' : '' }}>
       <Heading as="h3" size="sm">

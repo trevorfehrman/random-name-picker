@@ -11,9 +11,8 @@ const StudentGroupNameForm = styled.form`
   position: relative;
   width: 16rem;
   max-width: 90%;
-  text-align: right;
   display: flex;
-  justify-content: flex-end;
+  margin: 0.5rem auto;
 `
 
 const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({ studentGroupId }) => {
