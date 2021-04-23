@@ -18,7 +18,7 @@ const ManageStudents: React.FC = () => {
       <BodyBox>
         <Flex width="100%" minHeight="6rem" flexDirection="column">
           {studentDocuments?.map(doc => {
-            return <Student key={doc.docId} student={doc} docId={doc.docId} />
+            return <Student key={doc.docId} student={doc} />
           })}
         </Flex>
         <PlusButton onOpen={onOpen} />

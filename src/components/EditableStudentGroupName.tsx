@@ -57,10 +57,12 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({ stu
             defaultValue={studentGroupDocument.studentGroupName}
             placeholder="Student Group Name"
             w="100%"
-            textAlign="right"
+            textAlign="center"
             color="var(--grey-dark)"
-            fontSize="1.2rem"
-            fontWeight="bolder"
+            fontSize="1.5rem"
+            letterSpacing=".12em"
+            lineHeight="1.75rem"
+            textTransform="uppercase"
             onSubmit={submitHandler}
           >
             <EditablePreview _hover={{ cursor: 'pointer' }} zIndex={1} position="relative" />
