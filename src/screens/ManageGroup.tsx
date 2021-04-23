@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useStudentsInThisStudentGroup } from 'helpers/firestoreHooks'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import { BodyBox } from 'styles'
-import { Button, IconButton, useDisclosure, Flex, Box } from '@chakra-ui/react'
+import { Button, IconButton, useDisclosure, Flex, Box, Checkbox, Heading } from '@chakra-ui/react'
 import StudentToManage from 'components/StudentToManage'
 import { DeleteIcon } from '@chakra-ui/icons'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
@@ -41,6 +41,12 @@ const ManageGroup: React.FC = () => {
         >
           + ADD STUDENTS
         </Button>
+        <Flex width="100%" margin="1rem 0">
+          <Checkbox margin="0 1rem 0 .5rem" />
+          <Heading as="h3" size="md">
+            Select All
+          </Heading>
+        </Flex>
         <Flex
           direction="column"
           justifyContent="flex-start"
