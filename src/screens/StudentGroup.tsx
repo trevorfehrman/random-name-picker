@@ -2,10 +2,9 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore } from 'reactfire'
-import { Button, useDisclosure, Box, Heading } from '@chakra-ui/react'
+import { Button, Box, Heading } from '@chakra-ui/react'
 import { IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
-import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import { BodyBox } from 'styles'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
@@ -22,11 +21,8 @@ import {
   useStudentsInThisStudentGroup,
   useUnselectedStudents,
 } from 'helpers/firestoreHooks'
-import EditableStudentGroupName from 'components/EditableStudentGroupName'
 
 const StudentGroup: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
   const [noStudentSelected, setNoStudentSelected] = React.useState(true)
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
@@ -160,8 +156,6 @@ const StudentGroup: React.FC = () => {
             NEXT
           </Button>
         </Box>
-
-        <AddExistingStudentsModal onClose={onClose} isOpen={isOpen} studentGroupId={studentGroupId} />
 
         <FullScreenDisplay
           modalHeadingText="FullScreenMode"
