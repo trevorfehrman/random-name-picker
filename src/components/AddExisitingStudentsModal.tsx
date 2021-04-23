@@ -10,30 +10,29 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import { IStudent, IStudentInStudentGroup, IStudentGroup, IStudentToAdd, IStudentFact } from 'interfacesAndTypes'
+import { IStudentToAdd, IStudentFact } from 'interfacesAndTypes'
 import StudentPreview from 'components/StudentPreview'
-import firebase from 'firebase'
 import { useFirestore } from 'reactfire'
+import {
+  useStudentGroup,
+  useStudentsInThisStudentGroup,
+  useStudents,
+  useStudentsInStudentGroups,
+} from 'helpers/firestoreHooks'
 
 type AddExistingStudentsModalProps = {
-  studentsRef: firebase.firestore.CollectionReference
   onClose: () => void
   isOpen: boolean
-  studentDocuments: IStudent[]
-  studentsInThisStudentGroupDocuments: IStudentInStudentGroup[]
-  studentsInStudentGroupsRef: firebase.firestore.CollectionReference
-  studentGroupDocument: IStudentGroup
+  studentGroupId: string
 }
 
-const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({
-  onClose,
-  isOpen,
-  studentDocuments,
-  studentsInThisStudentGroupDocuments,
-  studentsInStudentGroupsRef,
-  studentGroupDocument,
-}) => {
+const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onClose, isOpen, studentGroupId }) => {
   const [selectedStudentsToAdd, setSelectedStudentsToAdd] = React.useState<IStudentToAdd[]>([])
+
+  const { studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(studentGroupId)
+  const studentsInStudentGroupsRef = useStudentsInStudentGroups()
+  const { studentGroupDocument } = useStudentGroup(studentGroupId)
+  const { studentDocuments } = useStudents()
 
   const addBatch = useFirestore().batch()
 

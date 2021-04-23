@@ -7,14 +7,16 @@ import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 import { INewStudentValues } from 'interfacesAndTypes'
 import FooterWithButtons from 'components/UI/FooterWithButtons'
+import { useStudents } from 'helpers/firestoreHooks'
 
 type NewStudentProps = {
-  studentsRef: firebase.firestore.CollectionReference
   onClose: () => void
 }
 
-const NewStudent: React.FC<NewStudentProps> = ({ studentsRef, onClose }) => {
+const NewStudent: React.FC<NewStudentProps> = ({ onClose }) => {
   const { register, handleSubmit, errors } = useForm()
+
+  const { studentsRef } = useStudents()
 
   const addStudentHandler = async (values: INewStudentValues) => {
     const { studentName, profilePic } = values

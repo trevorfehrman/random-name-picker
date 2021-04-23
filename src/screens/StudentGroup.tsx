@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
-import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
+import { useFirestore } from 'reactfire'
 import { Button, useDisclosure, Box, Heading } from '@chakra-ui/react'
-import { IStudentGroup, IStudent, IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
+import { IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import { BodyBox } from 'styles'
@@ -15,6 +15,14 @@ import {
   updateStudentFactsOnFirebase,
 } from 'helpers/student-group-helpers'
 import BackButton from 'components/UI/BackButton'
+import {
+  useStudentGroup,
+  useStudents,
+  useStudentsInStudentGroups,
+  useStudentsInThisStudentGroup,
+  useUnselectedStudents,
+} from 'helpers/firestoreHooks'
+import EditableStudentGroupName from 'components/EditableStudentGroupName'
 
 const StudentGroup: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -27,38 +35,21 @@ const StudentGroup: React.FC = () => {
   const params: GroupParams = useParams()
   const studentGroupId = params.groupId
 
-  const { data: user } = useUser()
+  const { studentGroupDocument, studentGroupRef } = useStudentGroup(studentGroupId)
 
-  const teacherRef = useFirestore().collection('teachers').doc(user.uid)
+  const { studentDocuments } = useStudents()
 
-  const studentGroupRef = teacherRef.collection('studentGroups').doc(studentGroupId)
-  const studentGroupDocument = useFirestoreDocData<IStudentGroup & { docId: string }>(studentGroupRef, {
-    idField: 'docId',
-  }).data
-
-  const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups')
-
-  const studentsInThisStudentGroupRef = studentsInStudentGroupsRef.where('studentGroupId', '==', studentGroupId)
-  const studentsInThisStudentGroupDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
-    studentsInThisStudentGroupRef,
-    { idField: 'docId' },
-  ).data
-
-  const unselectedStudentsRef = studentsInStudentGroupsRef
-    .where('studentGroupId', '==', studentGroupId)
-    .where('selected', '==', false)
-
-  const unselectedStudentsDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
-    unselectedStudentsRef,
-    { idField: 'docId' },
-  ).data
-
-  const studentsRef = teacherRef.collection('students')
-  const studentDocuments = useFirestoreCollectionData<IStudent & { docId: string }>(studentsRef, { idField: 'docId' })
-    .data
+  const { studentsInThisStudentGroupRef, studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(
+    studentGroupId,
+  )
+  const studentsInStudentGroupsRef = useStudentsInStudentGroups()
+  const { unselectedStudentsDocuments } = useUnselectedStudents(studentGroupId)
 
   React.useEffect(() => {
-    unselectedStudentsDocuments && setUnselected(unselectedStudentsDocuments.sort((a, b) => a.order - b.order))
+    unselectedStudentsDocuments &&
+      setUnselected(
+        unselectedStudentsDocuments.sort((a: IStudentInStudentGroup, b: IStudentInStudentGroup) => a.order - b.order),
+      )
   }, [unselectedStudentsDocuments])
 
   const backHandler = () => {
@@ -101,13 +92,7 @@ const StudentGroup: React.FC = () => {
 
   return (
     <>
-      {/* <Header /> */}
       <BodyBox>
-        {/* <HeadingBoxWithBackButton backHandler={backHandler}>
-          <Flex justify="flex-end" alignItems="flex-start">
-            <EditableStudentGroupName studentGroupDocument={studentGroupDocument} studentGroupRef={studentGroupRef} />
-          </Flex>
-        </HeadingBoxWithBackButton> */}
         <Box
           position="relative"
           width="92%"
@@ -121,6 +106,7 @@ const StudentGroup: React.FC = () => {
           <Heading as="h3" size="sm" textAlign="end">
             {studentGroupDocument?.studentGroupName}
           </Heading>
+          {/* <EditableStudentGroupName studentGroupId={studentGroupId} /> */}
         </Box>
         <Box width="85vw" maxWidth="40rem" maxHeight="40rem">
           <NameDisplay
@@ -175,15 +161,7 @@ const StudentGroup: React.FC = () => {
           </Button>
         </Box>
 
-        <AddExistingStudentsModal
-          onClose={onClose}
-          isOpen={isOpen}
-          studentDocuments={studentDocuments}
-          studentsInThisStudentGroupDocuments={studentsInThisStudentGroupDocuments}
-          studentsInStudentGroupsRef={studentsInStudentGroupsRef}
-          studentGroupDocument={studentGroupDocument}
-          studentsRef={studentsRef}
-        />
+        <AddExistingStudentsModal onClose={onClose} isOpen={isOpen} studentGroupId={studentGroupId} />
 
         <FullScreenDisplay
           modalHeadingText="FullScreenMode"

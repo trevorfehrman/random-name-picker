@@ -1,11 +1,10 @@
 import * as React from 'react'
-import firebase from 'firebase'
 import styled from '@emotion/styled'
 import { Editable, EditablePreview, EditableInput, FormControl, FormErrorMessage } from '@chakra-ui/react'
+import { useStudentGroup } from 'helpers/firestoreHooks'
 
 type EditableStudentGroupNameProps = {
-  studentGroupDocument: firebase.firestore.DocumentData
-  studentGroupRef: firebase.firestore.DocumentReference
+  studentGroupId: string
 }
 
 const StudentGroupNameForm = styled.form`
@@ -17,11 +16,10 @@ const StudentGroupNameForm = styled.form`
   justify-content: flex-end;
 `
 
-const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
-  studentGroupDocument,
-  studentGroupRef,
-}) => {
+const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({ studentGroupId }) => {
   const [errors, setErrors] = React.useState<string[]>([])
+
+  const { studentGroupDocument, studentGroupRef } = useStudentGroup(studentGroupId)
 
   const editStudentGroupNameHandler = (value: string) => {
     studentGroupRef.update({ studentGroupName: value }).catch(err => {
@@ -60,7 +58,7 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({
             placeholder="Student Group Name"
             w="100%"
             textAlign="right"
-            color="var(--main-color-very-dark)"
+            color="var(--grey-dark)"
             fontSize="1.2rem"
             fontWeight="bolder"
             onSubmit={submitHandler}

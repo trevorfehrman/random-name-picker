@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useFirestore, useUser, useFirestoreDocData } from 'reactfire'
+import { useFirestore, useFirestoreDocData } from 'reactfire'
 import { useParams, useHistory } from 'react-router-dom'
 import { Image, Box, FormErrorMessage, FormLabel, Input, Flex } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
@@ -9,6 +9,7 @@ import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 import FooterWithButtons from 'components/UI/FooterWithButtons'
 import styled from '@emotion/styled'
+import { useStudents, useTeacherRef } from 'helpers/firestoreHooks'
 
 const ContentsBox = styled.div`
   color: var(--grey-dark);
@@ -20,24 +21,21 @@ const ContentsBox = styled.div`
 
 const EditStudent: React.FC = () => {
   const params: StudentParams = useParams()
-  const history = useHistory()
   const studentId = params.studentId
+
+  const history = useHistory()
 
   const { handleSubmit, register, reset, errors } = useForm()
 
-  const { data: user } = useUser()
-  const teacherRef = useFirestore().collection('teachers').doc(user.uid)
-  const studentRef = teacherRef.collection('students').doc(studentId)
+  const teacherRef = useTeacherRef()
+  const { studentsRef } = useStudents()
+  const studentRef = studentsRef.doc(studentId)
 
   const studentDocument = useFirestoreDocData<IStudent>(studentRef).data
 
   const thisStudentInStudentGroupsRef = teacherRef
     .collection('studentsInStudentGroups')
     .where('studentId', '==', studentId)
-
-  // const studentsInStudentGroupsRef = teacherRef
-  //   .collection('studentsInStudentGroups')
-  //   .where('studentId', '==', studentId)
 
   React.useEffect(() => {
     const resetObject: Record<string, unknown> = {}
@@ -95,13 +93,6 @@ const EditStudent: React.FC = () => {
 
   return (
     <ContentsBox>
-      {/* <HeaderWithBackButton backHandler={backHandler}>
-        <Box w="100%" textAlign="center">
-          <Heading margin="0 auto" as="h1">
-            {studentDocument?.studentName}
-          </Heading>
-        </Box>
-      </HeaderWithBackButton> */}
       <form
         onSubmit={handleSubmit(submitHandler)}
         style={{

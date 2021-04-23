@@ -4,8 +4,9 @@ import styled from '@emotion/styled'
 import { useHistory } from 'react-router-dom'
 
 import 'firebase/firestore'
-import { useFirestore, useFirestoreCollectionData } from 'reactfire'
+import { useFirestore } from 'reactfire'
 import ConfirmationModal from 'components/ConfirmationModal'
+import { useStudentGroups, useStudentsInThisStudentGroup } from 'helpers/firestoreHooks'
 
 const StudentGroupContainer = styled.div`
   border: 1px solid var(--grey-light);
@@ -36,20 +37,16 @@ type StudentGroupProps = {
   userId: string
 }
 
-const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, studentGroupName }) => {
+const StudentGroup: React.FC<StudentGroupProps> = ({ studentGroupId, studentGroupName }) => {
   // const [modalIsOpen, setModalIsOpen] = React.useState(false)
 
   const { onOpen, isOpen, onClose } = useDisclosure()
 
-  const studentGroupRef = useFirestore().collection('teachers').doc(userId).collection('studentGroups')
+  const { studentGroupsRef } = useStudentGroups()
 
-  const studentsInStudentGroupsRef = useFirestore()
-    .collection('teachers')
-    .doc(userId)
-    .collection('studentsInStudentGroups')
-    .where('studentGroupId', '==', studentGroupId)
-
-  const studentsInStudentGroupsDocuments = useFirestoreCollectionData(studentsInStudentGroupsRef).data
+  const { studentsInThisStudentGroupDocuments, studentsInThisStudentGroupRef } = useStudentsInThisStudentGroup(
+    studentGroupId,
+  )
 
   const history = useHistory()
 
@@ -61,8 +58,8 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
 
   const deleteHandler = (event: React.MouseEvent) => {
     event.stopPropagation()
-    batch.delete(studentGroupRef.doc(studentGroupId))
-    studentsInStudentGroupsRef
+    batch.delete(studentGroupsRef.doc(studentGroupId))
+    studentsInThisStudentGroupRef
       .get()
       .then(snapshot => {
         snapshot.docs.forEach(doc => {
@@ -97,8 +94,8 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ userId, studentGroupId, stu
               width="7.3rem"
               textTransform="uppercase"
             >
-              {studentsInStudentGroupsDocuments?.length}{' '}
-              {studentsInStudentGroupsDocuments?.length === 1 ? 'student' : 'students'}
+              {studentsInThisStudentGroupDocuments?.length}{' '}
+              {studentsInThisStudentGroupDocuments?.length === 1 ? 'student' : 'students'}
             </Box>
           </Flex>
         </Flex>
