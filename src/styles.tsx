@@ -30,9 +30,7 @@ export const StudentContainer = styled(motion.div)`
   transition: all 0.3s ease-in;
   &:hover {
     cursor: pointer;
-    transform: translateY(-0.2rem);
-    background-color: var(--main-color-very-light);
-    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--main-color-medium);
   }
 `
 
@@ -61,7 +59,4 @@ export const NameDisplayBox = styled.div`
   margin: auto;
   width: 100%;
   height: 100%;
-  &:hover {
-    cursor: pointer;
-  }
 `

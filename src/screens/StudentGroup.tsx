@@ -133,7 +133,13 @@ const StudentGroup: React.FC = () => {
         >
           <Box width="52%" height="100%" padding=".1rem" borderRadius="3px">
             {studentsInThisStudentGroupDocuments?.length === 0 ? (
-              <Flex width="100%" height="100%" direction="column" onClick={openManageGroupPageHandler}>
+              <Flex
+                width="100%"
+                height="100%"
+                direction="column"
+                onClick={openManageGroupPageHandler}
+                _hover={{ cursor: 'pointer' }}
+              >
                 <Heading textTransform="uppercase" as="h3" size="md" color="var(--main-color-medium)">
                   click here
                 </Heading>

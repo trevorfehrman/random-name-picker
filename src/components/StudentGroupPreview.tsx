@@ -20,14 +20,7 @@ const StudentGroupContainer = styled.div`
   padding: 1.1rem 0.8rem;
   &:hover {
     cursor: pointer;
-    background-color: var(--main-color-very-light);
-    transform: translateY(-0.2rem);
-    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.5);
-  }
-  &:active {
-    background-color: var(--main-color-light);
-    transform: translateY(-0.1rem);
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--main-color-medium);
   }
 `
 
