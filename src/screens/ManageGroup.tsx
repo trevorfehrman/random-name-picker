@@ -41,8 +41,6 @@ const ManageGroup: React.FC = () => {
     setSelectedStudents(selection)
   }
 
-  console.log(selectedStudents)
-
   const removeBatch = useFirestore().batch()
 
   const removeHandler = () => {

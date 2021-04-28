@@ -21,19 +21,6 @@ const StudentPreview: React.FC<StudentPreviewProps> = ({
 
   const { studentName, studentFacts, profilePic, docId } = student
 
-  // const selectHandler = () => {
-  //   let updatedStudentsToAdd
-  //   if (!isSelected) {
-  //     updatedStudentsToAdd = [...selectedStudentsToAdd, { studentId: docId, studentName, profilePic, studentFacts }]
-  //   } else {
-  //     updatedStudentsToAdd = selectedStudentsToAdd.filter(student => {
-  //       return student.studentId !== docId
-  //     })
-  //   }
-  //   setSelectedStudentsToAdd(updatedStudentsToAdd)
-  //   setIsSelected(!isSelected)
-  // }
-
   const checkHandler = (e: React.SyntheticEvent) => {
     e.preventDefault()
     setSelectedStudentsToAdd(prevSelectedStudents => {
