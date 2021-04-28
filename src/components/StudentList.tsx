@@ -12,15 +12,17 @@ const StudentBox = styled.div`
 
 type StudentListProps = {
   studentsInThisStudentGroup: IStudentInStudentGroup[]
-  studentGroupId: string
   selectedStudentId: string
+  openManageGroupPageHandler: () => void
 }
 
-const StudentList: React.FC<StudentListProps> = ({ studentsInThisStudentGroup, selectedStudentId, studentGroupId }) => {
+const StudentList: React.FC<StudentListProps> = ({
+  studentsInThisStudentGroup,
+  selectedStudentId,
+  openManageGroupPageHandler,
+}) => {
   const history = useHistory()
-  const openManageGroupPageHandler = () => {
-    history.push(`/manage-group/${studentGroupId}`)
-  }
+
   return (
     <Box width="100%" height="100%" position="relative" onClick={openManageGroupPageHandler}>
       <StudentBox>

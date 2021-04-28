@@ -2,10 +2,9 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore } from 'reactfire'
-import { Button, useDisclosure, Box, Heading } from '@chakra-ui/react'
+import { Button, Box, Heading, Flex } from '@chakra-ui/react'
 import { IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
-import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import { BodyBox } from 'styles'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
@@ -22,11 +21,8 @@ import {
   useStudentsInThisStudentGroup,
   useUnselectedStudents,
 } from 'helpers/firestoreHooks'
-import EditableStudentGroupName from 'components/EditableStudentGroupName'
 
 const StudentGroup: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
   const [noStudentSelected, setNoStudentSelected] = React.useState(true)
   const [unselected, setUnselected] = React.useState<IStudentInStudentGroup[]>([])
   const [fullScreenDisplayIsOpen, setFullScreenDisplayIsOpen] = React.useState(false)
@@ -90,6 +86,10 @@ const StudentGroup: React.FC = () => {
     }
   }
 
+  const openManageGroupPageHandler = () => {
+    history.push(`/manage-group/${studentGroupId}`)
+  }
+
   return (
     <>
       <BodyBox>
@@ -133,7 +133,20 @@ const StudentGroup: React.FC = () => {
         >
           <Box width="52%" height="100%" padding=".1rem" borderRadius="3px">
             {studentsInThisStudentGroupDocuments?.length === 0 ? (
-              <p>click here to add students</p>
+              <Flex
+                width="100%"
+                height="100%"
+                direction="column"
+                onClick={openManageGroupPageHandler}
+                _hover={{ cursor: 'pointer' }}
+              >
+                <Heading textTransform="uppercase" as="h3" size="md" color="var(--main-color-medium)">
+                  click here
+                </Heading>
+                <Heading as="h3" size="sm">
+                  to add students
+                </Heading>
+              </Flex>
             ) : (
               <StudentList
                 studentsInThisStudentGroup={studentsInThisStudentGroupDocuments
@@ -143,8 +156,8 @@ const StudentGroup: React.FC = () => {
                   .sort((a, b) => {
                     return +a.selected - +b.selected
                   })}
-                studentGroupId={studentGroupId}
                 selectedStudentId={studentGroupDocument?.selectedStudent?.studentId}
+                openManageGroupPageHandler={openManageGroupPageHandler}
               />
             )}
           </Box>
@@ -160,8 +173,6 @@ const StudentGroup: React.FC = () => {
             NEXT
           </Button>
         </Box>
-
-        <AddExistingStudentsModal onClose={onClose} isOpen={isOpen} studentGroupId={studentGroupId} />
 
         <FullScreenDisplay
           modalHeadingText="FullScreenMode"

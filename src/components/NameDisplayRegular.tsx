@@ -19,7 +19,7 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
   return (
     <NameDisplayBox onClick={selectStudentAndStudentFactHandler}>
       {selectedStudent === null || noStudentSelected ? (
-        <Flex justify="center" align="center" height="calc(85vw + 7.3rem)">
+        <Flex justify="center" align="center" height="calc(85vw + 7.3rem)" maxHeight="33rem">
           <Heading as="h3" fontSize="1.2rem" color="var(--grey-dark)" fontWeight="400">
             {'click "NEXT" to select'}
           </Heading>

@@ -9,6 +9,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  Checkbox,
 } from '@chakra-ui/react'
 import { IStudentToAdd, IStudentFact } from 'interfacesAndTypes'
 import StudentPreview from 'components/StudentPreview'
@@ -33,6 +34,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
   const { studentGroupDocument } = useStudentGroup(studentGroupId)
   const { studentDocuments } = useStudents()
+  const [selectedStudents, setSelectedStudents] = React.useState<string[]>([])
 
   const addBatch = useFirestore().batch()
 
@@ -81,34 +83,60 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
       .catch(err => console.log(err))
   }
 
-  const studentsNotInStudentGroup = studentDocuments
-    ?.filter(student => {
-      let studentIsInClass = false
-      studentsInThisStudentGroupDocuments?.forEach(studentInGroup => {
-        if (studentInGroup.studentId === student.docId) {
-          studentIsInClass = true
-        }
+  const studentsNotInStudentGroup = studentDocuments?.filter(student => {
+    let studentIsInStudentGroup = false
+    studentsInThisStudentGroupDocuments?.forEach(studentInGroup => {
+      if (studentInGroup.studentId === student.docId) {
+        studentIsInStudentGroup = true
+      }
+    })
+    return !studentIsInStudentGroup
+  })
+
+  const selectAllHandler = (e: React.SyntheticEvent) => {
+    e.preventDefault()
+    const selection: IStudentToAdd[] = []
+    if (selectedStudentsToAdd.length < studentsNotInStudentGroup.length) {
+      studentsNotInStudentGroup.forEach(studentInThisGroup => {
+        selection.push({
+          studentId: studentInThisGroup.docId,
+          studentName: studentInThisGroup.studentName,
+          profilePic: studentInThisGroup.profilePic,
+          studentFacts: studentInThisGroup.studentFacts,
+        })
       })
-      return !studentIsInClass
-    })
-    .map(doc => {
-      return (
-        <StudentPreview
-          key={doc.docId}
-          student={doc}
-          selectedStudentsToAdd={selectedStudentsToAdd}
-          setSelectedStudentsToAdd={setSelectedStudentsToAdd}
-        />
-      )
-    })
+    }
+    setSelectedStudentsToAdd(selection)
+  }
+
+  const studentsNotInThisStudentGroupDisplay = studentsNotInStudentGroup?.map(doc => {
+    return (
+      <StudentPreview
+        key={doc.docId}
+        student={doc}
+        selectedStudentsToAdd={selectedStudentsToAdd}
+        setSelectedStudentsToAdd={setSelectedStudentsToAdd}
+        selectedStudents={selectedStudents}
+        setSelectedStudents={setSelectedStudents}
+      />
+    )
+  })
+
+  console.log(selectedStudentsToAdd)
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent width="90%" alignSelf="center">
         <ModalHeader>Add Students</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
+          <Checkbox
+            onClick={selectAllHandler}
+            isChecked={selectedStudentsToAdd.length === studentsNotInStudentGroup?.length}
+          >
+            Select All
+          </Checkbox>
           <Box
             border="1px solid var(--grey-dark)"
             borderRadius="3px"
@@ -117,7 +145,9 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
             padding="10px"
             overflowY="auto"
           >
-            {studentsNotInStudentGroup?.length > 0 ? studentsNotInStudentGroup : 'All students already in group!'}
+            {studentsNotInStudentGroup?.length > 0
+              ? studentsNotInThisStudentGroupDisplay
+              : 'All students already in group!'}
           </Box>
         </ModalBody>
 
@@ -126,7 +156,8 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
             Cancel
           </Button>
           <Button
-            colorScheme="orange"
+            backgroundColor="var(--main-color-medium)"
+            color="var(--white)"
             mr={3}
             onClick={addExistingHandler}
             isDisabled={selectedStudentsToAdd.length === 0}

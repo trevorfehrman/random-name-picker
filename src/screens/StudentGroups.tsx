@@ -17,7 +17,7 @@ const GroupBox = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 4rem;
+  margin-bottom: 7rem;
 `
 
 const StudentGroups: React.FC = () => {

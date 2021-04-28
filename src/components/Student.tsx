@@ -12,18 +12,17 @@ import { useStudents, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 
 type StudentProps = {
   student: IStudent
-  docId: string
 }
 
-const Student: React.FC<StudentProps> = ({ student, docId }) => {
+const Student: React.FC<StudentProps> = ({ student }) => {
   const { onClose, onOpen, isOpen } = useDisclosure()
 
   const history = useHistory()
 
   const { studentsRef } = useStudents()
-  const thisStudentRef = studentsRef.doc(docId)
+  const thisStudentRef = studentsRef.doc(student.docId)
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
-  const allGroupsWithThisStudentRef = studentsInStudentGroupsRef.where('studentId', '==', docId)
+  const allGroupsWithThisStudentRef = studentsInStudentGroupsRef.where('studentId', '==', student.docId)
 
   const deleteBatch = useFirestore().batch()
 
@@ -42,7 +41,7 @@ const Student: React.FC<StudentProps> = ({ student, docId }) => {
   }
 
   const openEditStudentHandler = () => {
-    history.push(`/edit-student/${docId}`)
+    history.push(`/edit-student/${student.docId}`)
   }
 
   const openModalHandler = (e: React.SyntheticEvent) => {
