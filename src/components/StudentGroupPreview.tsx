@@ -1,11 +1,10 @@
 import * as React from 'react'
-import { Flex, Heading, useDisclosure, Box } from '@chakra-ui/react'
+import { Flex, Heading, useDisclosure, Box, Checkbox } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 import { useHistory } from 'react-router-dom'
 
 import 'firebase/firestore'
 import { useFirestore } from 'reactfire'
-import ConfirmationModal from 'components/ConfirmationModal'
 import { useStudentGroups, useStudentsInThisStudentGroup } from 'helpers/firestoreHooks'
 
 const StudentGroupContainer = styled.div`
@@ -27,10 +26,18 @@ const StudentGroupContainer = styled.div`
 type StudentGroupProps = {
   studentGroupId: string
   studentGroupName: string
-  userId: string
+  managerIsOpen: boolean
+  setSelectedToDelete: React.Dispatch<React.SetStateAction<string[]>>
+  selectedToDelete: string[]
 }
 
-const StudentGroup: React.FC<StudentGroupProps> = ({ studentGroupId, studentGroupName }) => {
+const StudentGroup: React.FC<StudentGroupProps> = ({
+  studentGroupId,
+  studentGroupName,
+  managerIsOpen,
+  selectedToDelete,
+  setSelectedToDelete,
+}) => {
   // const [modalIsOpen, setModalIsOpen] = React.useState(false)
 
   const { onOpen, isOpen, onClose } = useDisclosure()
@@ -47,31 +54,39 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ studentGroupId, studentGrou
     history.push(`/student-group/${studentGroupId}`)
   }
 
-  const batch = useFirestore().batch()
-
-  const deleteHandler = (event: React.MouseEvent) => {
-    event.stopPropagation()
-    batch.delete(studentGroupsRef.doc(studentGroupId))
-    studentsInThisStudentGroupRef
-      .get()
-      .then(snapshot => {
-        snapshot.docs.forEach(doc => {
-          batch.delete(doc.ref)
-        })
-        return batch.commit()
-      })
-      .catch(err => console.log(err))
-  }
-
   // const openHandler = (event: React.SyntheticEvent) => {
   //   event?.stopPropagation()
   //   onOpen()
   // }
 
+  const checkHandler = () => {
+    setSelectedToDelete(prevSelectedToDelete => {
+      console.log(prevSelectedToDelete.includes(studentGroupId))
+      if (prevSelectedToDelete.includes(studentGroupId)) {
+        return prevSelectedToDelete.filter(studentGroup => studentGroup !== studentGroupId)
+      } else return [...prevSelectedToDelete, studentGroupId]
+    })
+  }
+
   return (
     <>
-      <StudentGroupContainer onClick={openStudentGroupHandler}>
+      <StudentGroupContainer
+        onClick={
+          managerIsOpen
+            ? () => {
+                return
+              }
+            : openStudentGroupHandler
+        }
+      >
         <Flex justify="flex-start" alignItems="center">
+          {managerIsOpen ? (
+            <Checkbox
+              marginRight="1rem"
+              isChecked={selectedToDelete.includes(studentGroupId)}
+              onChange={checkHandler}
+            />
+          ) : null}
           <Flex direction="column">
             <Heading as="h2" fontSize="1.4rem" paddingBottom=".8rem">
               {studentGroupName}
@@ -99,15 +114,6 @@ const StudentGroup: React.FC<StudentGroupProps> = ({ studentGroupId, studentGrou
           </IconButton>
         </ButtonDiv> */}
       </StudentGroupContainer>
-      <ConfirmationModal
-        buttonText="Confirm"
-        modalHeadingText="Confirm Delete"
-        isOpen={isOpen}
-        onClose={onClose}
-        onConfirm={deleteHandler}
-      >
-        <p>{`Are you sure you want to delete "${studentGroupName}"?`}</p>
-      </ConfirmationModal>
     </>
   )
 }
