@@ -1,8 +1,6 @@
 import * as React from 'react'
 import 'firebase/firestore'
 
-import { useUser, useFirestore } from 'reactfire'
-
 import StudentGroupPreview from 'components/StudentGroupPreview'
 import styled from '@emotion/styled'
 import { BodyBox } from 'styles'
@@ -29,15 +27,11 @@ const StudentGroups: React.FC = () => {
 
   const [selectedToDelete, setSelectedToDelete] = React.useState<string[]>([])
 
-  const { data: user } = useUser()
-
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   const { studentGroupsDocuments, studentGroupsRef } = useStudentGroups()
 
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
-
-  const batch = useFirestore().batch()
 
   const deleteHandler = (event: React.MouseEvent) => {
     selectedToDelete.forEach(studentGroupId => {

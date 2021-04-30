@@ -1,11 +1,10 @@
 import * as React from 'react'
-import { Flex, Heading, useDisclosure, Box, Checkbox } from '@chakra-ui/react'
+import { Flex, Heading, Box, Checkbox } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 import { useHistory } from 'react-router-dom'
 
 import 'firebase/firestore'
-import { useFirestore } from 'reactfire'
-import { useStudentGroups, useStudentsInThisStudentGroup } from 'helpers/firestoreHooks'
+import { useStudentsInThisStudentGroup } from 'helpers/firestoreHooks'
 
 const StudentGroupContainer = styled.div`
   border: 1px solid var(--grey-light);
@@ -38,12 +37,6 @@ const StudentGroup: React.FC<StudentGroupProps> = ({
   selectedToDelete,
   setSelectedToDelete,
 }) => {
-  // const [modalIsOpen, setModalIsOpen] = React.useState(false)
-
-  const { onOpen, isOpen, onClose } = useDisclosure()
-
-  const { studentGroupsRef } = useStudentGroups()
-
   const { studentsInThisStudentGroupDocuments, studentsInThisStudentGroupRef } = useStudentsInThisStudentGroup(
     studentGroupId,
   )
@@ -53,11 +46,6 @@ const StudentGroup: React.FC<StudentGroupProps> = ({
   const openStudentGroupHandler = () => {
     history.push(`/student-group/${studentGroupId}`)
   }
-
-  // const openHandler = (event: React.SyntheticEvent) => {
-  //   event?.stopPropagation()
-  //   onOpen()
-  // }
 
   const checkHandler = () => {
     setSelectedToDelete(prevSelectedToDelete => {
@@ -107,12 +95,6 @@ const StudentGroup: React.FC<StudentGroupProps> = ({
             </Box>
           </Flex>
         </Flex>
-
-        {/* <ButtonDiv>
-          <IconButton icon={<Icon as={BiTrash} />} onClick={openHandler} aria-label="delete">
-            Delete
-          </IconButton>
-        </ButtonDiv> */}
       </StudentGroupContainer>
     </>
   )
