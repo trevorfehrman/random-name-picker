@@ -56,7 +56,7 @@ const StudentPreview: React.FC<StudentPreviewProps> = ({
       spacing="1rem"
       _hover={{ cursor: 'pointer' }}
     >
-      <Heading as="h3" size="md">
+      <Heading as="h3" size="md" textAlign="left">
         {studentName}
       </Heading>
     </Checkbox>
