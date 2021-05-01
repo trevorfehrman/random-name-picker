@@ -29,7 +29,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent alignSelf="center" width="90%">
         <ModalHeader>{modalHeadingText}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>{children}</ModalBody>
