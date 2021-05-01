@@ -1,58 +1,59 @@
 import * as React from 'react'
-import { Flex, Heading, Icon, IconButton, useDisclosure } from '@chakra-ui/react'
+import { Flex, Heading, Checkbox } from '@chakra-ui/react'
 // import { DeleteIcon } from '@chakra-ui/icons'
-import { BiTrash } from 'react-icons/bi'
-import { useFirestore } from 'reactfire'
-import ConfirmationModal from 'components/ConfirmationModal'
 import { StudentContainer } from 'styles'
 import { useHistory } from 'react-router-dom'
 import { Image } from '@chakra-ui/react'
 import { IStudent } from 'interfacesAndTypes'
-import { useStudents, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 
 type StudentProps = {
   student: IStudent
+  managerIsOpen: boolean
+  selectedToDelete: string[]
+  setSelectedToDelete: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-const Student: React.FC<StudentProps> = ({ student }) => {
-  const { onClose, onOpen, isOpen } = useDisclosure()
-
+const Student: React.FC<StudentProps> = ({ student, managerIsOpen, selectedToDelete, setSelectedToDelete }) => {
   const history = useHistory()
-
-  const { studentsRef } = useStudents()
-  const thisStudentRef = studentsRef.doc(student.docId)
-  const studentsInStudentGroupsRef = useStudentsInStudentGroups()
-  const allGroupsWithThisStudentRef = studentsInStudentGroupsRef.where('studentId', '==', student.docId)
-
-  const deleteBatch = useFirestore().batch()
 
   // TODO if the last unselected student gets deleted from a group the selected status of
   // the remaining students in that group needs to be reset
-  const deleteHandler = async (e: React.SyntheticEvent) => {
-    e.stopPropagation()
-    deleteBatch.delete(thisStudentRef)
-    const snapshot = await allGroupsWithThisStudentRef.get()
-    if (snapshot.docs.length > 0) {
-      snapshot.docs.forEach(doc => {
-        deleteBatch.delete(doc.ref)
-      })
-    }
-    deleteBatch.commit()
-  }
 
   const openEditStudentHandler = () => {
     history.push(`/edit-student/${student.docId}`)
   }
 
-  const openModalHandler = (e: React.SyntheticEvent) => {
-    e.stopPropagation()
-    onOpen()
+  const checkHandler = () => {
+    console.log(student.docId)
+    setSelectedToDelete(prevSelectedToDelete => {
+      console.log(prevSelectedToDelete.includes(student.docId))
+      if (prevSelectedToDelete.includes(student.docId)) {
+        return prevSelectedToDelete.filter(studentId => studentId !== student.docId)
+      } else return [...prevSelectedToDelete, student.docId]
+    })
   }
 
   return (
     <>
-      <StudentContainer onClick={openEditStudentHandler}>
+      <StudentContainer
+        onClick={
+          managerIsOpen
+            ? () => {
+                return
+              }
+            : openEditStudentHandler
+        }
+      >
         <Flex align="center">
+          {managerIsOpen ? (
+            <Checkbox
+              border="1px solid var(--main-color-light)"
+              borderRadius="3px"
+              marginRight="1rem"
+              isChecked={selectedToDelete.includes(student.docId)}
+              onChange={checkHandler}
+            />
+          ) : null}
           <Image
             src={student?.profilePic}
             fit="cover"
@@ -65,17 +66,7 @@ const Student: React.FC<StudentProps> = ({ student }) => {
             {student?.studentName}
           </Heading>
         </Flex>
-        <IconButton icon={<Icon as={BiTrash} />} aria-label="delete" onClick={openModalHandler} />
       </StudentContainer>
-      <ConfirmationModal
-        buttonText="Confirm"
-        modalHeadingText="Confirm Delete"
-        isOpen={isOpen}
-        onClose={onClose}
-        onConfirm={deleteHandler}
-      >
-        Are you sure you want to delete this student? They will be removed from all groups.
-      </ConfirmationModal>
     </>
   )
 }

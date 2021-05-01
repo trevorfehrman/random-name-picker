@@ -10,7 +10,13 @@ type ManageButtonProps = {
 
 const ManageButton: React.FC<ManageButtonProps> = ({ primaryText, secondaryText, setManagerIsOpen, managerIsOpen }) => {
   return (
-    <Button onClick={() => setManagerIsOpen(!managerIsOpen)} width="9rem" minHeight="2.5rem">
+    <Button
+      //   backgroundColor={managerIsOpen ? 'var(--white)' : 'var(--main-color-medium)'}
+      //   color={managerIsOpen ? 'var(--grey-dark)' : 'var(--white)'}
+      onClick={() => setManagerIsOpen(!managerIsOpen)}
+      width="9rem"
+      minHeight="2.5rem"
+    >
       {managerIsOpen ? secondaryText : primaryText}
     </Button>
   )
