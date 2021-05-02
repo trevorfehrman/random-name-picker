@@ -29,7 +29,7 @@ const StudentToManage: React.FC<StudentToManageProps> = ({ student, onCheck, sel
         <Box w="4rem" h="4rem">
           <Image src={student.studentInfo.profilePic} borderRadius="50%" boxSize="100%" fit="cover" />
         </Box>
-        <Heading as="h2" fontSize="1.25rem" marginLeft="1rem" letterSpacing=".05rem">
+        <Heading as="h2" fontSize="1.25rem" marginLeft="1rem" letterSpacing=".05rem" textAlign="left">
           {student.studentInfo.studentName}
         </Heading>
       </Flex>

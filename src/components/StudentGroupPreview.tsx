@@ -71,6 +71,8 @@ const StudentGroup: React.FC<StudentGroupProps> = ({
           {managerIsOpen ? (
             <Checkbox
               marginRight="1rem"
+              border="1px solid var(--main-color-light)"
+              borderRadius="3px"
               isChecked={selectedToDelete.includes(studentGroupId)}
               onChange={checkHandler}
             />

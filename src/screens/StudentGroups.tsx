@@ -70,6 +70,8 @@ const StudentGroups: React.FC = () => {
             <Flex alignItems="center">
               <Checkbox
                 marginRight=".5rem"
+                border="1px solid var(--main-color-light)"
+                borderRadius="3px"
                 isChecked={selectedToDelete.length === studentGroupsDocuments.length}
                 onChange={selectAllHandler}
               />
