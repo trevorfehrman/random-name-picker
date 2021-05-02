@@ -1,24 +1,18 @@
 import * as React from 'react'
-import { Checkbox, Flex, Heading } from '@chakra-ui/react'
+import { Checkbox, Heading } from '@chakra-ui/react'
 import { IStudent, IStudentToAdd } from 'interfacesAndTypes'
 
 type StudentPreviewProps = {
   student: IStudent
   selectedStudentsToAdd: IStudentToAdd[]
   setSelectedStudentsToAdd: React.Dispatch<React.SetStateAction<IStudentToAdd[]>>
-  selectedStudents: string[]
-  setSelectedStudents: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const StudentPreview: React.FC<StudentPreviewProps> = ({
   student,
   selectedStudentsToAdd,
   setSelectedStudentsToAdd,
-  selectedStudents,
-  setSelectedStudents,
 }) => {
-  const [isSelected, setIsSelected] = React.useState(false)
-
   const { studentName, studentFacts, profilePic, docId } = student
 
   const checkHandler = (e: React.SyntheticEvent) => {
@@ -50,7 +44,6 @@ const StudentPreview: React.FC<StudentPreviewProps> = ({
       justify="space-between"
       padding=".6rem"
       onClick={checkHandler}
-      backgroundColor={isSelected ? 'var(--main-color-very-light)' : 'null'}
       marginTop="3px"
       borderRadius="5px"
       spacing="1rem"

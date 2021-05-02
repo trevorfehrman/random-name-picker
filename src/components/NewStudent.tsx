@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Flex, Input, FormErrorMessage, FormLabel } from '@chakra-ui/react'
 import { FormBox, FormControlWithMargin } from 'styles'
-import firebase from 'firebase'
 import { useForm } from 'react-hook-form'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'

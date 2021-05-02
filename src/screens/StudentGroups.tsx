@@ -33,7 +33,7 @@ const StudentGroups: React.FC = () => {
 
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
 
-  const deleteHandler = (event: React.MouseEvent) => {
+  const deleteHandler = () => {
     selectedToDelete.forEach(studentGroupId => {
       const batch = firebase.firestore().batch()
       batch.delete(studentGroupsRef.doc(studentGroupId))

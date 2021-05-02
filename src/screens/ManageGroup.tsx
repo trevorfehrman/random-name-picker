@@ -1,9 +1,9 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { useStudentsInThisStudentGroup, useStudentGroup, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
+import { useStudentsInThisStudentGroup, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import { BodyBox } from 'styles'
-import { Button, IconButton, useDisclosure, Flex, Box, Checkbox, Heading, CheckboxGroup } from '@chakra-ui/react'
+import { Button, IconButton, useDisclosure, Flex, Checkbox, Heading } from '@chakra-ui/react'
 import StudentToManage from 'components/StudentToManage'
 import { DeleteIcon } from '@chakra-ui/icons'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
@@ -21,8 +21,6 @@ const ManageGroup: React.FC = () => {
   const [selectedStudents, setSelectedStudents] = React.useState<string[]>([])
 
   const { studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(studentGroupId)
-
-  const { studentGroupRef } = useStudentGroup(studentGroupId)
 
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
 

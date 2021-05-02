@@ -3,7 +3,6 @@ import { Box } from '@chakra-ui/react'
 import { IStudentInStudentGroup } from 'interfacesAndTypes'
 import StudentInGroup from 'components/StudentInGroup'
 import styled from '@emotion/styled'
-import { useHistory } from 'react-router'
 
 const StudentBox = styled.div`
   width: 100%;
@@ -21,8 +20,6 @@ const StudentList: React.FC<StudentListProps> = ({
   selectedStudentId,
   openManageGroupPageHandler,
 }) => {
-  const history = useHistory()
-
   return (
     <Box width="100%" height="100%" position="relative" onClick={openManageGroupPageHandler}>
       <StudentBox>
