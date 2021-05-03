@@ -40,7 +40,7 @@ const ManageStudents: React.FC = () => {
     setSelectedToDelete(updatedSelectedToDelete)
   }
 
-  const deleteHandler = async (event: React.MouseEvent) => {
+  const deleteHandler = async () => {
     selectedToDelete.forEach(async studentId => {
       const deleteBatch = firebase.firestore().batch()
       deleteBatch.delete(studentsRef.doc(studentId))

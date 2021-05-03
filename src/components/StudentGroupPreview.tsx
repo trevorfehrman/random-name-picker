@@ -37,9 +37,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({
   selectedToDelete,
   setSelectedToDelete,
 }) => {
-  const { studentsInThisStudentGroupDocuments, studentsInThisStudentGroupRef } = useStudentsInThisStudentGroup(
-    studentGroupId,
-  )
+  const { studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(studentGroupId)
 
   const history = useHistory()
 

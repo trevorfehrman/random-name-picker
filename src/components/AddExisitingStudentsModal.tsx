@@ -34,7 +34,6 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
   const { studentGroupDocument } = useStudentGroup(studentGroupId)
   const { studentDocuments } = useStudents()
-  const [selectedStudents, setSelectedStudents] = React.useState<string[]>([])
 
   const addBatch = useFirestore().batch()
 
@@ -116,8 +115,6 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
         student={doc}
         selectedStudentsToAdd={selectedStudentsToAdd}
         setSelectedStudentsToAdd={setSelectedStudentsToAdd}
-        selectedStudents={selectedStudents}
-        setSelectedStudents={setSelectedStudents}
       />
     )
   })

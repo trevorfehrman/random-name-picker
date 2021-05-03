@@ -55,10 +55,19 @@ const StudentGroup: React.FC = () => {
   const updateBatch = useFirestore().batch()
 
   const selectStudentAndStudentFactHandler = async () => {
-    if (unselected.length === 0) {
+    if (studentsInThisStudentGroupDocuments.length === 0) {
       console.log('made it here')
       return
     }
+    if (unselected.length === 0 && studentsInThisStudentGroupDocuments.length !== 0) {
+      await resetSelectedStatusOnStudents(
+        updateBatch,
+        studentsInThisStudentGroupDocuments,
+        studentsInThisStudentGroupRef,
+      )
+      return
+    }
+
     const selectedStudent = unselected[0]
     console.log(selectedStudent)
     const { selectedStudentWithStudentFact, updatedStudentFacts } = addSelectedStudentFactAndRefillStudentFactsIfEmpty(
