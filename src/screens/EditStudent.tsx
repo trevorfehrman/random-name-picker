@@ -99,7 +99,7 @@ const EditStudent: React.FC = () => {
           width: '100%',
         }}
       >
-        <Box width="100%" overflowY="auto" maxHeight="70%" margin="auto" height="80vh">
+        <Box width="100%" overflowY="auto" maxHeight="70%" margin="0 auto 2rem auto" paddingBottom="2rem" height="95vh">
           <Box>
             <Image
               w="9.5rem"
