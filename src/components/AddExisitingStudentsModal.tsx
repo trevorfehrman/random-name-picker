@@ -20,6 +20,8 @@ import {
   useStudents,
   useStudentsInStudentGroups,
 } from 'helpers/firestoreHooks'
+import FooterWithButtons from './UI/FooterWithButtons'
+import FooterForAddExistingStudentsModal from './FooterForAddExistingStudentsModal'
 
 type AddExistingStudentsModalProps = {
   onClose: () => void
@@ -131,11 +133,12 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
           <Checkbox
             onClick={selectAllHandler}
             isChecked={selectedStudentsToAdd.length === studentsNotInStudentGroup?.length}
+            margin="0 0 .5rem 1.3rem"
           >
             Select All
           </Checkbox>
           <Box
-            border="1px solid var(--grey-dark)"
+            borderTop="1px solid var(--grey-light)"
             borderRadius="3px"
             maxHeight="50vh"
             minHeight="100px"
@@ -162,6 +165,7 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
             Add To Group
           </Button>
         </ModalFooter>
+        <FooterForAddExistingStudentsModal onCancel={onClose} addExistingHandler={addExistingHandler} />
       </ModalContent>
     </Modal>
   )
