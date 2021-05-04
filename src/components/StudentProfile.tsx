@@ -20,7 +20,15 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
       <Heading as="h2" letterSpacing=".1em" fontSize="1.4rem" textAlign="center" alignSelf="flex-end">
         {selectedStudent?.studentInfo.studentName}
       </Heading>
-      <Flex justifyContent="center" w="85vw" h="85vw" maxWidth="26rem" maxHeight="26rem" overflow="hidden">
+      <Flex
+        justifyContent="center"
+        w="85vw"
+        h="85vw"
+        maxWidth="26rem"
+        maxHeight="26rem"
+        overflow="hidden"
+        position="relative"
+      >
         <Image
           boxSize="100%"
           borderRadius="5px"
@@ -29,6 +37,15 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
           objectFit="cover"
           marginBottom=".2rem"
         />
+        <Flex
+          width="100%"
+          height="3rem"
+          position="absolute"
+          bottom={0}
+          left={0}
+          backgroundColor="rgba(0, 0, 0, .7)"
+          zIndex={500}
+        ></Flex>
       </Flex>
       <Flex
         direction="column"
