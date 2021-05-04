@@ -48,7 +48,20 @@ export const BodyBox = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  max-width: 75rem;
+  margin: auto;
+  overflow: auto;
+  padding: 1.3rem;
+  position: relative;
+`
+
+export const BodyBoxResponseHeight = styled.div`
+  color: var(--grey-dark);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
   overflow: auto;
   padding: 1.3rem;
   position: relative;

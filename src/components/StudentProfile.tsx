@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Flex, Heading, Image } from '@chakra-ui/react'
+import { Flex, Heading, Image, Box } from '@chakra-ui/react'
 import { ISelectedStudent } from 'interfacesAndTypes'
 
 type StudentProfileProps = {
@@ -14,13 +14,13 @@ const StudentProfile: React.FC<StudentProfileProps> = ({ selectedStudent }) => {
       alignItems="center"
       w="100%"
       margin="auto"
-      maxWidth="28rem"
-      maxHeight="33rem"
+      maxWidth="26rem"
+      maxHeight="34rem"
     >
       <Heading as="h2" letterSpacing=".1em" fontSize="1.4rem" textAlign="center" alignSelf="flex-end">
         {selectedStudent?.studentInfo.studentName}
       </Heading>
-      <Flex justifyContent="center" w="85vw" h="85vw" maxWidth="28rem" maxHeight="28rem">
+      <Flex justifyContent="center" w="85vw" h="85vw" maxWidth="26rem" maxHeight="26rem" overflow="hidden">
         <Image
           boxSize="100%"
           borderRadius="5px"

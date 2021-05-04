@@ -5,7 +5,7 @@ import { useFirestore } from 'reactfire'
 import { Button, Box, Heading, Flex } from '@chakra-ui/react'
 import { IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
-import { BodyBox } from 'styles'
+import { BodyBoxResponseHeight } from 'styles'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
 import {
@@ -55,19 +55,10 @@ const StudentGroup: React.FC = () => {
   const updateBatch = useFirestore().batch()
 
   const selectStudentAndStudentFactHandler = async () => {
-    if (studentsInThisStudentGroupDocuments.length === 0) {
+    if (unselected.length === 0) {
       console.log('made it here')
       return
     }
-    if (unselected.length === 0 && studentsInThisStudentGroupDocuments.length !== 0) {
-      await resetSelectedStatusOnStudents(
-        updateBatch,
-        studentsInThisStudentGroupDocuments,
-        studentsInThisStudentGroupRef,
-      )
-      return
-    }
-
     const selectedStudent = unselected[0]
     console.log(selectedStudent)
     const { selectedStudentWithStudentFact, updatedStudentFacts } = addSelectedStudentFactAndRefillStudentFactsIfEmpty(
@@ -101,11 +92,11 @@ const StudentGroup: React.FC = () => {
 
   return (
     <>
-      <BodyBox>
+      <BodyBoxResponseHeight>
         <Box
           position="relative"
-          width="92%"
-          maxWidth="28rem"
+          width="96%"
+          maxWidth="26rem"
           height="2.5rem"
           display="flex"
           justifyContent="space-between"
@@ -197,7 +188,7 @@ const StudentGroup: React.FC = () => {
             noStudentSelected={noStudentSelected}
           />
         </FullScreenDisplay>
-      </BodyBox>
+      </BodyBoxResponseHeight>
     </>
   )
 }

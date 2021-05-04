@@ -21,7 +21,13 @@ const StudentList: React.FC<StudentListProps> = ({
   openManageGroupPageHandler,
 }) => {
   return (
-    <Box width="100%" height="100%" position="relative" onClick={openManageGroupPageHandler}>
+    <Box
+      width="100%"
+      height="100%"
+      position="relative"
+      onClick={openManageGroupPageHandler}
+      _hover={{ cursor: 'pointer' }}
+    >
       <StudentBox>
         {studentsInThisStudentGroup?.map(doc => {
           return <StudentInGroup key={doc.studentId} student={doc} selectedStudentId={selectedStudentId} />
