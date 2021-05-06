@@ -6,8 +6,15 @@ import StudentProfile from 'components/StudentProfile'
 type NameDisplayFullScreenProps = {
   selectedStudent: ISelectedStudent | null
   noStudentSelected: boolean
+  fullScreenDisplayIsOpen: boolean
+  setFullScreenDisplayIsOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
-const NameDisplayFullScreen: React.FC<NameDisplayFullScreenProps> = ({ selectedStudent, noStudentSelected }) => {
+const NameDisplayFullScreen: React.FC<NameDisplayFullScreenProps> = ({
+  selectedStudent,
+  noStudentSelected,
+  fullScreenDisplayIsOpen,
+  setFullScreenDisplayIsOpen,
+}) => {
   return (
     <Flex w="100%" justify="center" align="center" height="100%">
       {selectedStudent === null || noStudentSelected ? (
@@ -15,7 +22,11 @@ const NameDisplayFullScreen: React.FC<NameDisplayFullScreenProps> = ({ selectedS
           {'click to select'}
         </Heading>
       ) : (
-        <StudentProfile selectedStudent={selectedStudent} />
+        <StudentProfile
+          selectedStudent={selectedStudent}
+          setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
+          fullScreenDisplayIsOpen={fullScreenDisplayIsOpen}
+        />
       )}
     </Flex>
   )

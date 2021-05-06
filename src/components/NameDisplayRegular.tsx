@@ -7,15 +7,11 @@ import StudentProfile from './StudentProfile'
 
 const NameDisplayRegular: React.FC<NameDisplayProps> = ({
   selectedStudent,
+  fullScreenDisplayIsOpen,
   setFullScreenDisplayIsOpen,
   selectStudentAndStudentFactHandler,
   noStudentSelected,
 }) => {
-  const expandHandler = (e: React.SyntheticEvent) => {
-    e.stopPropagation()
-    setFullScreenDisplayIsOpen(true)
-  }
-
   return (
     <NameDisplayBox onClick={selectStudentAndStudentFactHandler}>
       {selectedStudent === null || noStudentSelected ? (
@@ -25,18 +21,12 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
           </Heading>
         </Flex>
       ) : (
-        <StudentProfile selectedStudent={selectedStudent} />
+        <StudentProfile
+          selectedStudent={selectedStudent}
+          setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
+          fullScreenDisplayIsOpen={fullScreenDisplayIsOpen}
+        />
       )}
-      {/* <IconButton
-        icon={<Icon as={BiExpand} />}
-        aria-label="expand"
-        onClick={expandHandler}
-        position="absolute"
-        right="6.3rem"
-        bottom="6rem"
-        size="sm"
-        border="1px solid var(--grey-dark)"
-      /> */}
     </NameDisplayBox>
   )
 }
