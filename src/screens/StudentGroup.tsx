@@ -111,6 +111,7 @@ const StudentGroup: React.FC = () => {
         <Box width="85vw" maxWidth="40rem" maxHeight="40rem">
           <NameDisplay
             selectedStudent={studentGroupDocument?.selectedStudent}
+            fullScreenDisplayIsOpen={fullScreenDisplayIsOpen}
             setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
             selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
             noStudentSelected={noStudentSelected}
@@ -183,6 +184,7 @@ const StudentGroup: React.FC = () => {
           <NameDisplay
             selectedStudent={studentGroupDocument?.selectedStudent}
             isFullScreen
+            fullScreenDisplayIsOpen={fullScreenDisplayIsOpen}
             setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
             selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
             noStudentSelected={noStudentSelected}

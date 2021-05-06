@@ -6,6 +6,7 @@ import NameDisplayRegular from 'components/NameDisplayRegular'
 const NameDisplay: React.FC<NameDisplayProps> = ({
   selectedStudent,
   isFullScreen,
+  fullScreenDisplayIsOpen,
   setFullScreenDisplayIsOpen,
   selectStudentAndStudentFactHandler,
   noStudentSelected,
@@ -13,10 +14,16 @@ const NameDisplay: React.FC<NameDisplayProps> = ({
   return (
     <>
       {isFullScreen ? (
-        <NameDisplayFullScreen selectedStudent={selectedStudent} noStudentSelected={noStudentSelected} />
+        <NameDisplayFullScreen
+          selectedStudent={selectedStudent}
+          noStudentSelected={noStudentSelected}
+          fullScreenDisplayIsOpen={fullScreenDisplayIsOpen}
+          setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
+        />
       ) : (
         <NameDisplayRegular
           selectedStudent={selectedStudent}
+          fullScreenDisplayIsOpen={fullScreenDisplayIsOpen}
           setFullScreenDisplayIsOpen={setFullScreenDisplayIsOpen}
           selectStudentAndStudentFactHandler={selectStudentAndStudentFactHandler}
           noStudentSelected={noStudentSelected}
