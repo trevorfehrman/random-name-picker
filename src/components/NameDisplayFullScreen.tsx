@@ -18,9 +18,11 @@ const NameDisplayFullScreen: React.FC<NameDisplayFullScreenProps> = ({
   return (
     <Flex w="100%" justify="center" align="center" height="100%">
       {selectedStudent === null || noStudentSelected ? (
-        <Heading as="h3" fontSize="1.5rem">
-          {'click to select'}
-        </Heading>
+        <Flex direction="column" justifyContent="center">
+          <Heading as="h3" fontSize="1.5rem">
+            {'click to select'}
+          </Heading>
+        </Flex>
       ) : (
         <StudentProfile
           selectedStudent={selectedStudent}

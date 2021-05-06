@@ -23,9 +23,19 @@ const NameDisplayRegular: React.FC<NameDisplayProps> = ({
       }
     >
       {selectedStudent === null || noStudentSelected ? (
-        <Flex justify="center" align="center" height="calc(85vw + 7.3rem)" maxHeight="33rem">
-          <Heading as="h3" fontSize="1.2rem" color="var(--grey-dark)" fontWeight="400">
+        <Flex direction="column" justify="center" align="center" height="calc(85vw + 7.3rem)" maxHeight="33rem">
+          <Heading as="h3" fontSize="1.5rem" color="var(--grey-dark)" fontWeight="400">
             {'click "NEXT" to select'}
+          </Heading>
+          <Heading
+            as="h3"
+            fontSize="1.2rem"
+            onClick={() => setFullScreenDisplayIsOpen(true)}
+            color="var(--main-color-medium)"
+            marginTop="1rem"
+            _hover={{ color: 'var(--main-color-dark)', cursor: 'pointer' }}
+          >
+            {'click Here for Full Screen'}
           </Heading>
         </Flex>
       ) : (
