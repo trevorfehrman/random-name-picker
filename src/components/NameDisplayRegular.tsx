@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { NameDisplayBox } from 'styles'
-import { Heading, IconButton, Icon, Flex } from '@chakra-ui/react'
-import { BiExpand } from 'react-icons/bi'
+import { Heading, Flex } from '@chakra-ui/react'
 import { NameDisplayProps } from 'interfacesAndTypes'
 import StudentProfile from './StudentProfile'
 

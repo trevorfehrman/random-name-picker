@@ -18,11 +18,11 @@ export const updateStudentFactsOnFirebase: (
   }
 }
 
-export const resetSelectedStatusOnStudents: (
+export const resetSelectedStatusOnStudents = (
   updateBatch: firebase.firestore.WriteBatch,
   studentsInThisStudentGroupDocuments: IStudentInStudentGroup[],
   studentsInThisStudentGroupRef: firebase.firestore.Query<firebase.firestore.DocumentData>,
-) => void = (updateBatch, studentsInThisStudentGroupDocuments, studentsInThisStudentGroupRef) => {
+): void => {
   const orderArray: number[] = []
   for (let i = 0; i <= studentsInThisStudentGroupDocuments.length; i++) {
     orderArray[i] = i
@@ -75,10 +75,10 @@ const resetStudentFacts: (selectedStudent: IStudentInStudentGroup, studentDocume
   return updatedStudentFactsReset
 }
 
-const updateSelectedStudentObject: (
+const updateSelectedStudentObject = (
   selectedStudent: IStudentInStudentGroup,
   selectedFact: IStudentFact,
-) => ISelectedStudent = (selectedStudent, selectedFact) => {
+): ISelectedStudent => {
   const selectedStudentWithStudentFact: ISelectedStudent = {
     ...selectedStudent,
     studentInfo: {

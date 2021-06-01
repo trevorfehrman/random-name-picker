@@ -27,13 +27,13 @@ interface IUseStudentGroups {
   studentGroupsDocuments: IStudentGroup[]
 }
 
-export const useTeacherRef: () => firebase.firestore.DocumentReference = () => {
+export const useTeacherRef = (): firebase.firestore.DocumentReference => {
   const { data } = useUser()
   const teacherRef = useFirestore().collection('teachers').doc(data.uid)
   return teacherRef
 }
 
-export const useStudentGroups: () => IUseStudentGroups = () => {
+export const useStudentGroups = (): IUseStudentGroups => {
   const teacherRef = useTeacherRef()
   const studentGroupsRef = teacherRef.collection('studentGroups')
   const studentGroupsDocuments = useFirestoreCollectionData<IStudentGroup & { docId: string }>(studentGroupsRef, {
@@ -42,7 +42,7 @@ export const useStudentGroups: () => IUseStudentGroups = () => {
   return { studentGroupsRef, studentGroupsDocuments }
 }
 
-export const useStudentGroup: (studentGroupId: string) => IUseStudentGroup = (studentGroupId: string) => {
+export const useStudentGroup = (studentGroupId: string): IUseStudentGroup => {
   const teacherRef = useTeacherRef()
   const studentGroupRef = teacherRef.collection('studentGroups').doc(studentGroupId)
   const studentGroupDocument = useFirestoreDocData<IStudentGroup & { docId: string }>(studentGroupRef, {
@@ -55,7 +55,7 @@ export const useStudentGroup: (studentGroupId: string) => IUseStudentGroup = (st
   }
 }
 
-export const useStudents: () => IUseStudents = () => {
+export const useStudents = (): IUseStudents => {
   const teacherRef = useTeacherRef()
   const studentsRef = teacherRef.collection('students')
   const studentDocuments = useFirestoreCollectionData<IStudent & { docId: string }>(studentsRef, { idField: 'docId' })
@@ -63,15 +63,13 @@ export const useStudents: () => IUseStudents = () => {
   return { studentDocuments, studentsRef }
 }
 
-export const useStudentsInStudentGroups: () => firebase.firestore.CollectionReference = () => {
+export const useStudentsInStudentGroups = (): firebase.firestore.CollectionReference => {
   const teacherRef = useTeacherRef()
   const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups')
   return studentsInStudentGroupsRef
 }
 
-export const useStudentsInThisStudentGroup: (studentGroupId: string) => IUseStudentsInThisStudentGroup = (
-  studentGroupId: string,
-) => {
+export const useStudentsInThisStudentGroup = (studentGroupId: string): IUseStudentsInThisStudentGroup => {
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
   const studentsInThisStudentGroupRef = studentsInStudentGroupsRef.where('studentGroupId', '==', studentGroupId)
   const studentsInThisStudentGroupDocuments = useFirestoreCollectionData<IStudentInStudentGroup & { docId: string }>(
@@ -81,7 +79,7 @@ export const useStudentsInThisStudentGroup: (studentGroupId: string) => IUseStud
   return { studentsInThisStudentGroupRef, studentsInThisStudentGroupDocuments }
 }
 
-export const useUnselectedStudents: (studentGroupId: string) => IUseUnselectedStudents = (studentGroupId: string) => {
+export const useUnselectedStudents = (studentGroupId: string): IUseUnselectedStudents => {
   const teacherRef = useTeacherRef()
   const studentsInStudentGroupsRef = teacherRef.collection('studentsInStudentGroups')
   const unselectedStudentsRef = studentsInStudentGroupsRef
