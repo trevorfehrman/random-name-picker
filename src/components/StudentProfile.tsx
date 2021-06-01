@@ -24,31 +24,33 @@ const FullScreenOption = styled(Box)`
   align-items: center;
 `
 
-const ImageBox = styled(Box)`
-  width: 85vw;
-  height: 85vw;
-  max-width: 26rem;
-  max-height: 26rem;
-  overflow: hidden;
-  position: relative;
-
-  border-radius: 5px;
-  ${FullScreenOption} {
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-  &:hover {
-    ${FullScreenOption} {
-      opacity: 1;
-    }
-  }
-`
-
 const StudentProfile: React.FC<StudentProfileProps> = ({
   selectedStudent,
   setFullScreenDisplayIsOpen,
   fullScreenDisplayIsOpen,
 }) => {
+  const ImageBox = styled(Box)`
+    width: 85vw;
+    height: 85vw;
+    max-width: 26rem;
+    max-height: 26rem;
+    overflow: hidden;
+    position: relative;
+
+    border-radius: 5px;
+    ${FullScreenOption} {
+      z-index: -5;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    &:hover {
+      ${FullScreenOption} {
+        z-index: ${fullScreenDisplayIsOpen ? -5 : 500};
+        opacity: ${fullScreenDisplayIsOpen ? 0 : 1};
+      }
+    }
+  `
+
   const expandHandler = (e: React.SyntheticEvent) => {
     e.stopPropagation()
     fullScreenDisplayIsOpen ? setFullScreenDisplayIsOpen(false) : setFullScreenDisplayIsOpen(true)

@@ -150,8 +150,6 @@ const EditStudent: React.FC = () => {
             {studentFactInputs.map(studentFactInput => {
               return <StudentFactInput key={studentFactInput} register={register} studentFactInput={studentFactInput} />
             })}
-
-            {/* <SubmitButton text="Submit Changes" /> */}
           </Flex>
         </Box>
         <FooterWithButtons onCancel={onCancel} submitText="SUBMIT CHANGES" />

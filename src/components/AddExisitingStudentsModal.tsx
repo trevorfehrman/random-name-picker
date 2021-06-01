@@ -20,7 +20,6 @@ import {
   useStudents,
   useStudentsInStudentGroups,
 } from 'helpers/firestoreHooks'
-import FooterWithButtons from './UI/FooterWithButtons'
 import FooterForAddExistingStudentsModal from './FooterForAddExistingStudentsModal'
 
 type AddExistingStudentsModalProps = {
