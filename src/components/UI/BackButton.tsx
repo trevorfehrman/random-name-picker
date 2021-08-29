@@ -13,8 +13,6 @@ const BackButton: React.FC<BackButtonProps> = ({ backHandler }) => {
       onClick={backHandler}
       icon={<Icon fontSize="1.4rem" color="var(--main-color-medium)" as={BiArrowBack} />}
       aria-label="back"
-      top={0}
-      left={0}
       border="1px solid var(--main-color-medium)"
       backgroundColor="var(--white)"
       zIndex={10}

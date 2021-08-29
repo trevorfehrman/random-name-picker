@@ -103,3 +103,7 @@ body {
   --grey-light: #e2e8f0;
   --white: #fff;
 } */
+
+.noHighlightOnClick {
+  -webkit-tap-highlight-color: transparent;
+}

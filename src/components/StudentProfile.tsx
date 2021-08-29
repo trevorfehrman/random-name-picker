@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Flex, Heading, Image, Box, IconButton, Icon } from '@chakra-ui/react'
+import { Flex, Image, Box, IconButton, Icon } from '@chakra-ui/react'
 import { BiExpand, BiCollapse } from 'react-icons/bi'
 import { ISelectedStudent } from 'interfacesAndTypes'
 import styled from '@emotion/styled/macro'
@@ -65,9 +65,6 @@ const StudentProfile: React.FC<StudentProfileProps> = ({
       maxWidth="26rem"
       maxHeight="34rem"
     >
-      <Heading as="h2" letterSpacing=".1em" fontSize="1.4rem" textAlign="center" alignSelf="flex-end">
-        {selectedStudent?.studentInfo.studentName}
-      </Heading>
       <ImageBox>
         <Image boxSize="100%" borderRadius="5px" src={selectedStudent?.studentInfo.profilePic} objectFit="cover" />
         <FullScreenOption>
@@ -89,27 +86,6 @@ const StudentProfile: React.FC<StudentProfileProps> = ({
           />
         </FullScreenOption>
       </ImageBox>
-      <Flex
-        direction="column"
-        // w={{ base: '16rem', md: '26rem', lg: '33rem' }}
-        justify="flex-start"
-        padding="0"
-        alignSelf="flex-start"
-        alignItems="flex-start"
-        minHeight="5.5rem"
-      >
-        {selectedStudent?.studentInfo?.selectedFact && (
-          <Flex direction="column" justify="flex-start" alignItems="flex-start" lineHeight="28px">
-            <Heading as="h2" fontSize="1.1rem" color="var(--main-color-medium)" width="100%">
-              {selectedStudent.studentInfo.selectedFact.title}
-            </Heading>
-
-            <Heading as="h2" fontSize="1.5rem" letterSpacing=".05em">
-              {selectedStudent.studentInfo.selectedFact.value}
-            </Heading>
-          </Flex>
-        )}
-      </Flex>
     </Flex>
   )
 }
