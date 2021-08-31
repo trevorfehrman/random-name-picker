@@ -5,7 +5,6 @@ import { useFirestore } from 'reactfire'
 import { Button, Box, Heading, Flex } from '@chakra-ui/react'
 import { IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
-import { BodyBoxResponseHeight } from 'styles'
 import NameDisplay from 'components/NameDisplay'
 import StudentList from 'components/StudentList'
 import {
@@ -92,23 +91,67 @@ const StudentGroup: React.FC = () => {
 
   return (
     <>
-      <BodyBoxResponseHeight>
+      <Box
+        display="grid"
+        gridTemplateRows={{ base: '5rem max-content 1fr max-content max-content', md: '5rem 5rem .5fr 2fr 1fr' }}
+        gridTemplateColumns={{
+          base: '1fr minmax(150px, max-content) 1fr',
+          md: 'minmax(min-content, 50%) minmax(40%, 50%)',
+          lg: '10% 40% 40% 10%',
+          xl: '15% 35% 35% 15%',
+        }}
+        gridTemplateAreas={{
+          base: `'backBtnGroupName   backBtnGroupName   backBtnGroupName  '
+                '        .           studentName           .              '
+                '        .           studentPicture        .              '
+                '        .           studentFact           .              '
+                'studentListNextBtn  studentListNextBtn studentListNextBtn'`,
+          md: `'backBtnGroupName backBtnGroupName'
+                '      .                .        '
+                'studentPicture  studentName'
+                'studentPicture  studentFact'
+                'studentPicture  studentListNextBtn'`,
+          lg: `'backBtnGroupName backBtnGroupName backBtnGroupName backBtnGroupName'
+               '        .               .                .                 .       '
+              '         .        studentPicture   studentName              .       '
+              '         .        studentPicture   studentFact              .       '
+              '         .        studentPicture   studentListNextBtn       .       '`,
+        }}
+        alignItems={{ base: 'center', lg: 'center' }}
+        alignContent="center"
+        justifyItems="center"
+      >
         <Box
           position="relative"
-          width="96%"
-          maxWidth="26rem"
+          width="100%"
           height="2.5rem"
           display="flex"
           justifyContent="space-between"
           alignItems="flex-end"
+          gridArea="backBtnGroupName"
+          padding="0 1rem"
         >
           <BackButton backHandler={backHandler} />
-          <Heading as="h3" size="sm" textAlign="end">
+
+          {/* <EditableStudentGroupName studentGroupId={studentGroupId} /> */}
+          <Heading as="h3" fontSize={{ base: '1rem', md: '1.4rem', lg: '1.7rem' }} textAlign="end" alignSelf="center">
             {studentGroupDocument?.studentGroupName}
           </Heading>
-          {/* <EditableStudentGroupName studentGroupId={studentGroupId} /> */}
         </Box>
-        <Box width="85vw" maxWidth="40rem" maxHeight="40rem">
+
+        <Heading
+          as="h2"
+          letterSpacing=".1em"
+          fontSize={{ base: '1.4rem', md: '2rem', lg: '2.5rem' }}
+          textAlign="left"
+          alignSelf="flex-end"
+          gridArea="studentName"
+          justifySelf={{ base: 'end', md: 'start' }}
+          padding={{ base: 'none', md: '0 2rem' }}
+        >
+          {studentGroupDocument?.selectedStudent?.studentInfo.studentName}
+        </Heading>
+        <Box gridArea="studentPicture">
           <NameDisplay
             selectedStudent={studentGroupDocument?.selectedStudent}
             fullScreenDisplayIsOpen={fullScreenDisplayIsOpen}
@@ -118,21 +161,49 @@ const StudentGroup: React.FC = () => {
           />
         </Box>
 
-        {/* <Button alignSelf="flex-end" marginBottom=".3rem" onClick={onOpen}>
-          <Icon as={BiUserPlus} marginRight=".5rem" fontSize="2rem" />
-          Add Students
-        </Button> */}
+        {/* <Box width="85vw" maxWidth="40rem" maxHeight="40rem" gridArea="pic"></Box> */}
+        <Flex
+          direction="column"
+          justify="flex-start"
+          padding={{ base: 'none', md: '0 2rem' }}
+          justifySelf="start"
+          alignItems="flex-start"
+          minHeight="5.5rem"
+          gridArea="studentFact"
+        >
+          {studentGroupDocument?.selectedStudent?.studentInfo?.selectedFact && (
+            <Flex direction="column" justify="flex-start" alignItems="flex-start" lineHeight="28px">
+              <Heading
+                as="h2"
+                fontSize={{ base: '1.1rem', md: '1.6rem', lg: '2rem' }}
+                color="var(--main-color-medium)"
+                width="100%"
+              >
+                {studentGroupDocument.selectedStudent.studentInfo.selectedFact.title}
+              </Heading>
+
+              <Heading as="h2" fontSize={{ base: '1.5rem', md: '2.3rem', lg: '3rem' }} letterSpacing=".05em">
+                {studentGroupDocument.selectedStudent.studentInfo.selectedFact.value}
+              </Heading>
+            </Flex>
+          )}
+        </Flex>
+
         <Box
           width="100%"
           height="4.8rem"
+          minHeight={{ base: 'none', lg: '7.3rem' }}
           display="flex"
           justifyContent="space-between"
           alignItems="flex-start"
           overflowY="hidden"
           marginTop=".3rem"
-          maxWidth="30rem"
+          maxWidth={{ base: '30rem', lg: '35rem' }}
+          gridArea="studentListNextBtn"
+          padding={{ base: '0 1rem', md: '0 2rem' }}
+          justifySelf={{ base: 'center', md: 'start' }}
         >
-          <Box width="52%" height="100%" padding=".1rem" borderRadius="3px">
+          <Box width="100%" height="100%" borderRadius="3px">
             {studentsInThisStudentGroupDocuments?.length === 0 ? (
               <Flex
                 width="100%"
@@ -164,12 +235,14 @@ const StudentGroup: React.FC = () => {
           </Box>
           <Button
             minWidth="28%"
-            height="4.8rem"
+            height={{ base: '100%', lg: '80%' }}
             backgroundColor="var(--white)"
             color="var(--main-color-medium)"
             border="1px solid var(--main-color-medium)"
             fontSize="2rem"
             onClick={selectStudentAndStudentFactHandler}
+            alignSelf={{ base: 'flex-end', lg: 'center' }}
+            className="noHighlightOnClick"
           >
             NEXT
           </Button>
@@ -190,7 +263,8 @@ const StudentGroup: React.FC = () => {
             noStudentSelected={noStudentSelected}
           />
         </FullScreenDisplay>
-      </BodyBoxResponseHeight>
+      </Box>
+      {/* </BodyBoxResponseHeight> */}
     </>
   )
 }

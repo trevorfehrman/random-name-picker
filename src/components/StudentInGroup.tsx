@@ -11,7 +11,7 @@ type StudentInGroupProps = {
 const StudentInGroup: React.FC<StudentInGroupProps> = ({ student }) => {
   return (
     <StudentInGroupContainer layout style={{ color: student.selected ? 'var(--main-color-light)' : '' }}>
-      <Heading as="h3" size="sm">
+      <Heading as="h3" size="sm" fontSize={{ base: '1rem', lg: '1.5rem' }}>
         {student.studentInfo.studentName}
       </Heading>
     </StudentInGroupContainer>
