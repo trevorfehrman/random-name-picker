@@ -101,21 +101,21 @@ const StudentGroup: React.FC = () => {
           xl: '15% 35% 35% 15%',
         }}
         gridTemplateAreas={{
-          base: `'top top top'
-                '. name .'
-                '. pic .'
-                '. fact .'
-                'bottom bottom bottom'`,
-          md: `'top top'
-                '. .'
-                'pic name'
-                'pic fact'
-                'pic bottom'`,
-          lg: `'top top top top'
-          '. . . . '
-              '. pic name .'
-              '. pic fact .'
-              '. pic bottom .'`,
+          base: `'backBtnGroupName   backBtnGroupName   backBtnGroupName  '
+                '        .           studentName           .              '
+                '        .           studentPicture        .              '
+                '        .           studentFact           .              '
+                'studentListNextBtn  studentListNextBtn studentListNextBtn'`,
+          md: `'backBtnGroupName backBtnGroupName'
+                '      .                .        '
+                'studentPicture  studentName'
+                'studentPicture  studentFact'
+                'studentPicture  studentListNextBtn'`,
+          lg: `'backBtnGroupName backBtnGroupName backBtnGroupName backBtnGroupName'
+               '        .               .                .                 .       '
+              '         .        studentPicture   studentName              .       '
+              '         .        studentPicture   studentFact              .       '
+              '         .        studentPicture   studentListNextBtn       .       '`,
         }}
         alignItems={{ base: 'center', lg: 'center' }}
         alignContent="center"
@@ -128,19 +128,13 @@ const StudentGroup: React.FC = () => {
           display="flex"
           justifyContent="space-between"
           alignItems="flex-end"
-          gridArea="top"
+          gridArea="backBtnGroupName"
           padding="0 1rem"
         >
           <BackButton backHandler={backHandler} />
 
           {/* <EditableStudentGroupName studentGroupId={studentGroupId} /> */}
-          <Heading
-            as="h3"
-            fontSize={{ base: '1rem', md: '1.4rem', lg: '1.7rem' }}
-            textAlign="end"
-            gridArea="group"
-            alignSelf="center"
-          >
+          <Heading as="h3" fontSize={{ base: '1rem', md: '1.4rem', lg: '1.7rem' }} textAlign="end" alignSelf="center">
             {studentGroupDocument?.studentGroupName}
           </Heading>
         </Box>
@@ -151,13 +145,13 @@ const StudentGroup: React.FC = () => {
           fontSize={{ base: '1.4rem', md: '2rem', lg: '2.5rem' }}
           textAlign="left"
           alignSelf="flex-end"
-          gridArea="name"
+          gridArea="studentName"
           justifySelf={{ base: 'end', md: 'start' }}
           padding={{ base: 'none', md: '0 2rem' }}
         >
           {studentGroupDocument?.selectedStudent?.studentInfo.studentName}
         </Heading>
-        <Box gridArea="pic">
+        <Box gridArea="studentPicture">
           <NameDisplay
             selectedStudent={studentGroupDocument?.selectedStudent}
             fullScreenDisplayIsOpen={fullScreenDisplayIsOpen}
@@ -175,7 +169,7 @@ const StudentGroup: React.FC = () => {
           justifySelf="start"
           alignItems="flex-start"
           minHeight="5.5rem"
-          gridArea="fact"
+          gridArea="studentFact"
         >
           {studentGroupDocument?.selectedStudent?.studentInfo?.selectedFact && (
             <Flex direction="column" justify="flex-start" alignItems="flex-start" lineHeight="28px">
@@ -185,11 +179,11 @@ const StudentGroup: React.FC = () => {
                 color="var(--main-color-medium)"
                 width="100%"
               >
-                {studentGroupDocument?.selectedStudent.studentInfo.selectedFact.title}
+                {studentGroupDocument.selectedStudent.studentInfo.selectedFact.title}
               </Heading>
 
               <Heading as="h2" fontSize={{ base: '1.5rem', md: '2.3rem', lg: '3rem' }} letterSpacing=".05em">
-                {studentGroupDocument?.selectedStudent.studentInfo.selectedFact.value}
+                {studentGroupDocument.selectedStudent.studentInfo.selectedFact.value}
               </Heading>
             </Flex>
           )}
@@ -205,7 +199,7 @@ const StudentGroup: React.FC = () => {
           overflowY="hidden"
           marginTop=".3rem"
           maxWidth={{ base: '30rem', lg: '35rem' }}
-          gridArea="bottom"
+          gridArea="studentListNextBtn"
           padding={{ base: '0 1rem', md: '0 2rem' }}
           justifySelf={{ base: 'center', md: 'start' }}
         >
@@ -247,7 +241,6 @@ const StudentGroup: React.FC = () => {
             border="1px solid var(--main-color-medium)"
             fontSize="2rem"
             onClick={selectStudentAndStudentFactHandler}
-            gridArea="next"
             alignSelf={{ base: 'flex-end', lg: 'center' }}
             className="noHighlightOnClick"
           >
