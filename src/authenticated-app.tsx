@@ -8,10 +8,14 @@ import StudentGroup from 'screens/StudentGroup'
 import ManageStudents from 'screens/ManageStudents'
 import EditStudent from 'screens/EditStudent'
 import ManageGroup from 'screens/ManageGroup'
+import MobileHeader from 'components/MobileHeader'
+import { HeaderForDesktop } from 'components/HeaderForDesktop'
 
 const AuthenticatedApp: React.FC = () => {
   return (
     <>
+      <MobileHeader />
+      <HeaderForDesktop />
       <Switch>
         <Route path="/" exact component={StudentGroups} />
         <Route path="/student-group/:groupId" component={StudentGroup} />

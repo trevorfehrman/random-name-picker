@@ -7,7 +7,6 @@ import { BodyBox } from 'styles'
 import { useDisclosure, Box, Flex, Checkbox, Heading } from '@chakra-ui/react'
 import CreateNewStudentGroupModal from 'components/CreateNewStudentGroupModal'
 import PlusButton from 'components/UI/PlusButton'
-import Header from 'components/Header'
 import { useStudentGroups, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 import ManageButton from 'components/UI/ManageButton'
 import DeleteButton from 'components/UI/DeleteButton'
@@ -63,7 +62,6 @@ const StudentGroups: React.FC = () => {
 
   return (
     <Box height="100vh" overflowY="hidden">
-      <Header />
       <BodyBox>
         <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
           {managerIsOpen ? (

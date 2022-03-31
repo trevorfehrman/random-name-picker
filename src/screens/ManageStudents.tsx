@@ -4,7 +4,6 @@ import Student from 'components/Student'
 import { BodyBox } from 'styles'
 import CreateNewStudentModal from 'components/CreateNewStudentModal'
 import PlusButton from 'components/UI/PlusButton'
-import Header from 'components/Header'
 import { useStudents, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 import styled from '@emotion/styled'
 import ManageButton from 'components/UI/ManageButton'
@@ -59,7 +58,6 @@ const ManageStudents: React.FC = () => {
 
   return (
     <Box height="100vh" overflowY="hidden">
-      <Header />
       <BodyBox>
         <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
           {managerIsOpen ? (

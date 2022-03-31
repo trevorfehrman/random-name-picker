@@ -12,7 +12,6 @@ import {
   resetSelectedStatusOnStudents,
   updateStudentFactsOnFirebase,
 } from 'helpers/student-group-helpers'
-import BackButton from 'components/UI/BackButton'
 import {
   useStudentGroup,
   useStudents,
@@ -46,10 +45,6 @@ const StudentGroup: React.FC = () => {
         unselectedStudentsDocuments.sort((a: IStudentInStudentGroup, b: IStudentInStudentGroup) => a.order - b.order),
       )
   }, [unselectedStudentsDocuments])
-
-  const backHandler = () => {
-    history.push('/')
-  }
 
   const updateBatch = useFirestore().batch()
 
@@ -93,7 +88,7 @@ const StudentGroup: React.FC = () => {
     <>
       <Box
         display="grid"
-        gridTemplateRows={{ base: '5rem max-content 1fr max-content max-content', md: '5rem 5rem .5fr 2fr 1fr' }}
+        gridTemplateRows={{ base: '3rem max-content 1fr max-content max-content', md: '5rem 5rem .5fr 2fr 1fr' }}
         gridTemplateColumns={{
           base: '1fr minmax(150px, max-content) 1fr',
           md: 'minmax(min-content, 50%) minmax(40%, 50%)',
@@ -121,19 +116,7 @@ const StudentGroup: React.FC = () => {
         alignContent="center"
         justifyItems="center"
       >
-        <Box
-          position="relative"
-          width="100%"
-          height="2.5rem"
-          display="flex"
-          justifyContent="space-between"
-          alignItems="flex-end"
-          gridArea="backBtnGroupName"
-          padding="0 1rem"
-        >
-          <BackButton backHandler={backHandler} />
-
-          {/* <EditableStudentGroupName studentGroupId={studentGroupId} /> */}
+        <Box position="relative" width="100%" display="flex" gridArea="backBtnGroupName" padding="0 2rem">
           <Heading as="h3" fontSize={{ base: '1rem', md: '1.4rem', lg: '1.7rem' }} textAlign="end" alignSelf="center">
             {studentGroupDocument?.studentGroupName}
           </Heading>
@@ -149,7 +132,7 @@ const StudentGroup: React.FC = () => {
           justifySelf={{ base: 'end', md: 'start' }}
           padding={{ base: 'none', md: '0 2rem' }}
         >
-          {studentGroupDocument?.selectedStudent?.studentInfo.studentName}
+          {!noStudentSelected && studentGroupDocument?.selectedStudent?.studentInfo.studentName}
         </Heading>
         <Box gridArea="studentPicture">
           <NameDisplay
@@ -161,7 +144,6 @@ const StudentGroup: React.FC = () => {
           />
         </Box>
 
-        {/* <Box width="85vw" maxWidth="40rem" maxHeight="40rem" gridArea="pic"></Box> */}
         <Flex
           direction="column"
           justify="flex-start"
@@ -171,7 +153,7 @@ const StudentGroup: React.FC = () => {
           minHeight="5.5rem"
           gridArea="studentFact"
         >
-          {studentGroupDocument?.selectedStudent?.studentInfo?.selectedFact && (
+          {!noStudentSelected && studentGroupDocument?.selectedStudent?.studentInfo?.selectedFact && (
             <Flex direction="column" justify="flex-start" alignItems="flex-start" lineHeight="28px">
               <Heading
                 as="h2"
@@ -264,7 +246,6 @@ const StudentGroup: React.FC = () => {
           />
         </FullScreenDisplay>
       </Box>
-      {/* </BodyBoxResponseHeight> */}
     </>
   )
 }
