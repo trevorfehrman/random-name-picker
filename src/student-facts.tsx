@@ -8,6 +8,8 @@ export const studentFactInputs = [
   'Cutest Pet',
   'Signature Catch Phrase',
   'Favorite Ice Cream',
+  'Favorite Book',
+  'Favorite Character',
 ]
 
 export const createStudentFactsObject: (values: INewStudentValues) => IStudentFacts = (values: INewStudentValues) => {

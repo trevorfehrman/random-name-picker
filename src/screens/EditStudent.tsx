@@ -4,7 +4,7 @@ import { useParams, useHistory } from 'react-router-dom'
 import { Image, Box, FormErrorMessage, FormLabel, Input, Flex } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { INewStudentValues, StudentParams, IStudent } from 'interfacesAndTypes'
-import { FormControlWithMargin } from 'styles'
+import { FormControlStyled } from 'components/FormControlStyled'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 import FooterWithButtons from 'components/UI/FooterWithButtons'
@@ -14,7 +14,6 @@ import { useStudents, useTeacherRef } from 'helpers/firestoreHooks'
 const ContentsBox = styled.div`
   color: var(--grey-dark);
   width: 100%;
-  height: 100vh;
   padding: 1.3rem;
   position: relative;
 `
@@ -99,7 +98,7 @@ const EditStudent: React.FC = () => {
           width: '100%',
         }}
       >
-        <Box width="100%" overflowY="auto" maxHeight="70%" margin="0 auto 2rem auto" paddingBottom="2rem" height="95vh">
+        <Box width="100%" margin="0 auto 2rem auto" paddingBottom="2rem">
           <Box>
             <Image
               w="9.5rem"
@@ -121,7 +120,7 @@ const EditStudent: React.FC = () => {
             padding="1rem"
             _notLast={{ marginBottom: '1rem' }}
           >
-            <FormControlWithMargin isInvalid={errors.name} isRequired>
+            <FormControlStyled isInvalid={errors.name} isRequired>
               <FormLabel color="var(--main-color-medium)" htmlFor="studentName">
                 Name
               </FormLabel>
@@ -137,21 +136,19 @@ const EditStudent: React.FC = () => {
               {errors.studentName && errors.studentName.type === 'minLength' && (
                 <FormErrorMessage>Need more!</FormErrorMessage>
               )}
-            </FormControlWithMargin>
+            </FormControlStyled>
 
-            <FormControlWithMargin isInvalid={errors.profilePic} isRequired>
+            <FormControlStyled isInvalid={errors.profilePic} isRequired>
               <FormLabel color="var(--main-color-medium)" htmlFor="profile-pic">
                 Profile Pic
               </FormLabel>
               <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
               {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
-            </FormControlWithMargin>
+            </FormControlStyled>
 
             {studentFactInputs.map(studentFactInput => {
               return <StudentFactInput key={studentFactInput} register={register} studentFactInput={studentFactInput} />
             })}
-
-            {/* <SubmitButton text="Submit Changes" /> */}
           </Flex>
         </Box>
         <FooterWithButtons onCancel={onCancel} submitText="SUBMIT CHANGES" />

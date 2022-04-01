@@ -11,7 +11,7 @@ const FooterWithButtons: React.FC<FooterWithButtonsProps> = ({ onCancel, submitT
     <Flex
       backgroundColor="var(--grey-very-light)"
       borderRadius="0 0 5px 5px"
-      position="absolute"
+      position="fixed"
       left="0"
       bottom="0"
       width="100%"
