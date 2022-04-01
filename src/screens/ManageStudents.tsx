@@ -57,7 +57,7 @@ const ManageStudents: React.FC = () => {
   }
 
   return (
-    <Box height="100vh" overflowY="hidden">
+    <Box height="100vh">
       <BodyBox>
         <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
           {managerIsOpen ? (

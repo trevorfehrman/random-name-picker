@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { FormLabel, Input } from '@chakra-ui/react'
-import { FormControlWithMargin } from 'styles'
+import { FormControlStyled } from 'components/FormControlStyled'
 
 type StudentFactInputProps = {
   // the type described in the error for register was so long it wasn't even all displayed
@@ -14,12 +14,12 @@ const StudentFactInput: React.FC<StudentFactInputProps> = ({ register, studentFa
 
   return (
     <>
-      <FormControlWithMargin>
+      <FormControlStyled>
         <FormLabel color="var(--main-color-medium)" htmlFor={studentFactInput}>
           {studentFactInput}
         </FormLabel>
         <Input id={studentFactInput} name={studentFactInput} placeholder={studentFactInput} ref={register} />
-      </FormControlWithMargin>
+      </FormControlStyled>
     </>
   )
 }

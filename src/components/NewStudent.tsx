@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { Flex, Input, FormErrorMessage, FormLabel } from '@chakra-ui/react'
-import { FormBox, FormControlWithMargin } from 'styles'
+import { FormBox } from 'styles'
 import { useForm } from 'react-hook-form'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs, createStudentFactsObject } from 'student-facts'
 import { INewStudentValues } from 'interfacesAndTypes'
 import FooterWithButtons from 'components/UI/FooterWithButtons'
 import { useStudents } from 'helpers/firestoreHooks'
+import { FormControlStyled } from 'components/FormControlStyled'
 
 type NewStudentProps = {
   onClose: () => void
@@ -36,7 +37,7 @@ const NewStudent: React.FC<NewStudentProps> = ({ onClose }) => {
     <form onSubmit={handleSubmit(addStudentHandler)}>
       <FormBox>
         <Flex direction="column" justify="center" align="center" height="100%" overflowY="hidden">
-          <FormControlWithMargin isInvalid={errors.name} isRequired>
+          <FormControlStyled isInvalid={errors.name} isRequired>
             <FormLabel color="var(--main-color-medium)" htmlFor="studentName">
               Name
             </FormLabel>
@@ -50,21 +51,19 @@ const NewStudent: React.FC<NewStudentProps> = ({ onClose }) => {
             {errors.studentName && errors.studentName.type === 'minLength' && (
               <FormErrorMessage>Need more!</FormErrorMessage>
             )}
-          </FormControlWithMargin>
+          </FormControlStyled>
 
-          <FormControlWithMargin isInvalid={errors.profilePic} isRequired>
+          <FormControlStyled isInvalid={errors.profilePic} isRequired>
             <FormLabel color="var(--main-color-medium)" htmlFor="profile-pic">
               Profile Pic
             </FormLabel>
             <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
             {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
-          </FormControlWithMargin>
+          </FormControlStyled>
 
           {studentFactInputs.map(studentFactInput => {
             return <StudentFactInput key={studentFactInput} register={register} studentFactInput={studentFactInput} />
           })}
-
-          {/* <SubmitButton text="Submit" /> */}
         </Flex>
       </FormBox>
       <FooterWithButtons onCancel={onClose} submitText={'CREATE'} />

@@ -3,7 +3,7 @@ import { useHistory, useParams } from 'react-router-dom'
 import { useStudentsInThisStudentGroup, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 import EditableStudentGroupName from 'components/EditableStudentGroupName'
 import { BodyBox } from 'styles'
-import { Button, IconButton, useDisclosure, Flex, Checkbox, Heading } from '@chakra-ui/react'
+import { Button, IconButton, useDisclosure, Flex, Checkbox, Heading, Box } from '@chakra-ui/react'
 import StudentToManage from 'components/StudentToManage'
 import { DeleteIcon } from '@chakra-ui/icons'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
@@ -106,29 +106,30 @@ const ManageGroup: React.FC = () => {
           })}
         </Flex>
       </BodyBox>
-      <Flex
-        alignItems="center"
-        justifyContent="flex-end"
-        position="absolute"
-        width="100%"
-        height="5rem"
-        backgroundColor="var(--grey-very-light)"
-        left="0"
-        bottom="0"
-      >
-        <Button
-          height="3rem"
-          width="10rem"
-          marginRight="1rem"
-          backgroundColor="var(--main-color-medium)"
-          color="var(--white)"
-          fontSize="1.1rem"
-          fontWeight="600"
-          onClick={backHandler}
+      <Box display="block" position="fixed" bottom="0" left="0" h="5rem" w="full">
+        <Flex
+          alignItems="center"
+          justifyContent="flex-end"
+          position="absolute"
+          width="100%"
+          height="5rem"
+          backgroundColor="var(--grey-very-light)"
         >
-          BACK TO GROUP
-        </Button>
-      </Flex>
+          <Button
+            height="3rem"
+            width="10rem"
+            marginRight="1rem"
+            backgroundColor="var(--main-color-medium)"
+            color="var(--white)"
+            fontSize="1.1rem"
+            fontWeight="600"
+            onClick={backHandler}
+          >
+            BACK TO GROUP
+          </Button>
+        </Flex>
+      </Box>
+
       {selectedStudents.length > 0 ? (
         <IconButton
           icon={<DeleteIcon fontSize="2rem" />}

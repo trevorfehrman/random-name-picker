@@ -60,6 +60,11 @@ const StudentGroups: React.FC = () => {
     setSelectedToDelete(updatedSelectedToDelete)
   }
 
+  let thereAreNoGroups = true
+  if (studentGroupsDocuments) {
+    thereAreNoGroups = studentGroupsDocuments.length === 0
+  }
+
   return (
     <Box height="100vh" overflowY="hidden">
       <BodyBox>
@@ -78,28 +83,36 @@ const StudentGroups: React.FC = () => {
               </Heading>
             </Flex>
           ) : null}
-          <ManageButton
-            primaryText="Manage Groups"
-            secondaryText="Close Manager"
-            managerIsOpen={managerIsOpen}
-            setManagerIsOpen={setManagerIsOpen}
-          />
+          {thereAreNoGroups ? null : (
+            <ManageButton
+              primaryText="Manage Groups"
+              secondaryText="Close Manager"
+              managerIsOpen={managerIsOpen}
+              setManagerIsOpen={setManagerIsOpen}
+            />
+          )}
         </Flex>
+
         <GroupBox>
-          {studentGroupsDocuments?.map(doc => {
-            return (
-              <StudentGroupPreview
-                key={doc.docId}
-                studentGroupId={doc.docId}
-                studentGroupName={doc.studentGroupName}
-                managerIsOpen={managerIsOpen}
-                setSelectedToDelete={setSelectedToDelete}
-                selectedToDelete={selectedToDelete}
-              />
-            )
-          })}
+          {thereAreNoGroups ? (
+            <Heading as="h2">Click the plus sign to create a new Group!</Heading>
+          ) : (
+            studentGroupsDocuments?.map(doc => {
+              return (
+                <StudentGroupPreview
+                  key={doc.docId}
+                  studentGroupId={doc.docId}
+                  studentGroupName={doc.studentGroupName}
+                  managerIsOpen={managerIsOpen}
+                  setSelectedToDelete={setSelectedToDelete}
+                  selectedToDelete={selectedToDelete}
+                />
+              )
+            })
+          )}
           {managerIsOpen ? <DeleteButton onOpen={onOpen} /> : <PlusButton onOpen={onOpen} />}
         </GroupBox>
+
         {managerIsOpen ? (
           <ConfirmationModal
             buttonText="Confirm"

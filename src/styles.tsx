@@ -1,12 +1,7 @@
-import { FormControl } from '@chakra-ui/form-control'
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 
 // dark grey: #474747
-
-export const FormControlWithMargin = styled(FormControl)`
-  margin-bottom: 1.5rem;
-`
 
 export const StudentInGroupContainer = styled(motion.div)`
   display: flex;
@@ -51,7 +46,6 @@ export const BodyBox = styled.div`
   height: 100vh;
   max-width: 75rem;
   margin: auto;
-  overflow: auto;
   padding: 1.3rem;
   position: relative;
 `
