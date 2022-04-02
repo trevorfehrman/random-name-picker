@@ -8,7 +8,7 @@ const listItemStyles = {
   },
 }
 
-export const HeaderForDesktop: React.FC = () => {
+export const HeaderForDesktop: React.FC<{ notificationValue: number }> = ({ notificationValue }) => {
   return (
     <Box display="fixed" w="100%">
       <Flex
@@ -30,6 +30,23 @@ export const HeaderForDesktop: React.FC = () => {
               <NavLink to="/">Groups</NavLink>
             </ListItem>
             <ListItem {...listItemStyles} marginLeft="3rem">
+              {notificationValue > 0 ? (
+                <Flex
+                  justify="center"
+                  align="center"
+                  w="1.7rem"
+                  h="1.7rem"
+                  position="absolute"
+                  right="1.6rem"
+                  top=".6rem"
+                  fontSize="1rem"
+                  bg="var(--alert-color)"
+                  borderRadius="50%"
+                  fontWeight="bold"
+                >
+                  {notificationValue}
+                </Flex>
+              ) : null}
               <NavLink to="/manage-students">Students</NavLink>
             </ListItem>
           </List>
