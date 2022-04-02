@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
 import { Flex, useDisclosure, Box, Checkbox, Heading } from '@chakra-ui/react'
 import Student from 'components/Student'
 import { BodyBox } from 'styles'
@@ -10,6 +11,7 @@ import ManageButton from 'components/UI/ManageButton'
 import DeleteButton from 'components/UI/DeleteButton'
 import ConfirmationModal from 'components/ConfirmationModal'
 import firebase from 'firebase'
+import { IStudent } from 'interfacesAndTypes'
 
 const StudentBox = styled.div`
   display: flex;
@@ -19,10 +21,12 @@ const StudentBox = styled.div`
   margin-bottom: 7rem;
 `
 
-const ManageStudents: React.FC = () => {
+const ManageStudents: React.FC<{ sharedProfiles: IStudent[] }> = ({ sharedProfiles }) => {
   const [managerIsOpen, setManagerIsOpen] = React.useState(false)
 
   const [selectedToDelete, setSelectedToDelete] = React.useState<string[]>([])
+
+  const history = useHistory()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -56,9 +60,34 @@ const ManageStudents: React.FC = () => {
     setManagerIsOpen(false)
   }
 
+  const handleReviewProfile = (profileId: string) => {
+    console.log(profileId)
+    history.push(`/review-profile/${profileId}`)
+  }
+
   return (
     <Box height="100vh">
       <BodyBox>
+        {sharedProfiles?.length > 0 ? (
+          <Flex direction="column" w="100%" marginY="3rem">
+            <Heading as="h2">New unlinked profiles</Heading>
+            {sharedProfiles.map(sharedProfile => {
+              const { studentId, studentName } = sharedProfile
+              return (
+                <Flex
+                  onClick={() => handleReviewProfile(sharedProfile.docId)}
+                  key={studentId}
+                  border="1px solid var(--grey-medium)"
+                  w="100%"
+                  padding="1rem"
+                  borderRadius="5px"
+                >
+                  <Heading as="h3">{studentName}</Heading>
+                </Flex>
+              )
+            })}
+          </Flex>
+        ) : null}
         <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
           {managerIsOpen ? (
             <Flex alignItems="center">
