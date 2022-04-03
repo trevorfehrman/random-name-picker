@@ -27,7 +27,7 @@ export interface IStudentFact {
 
 export interface IStudent {
   studentName: string
-  studentId: string
+  profileId: string
   docId: string
   profilePic?: string
   studentFacts: IStudentFacts

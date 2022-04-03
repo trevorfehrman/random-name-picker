@@ -20,7 +20,7 @@ const DeleteButton: React.FC<PlusButtonProps> = ({ onOpen }) => {
       borderRadius="50%"
       backgroundColor="var(--main-color-medium)"
     >
-      <DeleteIcon color="white" font-size="1.5rem" />
+      <DeleteIcon color="white" fontSize="1.5rem" />
     </Button>
   )
 }

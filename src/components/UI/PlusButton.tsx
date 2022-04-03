@@ -20,7 +20,7 @@ const PlusButton: React.FC<PlusButtonProps> = ({ onOpen }) => {
       borderRadius="50%"
       backgroundColor="var(--main-color-medium)"
     >
-      <AddIcon color="white" font-size="1.5rem" />
+      <AddIcon color="white" fontSize="1.5rem" />
     </Button>
   )
 }
