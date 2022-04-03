@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { Flex, useDisclosure, Box, Checkbox, Heading } from '@chakra-ui/react'
+import { Flex, useDisclosure, Box, Checkbox, Heading, Image, Button } from '@chakra-ui/react'
 import Student from 'components/Student'
 import { BodyBox } from 'styles'
 import CreateNewStudentModal from 'components/CreateNewStudentModal'
@@ -62,32 +62,52 @@ const ManageStudents: React.FC<{ sharedProfiles: IStudent[] }> = ({ sharedProfil
 
   const handleReviewProfile = (profileId: string) => {
     console.log(profileId)
-    history.push(`/review-profile/${profileId}`)
+    history.push(`/review-new-profile/${profileId}`)
   }
 
   return (
     <Box height="100vh">
       <BodyBox>
         {sharedProfiles?.length > 0 ? (
-          <Flex direction="column" w="100%" marginY="3rem">
-            <Heading as="h2">New unlinked profiles</Heading>
+          <Flex direction="column" w="100%" marginY="3rem" align="center">
+            <Heading as="h2" marginBottom="2rem">
+              New students
+            </Heading>
             {sharedProfiles.map(sharedProfile => {
-              const { studentId, studentName } = sharedProfile
-              return (
-                <Flex
-                  onClick={() => handleReviewProfile(sharedProfile.docId)}
-                  key={studentId}
-                  border="1px solid var(--grey-medium)"
-                  w="100%"
-                  padding="1rem"
-                  borderRadius="5px"
-                >
-                  <Heading as="h3">{studentName}</Heading>
-                </Flex>
-              )
+              const { studentName } = sharedProfile
+              if (!studentDocuments?.some(element => element.profileId === sharedProfile.docId)) {
+                return (
+                  <Flex
+                    key={sharedProfile.docId}
+                    onClick={() => handleReviewProfile(sharedProfile.docId)}
+                    border="1px solid var(--grey-medium)"
+                    w="100%"
+                    padding="1rem"
+                    borderRadius="5px"
+                    cursor="pointer"
+                    align="center"
+                    justify="space-between"
+                  >
+                    <Flex align="center">
+                      <Image src={sharedProfile.profilePic} w="70px" h="70px" borderRadius="50%" marginRight="1rem" />
+                      <Heading as="h3" fontSize="1.3rem">
+                        {studentName}
+                      </Heading>
+                    </Flex>
+                    <Flex _notLast={{ padding: '1rem' }}>
+                      <Button>Review</Button>
+                      <Button>Accept</Button>
+                      <Button>Reject</Button>
+                    </Flex>
+                  </Flex>
+                )
+              } else {
+                return null
+              }
             })}
           </Flex>
         ) : null}
+        <Heading as="h2">Your students</Heading>
         <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
           {managerIsOpen ? (
             <Flex alignItems="center">
@@ -119,6 +139,7 @@ const ManageStudents: React.FC<{ sharedProfiles: IStudent[] }> = ({ sharedProfil
                 selectedToDelete={selectedToDelete}
                 setSelectedToDelete={setSelectedToDelete}
                 managerIsOpen={managerIsOpen}
+                hasReviewPending={sharedProfiles?.some(element => element.docId === doc.profileId)}
               />
             )
           })}

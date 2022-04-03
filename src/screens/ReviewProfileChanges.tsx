@@ -1,36 +1,41 @@
 import * as React from 'react'
-import { useFirestore, useFirestoreDocData } from 'reactfire'
-import { useParams, useHistory } from 'react-router-dom'
-import { INewStudentValues, StudentParams, IStudent } from 'interfacesAndTypes'
-import { createStudentFactsObject } from 'student-facts'
-import { useStudents, useTeacherRef } from 'helpers/firestoreHooks'
-import { StudentDetailsForm } from 'components/StudentDetailsForm'
 
-const EditStudent: React.FC = () => {
-  const params: StudentParams = useParams()
-  const studentId = params.studentId
+import { useParams, useHistory } from 'react-router-dom'
+import { useFirestore, useFirestoreCollectionData, useFirestoreDocData } from 'reactfire'
+import { IStudent, INewStudentValues } from 'interfacesAndTypes'
+import { StudentDetailsForm } from 'components/StudentDetailsForm'
+import { useStudents, useTeacherRef } from 'helpers/firestoreHooks'
+import { createStudentFactsObject } from 'student-facts'
+
+export const ReviewProfileChanges: React.FC = () => {
+  const params: { profileId: string } = useParams()
+
+  const profileRef = useFirestore().collection('sharedProfiles').doc(params.profileId)
+  const profileDoc = useFirestoreDocData<IStudent>(profileRef).data
+
+  console.log(profileDoc)
 
   const history = useHistory()
 
   const teacherRef = useTeacherRef()
   const { studentsRef } = useStudents()
-  const studentRef = studentsRef.doc(studentId)
+  const studentRef = studentsRef.where('studentId', '==', params.profileId)
+  const studentDoc = useFirestoreCollectionData<IStudent & { docId: string }>(studentRef, { idField: 'docId' })
+    ?.data?.[0]
 
-  const studentDocument = useFirestoreDocData<IStudent>(studentRef).data
-
-  console.log(studentDocument)
+  const studentToUpdateRef = studentsRef?.doc(studentDoc?.docId)
 
   const thisStudentInStudentGroupsRef = teacherRef
     .collection('studentsInStudentGroups')
-    .where('studentId', '==', studentId)
+    .where('studentId', '==', studentDoc?.docId || '')
 
   const updateBatch = useFirestore().batch()
 
-  const submitHandler = async (values: INewStudentValues) => {
+  const acceptChangesHandler = async (values: INewStudentValues) => {
     // update the 'students' collection with a studentFacts object
     const { studentName, profilePic } = values
     const studentFacts = createStudentFactsObject(values)
-    updateBatch.update(studentRef, {
+    await updateBatch.update(studentToUpdateRef, {
       studentName,
       profilePic,
       studentFacts,
@@ -55,13 +60,12 @@ const EditStudent: React.FC = () => {
         })
       })
     }
-    updateBatch.commit()
+    await updateBatch.commit()
+    profileRef.delete()
     history.push('/manage-students')
   }
 
   return (
-    <StudentDetailsForm submitHandler={submitHandler} studentDocument={studentDocument} submitText="Submit Changes" />
+    <StudentDetailsForm submitText="Accept changes" studentDocument={profileDoc} submitHandler={acceptChangesHandler} />
   )
 }
-
-export default EditStudent

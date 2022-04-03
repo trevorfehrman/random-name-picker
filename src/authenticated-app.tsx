@@ -13,7 +13,8 @@ import ManageGroup from 'screens/ManageGroup'
 import MobileHeader from 'components/MobileHeader'
 import { HeaderForDesktop } from 'components/HeaderForDesktop'
 import { IStudent } from 'interfacesAndTypes'
-import { ReviewProfile } from 'screens/ReviewProfile'
+import { ReviewNewProfile } from 'screens/ReviewNewProfile'
+import { ReviewProfileChanges } from 'screens/ReviewProfileChanges'
 
 interface iTeacherDoc {
   displayName: string
@@ -21,6 +22,9 @@ interface iTeacherDoc {
   photoURL: string
   teacherCode: string
   uid: string
+}
+interface ISharedStudentProfile extends IStudent {
+  teacherCode: string
 }
 
 const AuthenticatedApp: React.FC = () => {
@@ -32,12 +36,9 @@ const AuthenticatedApp: React.FC = () => {
   let sharedProfiles = null
 
   const sharedProfilesRef = useFirestore().collection('sharedProfiles').where('teacherCode', '==', teacherCode)
-  sharedProfiles = useFirestoreCollectionData<IStudent & { teacherCode: string } & { docId: string }>(
-    sharedProfilesRef,
-    {
-      idField: 'docId',
-    },
-  ).data
+  sharedProfiles = useFirestoreCollectionData<ISharedStudentProfile & { docId: string }>(sharedProfilesRef, {
+    idField: 'docId',
+  }).data
 
   const notificationValue = sharedProfiles?.length
 
@@ -56,7 +57,8 @@ const AuthenticatedApp: React.FC = () => {
           <ManageStudents sharedProfiles={sharedProfiles} />
         </Route>
         <Route path="/edit-student/:studentId" component={EditStudent} />
-        <Route path="/review-profile/:profileId" component={ReviewProfile} />
+        <Route path="/review-profile-changes/:profileId" component={ReviewProfileChanges} />
+        <Route path="/review-new-profile/:profileId" component={ReviewNewProfile} />
         <Route path="/manage-group/:studentGroupId" component={ManageGroup} />
       </Switch>
     </>
