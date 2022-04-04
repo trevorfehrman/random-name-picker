@@ -7,10 +7,12 @@ import { useForm } from 'react-hook-form'
 import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs } from 'student-facts'
 import { IStudent, INewStudentValues } from 'interfacesAndTypes'
+import { useHistory } from 'react-router-dom'
 
 const ContentsBox = styled.div`
   color: var(--grey-dark);
   width: 100%;
+
   padding: 1.3rem;
   position: relative;
 `
@@ -22,9 +24,12 @@ interface IStudentToBeUpdated extends IStudent {
 export const StudentDetailsForm: React.FC<{
   submitHandler: (values: INewStudentValues) => void
   studentDocument: IStudentToBeUpdated
-  onCancel: () => void
-}> = ({ submitHandler, studentDocument, onCancel }) => {
+  submitText: string
+  cancelDestination: string
+}> = ({ submitHandler, studentDocument, submitText, cancelDestination }) => {
   const { handleSubmit, register, reset, errors } = useForm()
+
+  const history = useHistory()
 
   React.useEffect(() => {
     const resetObject: Record<string, unknown> = {}
@@ -102,7 +107,7 @@ export const StudentDetailsForm: React.FC<{
             })}
           </Flex>
         </Box>
-        <FooterWithButtons onCancel={onCancel} submitText="SUBMIT CHANGES" />
+        <FooterWithButtons onCancel={() => history.push(cancelDestination)} submitText={submitText} />
       </form>
     </ContentsBox>
   )

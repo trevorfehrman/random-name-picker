@@ -8,9 +8,9 @@ const listItemStyles = {
   },
 }
 
-export const HeaderForDesktop: React.FC<{ notificationValue: number }> = ({ notificationValue }) => {
+export const HeaderForDesktop: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfileAmount }) => {
   return (
-    <Box display="fixed" w="100%">
+    <Box w="100%" zIndex="10">
       <Flex
         w="100%"
         padding="1rem 3rem"
@@ -19,6 +19,7 @@ export const HeaderForDesktop: React.FC<{ notificationValue: number }> = ({ noti
         justify="space-between"
         align="center"
         bg="var(--main-color-medium)"
+        h="4.5rem"
         display={['none', 'none', 'flex']}
       >
         <Heading as="h1">
@@ -30,7 +31,7 @@ export const HeaderForDesktop: React.FC<{ notificationValue: number }> = ({ noti
               <NavLink to="/">Groups</NavLink>
             </ListItem>
             <ListItem {...listItemStyles} marginLeft="3rem">
-              {notificationValue > 0 ? (
+              {sharedProfileAmount > 0 ? (
                 <Flex
                   justify="center"
                   align="center"
@@ -44,7 +45,7 @@ export const HeaderForDesktop: React.FC<{ notificationValue: number }> = ({ noti
                   borderRadius="50%"
                   fontWeight="bold"
                 >
-                  {notificationValue}
+                  {sharedProfileAmount}
                 </Flex>
               ) : null}
               <NavLink to="/manage-students">Students</NavLink>

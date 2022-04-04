@@ -27,7 +27,7 @@ export interface IStudentFact {
 
 export interface IStudent {
   studentName: string
-  studentId: string
+  profileId: string
   docId: string
   profilePic?: string
   studentFacts: IStudentFacts
@@ -81,4 +81,8 @@ export type NameDisplayProps = {
   setFullScreenDisplayIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   selectStudentAndStudentFactHandler: () => void
   noStudentSelected: boolean
+}
+
+export interface ISharedStudentProfile extends IStudent {
+  teacherCode: string
 }

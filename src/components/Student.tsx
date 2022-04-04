@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Flex, Heading, Checkbox } from '@chakra-ui/react'
+import { Flex, Heading, Checkbox, Button } from '@chakra-ui/react'
 // import { DeleteIcon } from '@chakra-ui/icons'
 import { StudentContainer } from 'styles'
 import { useHistory } from 'react-router-dom'

@@ -60,6 +60,7 @@ const resetStudentFacts: (selectedStudent: IStudentInStudentGroup, studentDocume
   selectedStudent: IStudentInStudentGroup,
   studentDocuments: IStudent[],
 ) => {
+  console.log('selected = ', selectedStudent, 'student documents =', studentDocuments)
   const studentFactsReset = studentDocuments.filter(student => {
     return student.docId === selectedStudent.studentId
   })[0].studentFacts

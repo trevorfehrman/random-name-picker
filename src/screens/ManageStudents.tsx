@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { Flex, useDisclosure, Box, Checkbox, Heading } from '@chakra-ui/react'
+import { Flex, useDisclosure, Box, Checkbox, Heading, Button } from '@chakra-ui/react'
 import Student from 'components/Student'
 import { BodyBox } from 'styles'
 import CreateNewStudentModal from 'components/CreateNewStudentModal'
@@ -11,7 +11,6 @@ import ManageButton from 'components/UI/ManageButton'
 import DeleteButton from 'components/UI/DeleteButton'
 import ConfirmationModal from 'components/ConfirmationModal'
 import firebase from 'firebase'
-import { IStudent } from 'interfacesAndTypes'
 
 const StudentBox = styled.div`
   display: flex;
@@ -21,7 +20,7 @@ const StudentBox = styled.div`
   margin-bottom: 7rem;
 `
 
-const ManageStudents: React.FC<{ sharedProfiles: IStudent[] }> = ({ sharedProfiles }) => {
+const ManageStudents: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfileAmount }) => {
   const [managerIsOpen, setManagerIsOpen] = React.useState(false)
 
   const [selectedToDelete, setSelectedToDelete] = React.useState<string[]>([])
@@ -60,34 +59,25 @@ const ManageStudents: React.FC<{ sharedProfiles: IStudent[] }> = ({ sharedProfil
     setManagerIsOpen(false)
   }
 
-  const handleReviewProfile = (profileId: string) => {
-    console.log(profileId)
-    history.push(`/review-profile/${profileId}`)
-  }
-
   return (
     <Box height="100vh">
       <BodyBox>
-        {sharedProfiles?.length > 0 ? (
-          <Flex direction="column" w="100%" marginY="3rem">
-            <Heading as="h2">New unlinked profiles</Heading>
-            {sharedProfiles.map(sharedProfile => {
-              const { studentId, studentName } = sharedProfile
-              return (
-                <Flex
-                  onClick={() => handleReviewProfile(sharedProfile.docId)}
-                  key={studentId}
-                  border="1px solid var(--grey-medium)"
-                  w="100%"
-                  padding="1rem"
-                  borderRadius="5px"
-                >
-                  <Heading as="h3">{studentName}</Heading>
-                </Flex>
-              )
-            })}
+        {sharedProfileAmount > 0 ? (
+          <Flex marginY="2rem" align="center">
+            <Heading as="h3">{`You have ${sharedProfileAmount} new profile${
+              sharedProfileAmount > 1 ? 's' : ''
+            } to approve`}</Heading>
+            <Button
+              marginLeft="1rem"
+              onClick={() => {
+                history.push('/review-new-profiles')
+              }}
+            >
+              View new profiles
+            </Button>
           </Flex>
         ) : null}
+        <Heading as="h2">Your students</Heading>
         <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
           {managerIsOpen ? (
             <Flex alignItems="center">
@@ -137,7 +127,11 @@ const ManageStudents: React.FC<{ sharedProfiles: IStudent[] }> = ({ sharedProfil
           <CreateNewStudentModal onClose={onClose} isOpen={isOpen} />
         )}
       </BodyBox>
-      {managerIsOpen ? <DeleteButton onOpen={onOpen} /> : <PlusButton onOpen={onOpen} />}
+      {managerIsOpen ? (
+        <DeleteButton onOpen={onOpen} />
+      ) : (
+        <PlusButton thereAreNoDocuments={studentDocuments?.length === 0} onOpen={onOpen} />
+      )}
     </Box>
   )
 }
