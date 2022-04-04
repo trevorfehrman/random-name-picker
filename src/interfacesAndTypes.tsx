@@ -82,3 +82,7 @@ export type NameDisplayProps = {
   selectStudentAndStudentFactHandler: () => void
   noStudentSelected: boolean
 }
+
+export interface ISharedStudentProfile extends IStudent {
+  teacherCode: string
+}

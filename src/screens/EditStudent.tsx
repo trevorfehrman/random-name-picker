@@ -60,7 +60,12 @@ const EditStudent: React.FC = () => {
   }
 
   return (
-    <StudentDetailsForm submitHandler={submitHandler} studentDocument={studentDocument} submitText="Submit Changes" />
+    <StudentDetailsForm
+      cancelDestination="/manage-students"
+      submitHandler={submitHandler}
+      studentDocument={studentDocument}
+      submitText="Submit Changes"
+    />
   )
 }
 

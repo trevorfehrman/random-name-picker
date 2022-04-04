@@ -11,16 +11,9 @@ type StudentProps = {
   managerIsOpen: boolean
   selectedToDelete: string[]
   setSelectedToDelete: React.Dispatch<React.SetStateAction<string[]>>
-  hasReviewPending?: boolean
 }
 
-const Student: React.FC<StudentProps> = ({
-  student,
-  managerIsOpen,
-  selectedToDelete,
-  setSelectedToDelete,
-  hasReviewPending,
-}) => {
+const Student: React.FC<StudentProps> = ({ student, managerIsOpen, selectedToDelete, setSelectedToDelete }) => {
   const history = useHistory()
 
   // TODO if the last unselected student gets deleted from a group the selected status of
@@ -73,22 +66,6 @@ const Student: React.FC<StudentProps> = ({
             {student?.studentName}
           </Heading>
         </Flex>
-        {hasReviewPending && (
-          <Flex direction="column">
-            <Heading as="h4" fontSize="1.3rem" marginBottom=".5rem">
-              Pending Approval...
-            </Heading>
-            <Button
-              padding="1rem"
-              onClick={e => {
-                e.stopPropagation()
-                history.push(`/review-profile-changes/${student?.profileId}`)
-              }}
-            >
-              Review Changes
-            </Button>
-          </Flex>
-        )}
       </StudentContainer>
     </>
   )

@@ -117,7 +117,14 @@ const StudentGroup: React.FC = () => {
         justifyItems="center"
       >
         <Box position="relative" width="100%" display="flex" gridArea="backBtnGroupName" padding="0 2rem">
-          <Heading as="h3" fontSize={{ base: '1rem', md: '1.4rem', lg: '1.7rem' }} textAlign="end" alignSelf="center">
+          <Heading
+            as="h3"
+            textTransform="uppercase"
+            fontSize={{ base: '1.3rem', md: '1.8rem', lg: '2.3rem' }}
+            textAlign="end"
+            alignSelf="center"
+            color="var(--grey-medium-dark)"
+          >
             {studentGroupDocument?.studentGroupName}
           </Heading>
         </Box>

@@ -15,36 +15,34 @@ const MobileHeader: React.FC = () => {
   const location = useLocation()
 
   return (
-    <>
-      <Tabs color="var(--main-color-medium)" variant="unstyled" display={['', '', 'none']}>
-        <TabList>
-          <NavLink to="/" exact style={{ width: '50%', height: '4rem' }}>
-            <Tab
-              borderBottom={
-                location.pathname === '/' ? '2px solid var(--main-color-medium)' : '2px solid var(--grey-medium)'
-              }
-              {...tabStyles}
-            >
-              Groups
-            </Tab>
-          </NavLink>
+    <Tabs color="var(--main-color-medium)" variant="unstyled" display={['', '', 'none']} w="100%" zIndex="10">
+      <TabList>
+        <NavLink to="/" exact style={{ width: '50%', height: '4.5rem' }}>
+          <Tab
+            borderBottom={
+              location.pathname === '/' ? '2px solid var(--main-color-medium)' : '2px solid var(--grey-medium)'
+            }
+            {...tabStyles}
+          >
+            Groups
+          </Tab>
+        </NavLink>
 
-          <NavLink to="/manage-students" style={{ width: '50%', height: '4rem' }}>
-            <Tab
-              borderLeft="1px solid var(--grey-medium)"
-              borderBottom={
-                location.pathname === '/manage-students'
-                  ? '2px solid var(--main-color-medium)'
-                  : '2px solid var(--grey-medium)'
-              }
-              {...tabStyles}
-            >
-              Students
-            </Tab>
-          </NavLink>
-        </TabList>
-      </Tabs>
-    </>
+        <NavLink to="/manage-students" style={{ width: '50%', height: '4.5rem' }}>
+          <Tab
+            borderLeft="1px solid var(--grey-medium)"
+            borderBottom={
+              location.pathname === '/manage-students'
+                ? '2px solid var(--main-color-medium)'
+                : '2px solid var(--grey-medium)'
+            }
+            {...tabStyles}
+          >
+            Students
+          </Tab>
+        </NavLink>
+      </TabList>
+    </Tabs>
   )
 }
 

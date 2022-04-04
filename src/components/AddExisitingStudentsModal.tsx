@@ -1,7 +1,9 @@
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
 import {
   Button,
   Box,
+  Flex,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -10,6 +12,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Checkbox,
+  Text,
 } from '@chakra-ui/react'
 import { IStudentToAdd, IStudentFact } from 'interfacesAndTypes'
 import StudentPreview from 'components/StudentPreview'
@@ -35,6 +38,8 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
   const { studentGroupDocument } = useStudentGroup(studentGroupId)
   const { studentDocuments } = useStudents()
+
+  const history = useHistory()
 
   const addBatch = useFirestore().batch()
 
@@ -120,6 +125,8 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
     )
   })
 
+  const thereAreNoStudents = studentDocuments?.length === 0
+
   console.log(selectedStudentsToAdd)
 
   return (
@@ -129,13 +136,15 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
         <ModalHeader>Add Students</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Checkbox
-            onClick={selectAllHandler}
-            isChecked={selectedStudentsToAdd.length === studentsNotInStudentGroup?.length}
-            margin="0 0 .5rem 1.3rem"
-          >
-            Select All
-          </Checkbox>
+          {!thereAreNoStudents && (
+            <Checkbox
+              onClick={selectAllHandler}
+              isChecked={selectedStudentsToAdd.length === studentsNotInStudentGroup?.length}
+              margin="0 0 .5rem 1.3rem"
+            >
+              Select All
+            </Checkbox>
+          )}
           <Box
             borderTop="1px solid var(--grey-light)"
             borderRadius="3px"
@@ -144,9 +153,25 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
             padding="10px"
             overflowY="auto"
           >
-            {studentsNotInStudentGroup?.length > 0
-              ? studentsNotInThisStudentGroupDisplay
-              : 'All students already in group!'}
+            {thereAreNoStudents ? (
+              <Flex direction="column">
+                <Text marginBottom="1rem">
+                  This is where you&apos;ll add students to this group. First, head to the Students page to create some
+                  students
+                </Text>
+                <Button
+                  onClick={() => {
+                    history.push('/manage-students')
+                  }}
+                >
+                  Go to students page &rarr;
+                </Button>
+              </Flex>
+            ) : studentsNotInStudentGroup?.length > 0 ? (
+              studentsNotInThisStudentGroupDisplay
+            ) : (
+              'All students already in group!'
+            )}
           </Box>
         </ModalBody>
 

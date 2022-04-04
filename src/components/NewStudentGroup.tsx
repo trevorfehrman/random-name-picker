@@ -49,6 +49,7 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ onClose }) => {
             placeholder="Name"
             id="studentGroupName"
             isRequired
+            autoComplete="off"
           ></Input>
         </Box>
 

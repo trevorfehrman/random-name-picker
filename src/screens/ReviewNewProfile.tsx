@@ -29,13 +29,18 @@ export const ReviewNewProfile: React.FC = () => {
         studentFacts,
       })
       profileRef.delete()
-      history.push('/manage-students')
+      history.push('/review-new-profiles')
     } catch (err) {
       console.log(err)
     }
   }
 
   return (
-    <StudentDetailsForm submitText="Accept Student" studentDocument={profileDoc} submitHandler={addStudentHandler} />
+    <StudentDetailsForm
+      cancelDestination="/review-new-profiles"
+      submitText="Accept Student"
+      studentDocument={profileDoc}
+      submitHandler={addStudentHandler}
+    />
   )
 }

@@ -19,7 +19,7 @@ export const ReviewProfileChanges: React.FC = () => {
 
   const teacherRef = useTeacherRef()
   const { studentsRef } = useStudents()
-  const studentRef = studentsRef.where('studentId', '==', params.profileId)
+  const studentRef = studentsRef.where('profileId', '==', params.profileId)
   const studentDoc = useFirestoreCollectionData<IStudent & { docId: string }>(studentRef, { idField: 'docId' })
     ?.data?.[0]
 
@@ -33,6 +33,7 @@ export const ReviewProfileChanges: React.FC = () => {
 
   const acceptChangesHandler = async (values: INewStudentValues) => {
     // update the 'students' collection with a studentFacts object
+    console.log(studentToUpdateRef)
     const { studentName, profilePic } = values
     const studentFacts = createStudentFactsObject(values)
     await updateBatch.update(studentToUpdateRef, {
@@ -62,10 +63,15 @@ export const ReviewProfileChanges: React.FC = () => {
     }
     await updateBatch.commit()
     profileRef.delete()
-    history.push('/manage-students')
+    history.push('/review-new-profiles')
   }
 
   return (
-    <StudentDetailsForm submitText="Accept changes" studentDocument={profileDoc} submitHandler={acceptChangesHandler} />
+    <StudentDetailsForm
+      cancelDestination="/review-new-profiles"
+      submitText="Accept changes"
+      studentDocument={profileDoc}
+      submitHandler={acceptChangesHandler}
+    />
   )
 }
