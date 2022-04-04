@@ -59,8 +59,10 @@ const ManageStudents: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfi
     setManagerIsOpen(false)
   }
 
+  const thereAreNoStudents = studentDocuments?.length === 0
+
   return (
-    <Box height="100vh">
+    <Box height="calc(100vh - 4.5rem)">
       <BodyBox>
         {sharedProfileAmount > 0 ? (
           <Flex marginY="2rem" align="center">
@@ -77,42 +79,56 @@ const ManageStudents: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfi
             </Button>
           </Flex>
         ) : null}
-        <Heading as="h2">Your students</Heading>
-        <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
-          {managerIsOpen ? (
-            <Flex alignItems="center">
-              <Checkbox
-                marginRight=".5rem"
-                border="1px solid var(--main-color-light)"
-                borderRadius="3px"
-                isChecked={selectedToDelete.length === studentDocuments.length}
-                onChange={selectAllHandler}
-              />
-              <Heading as="h3" fontSize="1rem">
-                Select All
-              </Heading>
-            </Flex>
-          ) : null}
-          <ManageButton
-            primaryText="Manage Students"
-            secondaryText="Close Manager"
-            managerIsOpen={managerIsOpen}
-            setManagerIsOpen={setManagerIsOpen}
-          />
-        </Flex>
-        <StudentBox>
-          {studentDocuments?.map(doc => {
-            return (
-              <Student
-                key={doc.docId}
-                student={doc}
-                selectedToDelete={selectedToDelete}
-                setSelectedToDelete={setSelectedToDelete}
-                managerIsOpen={managerIsOpen}
-              />
-            )
-          })}
-        </StudentBox>
+        {!thereAreNoStudents && (
+          <Heading as="h2" marginTop="2rem">
+            Your students
+          </Heading>
+        )}
+        {!thereAreNoStudents && (
+          <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
+            {managerIsOpen ? (
+              <Flex alignItems="center">
+                <Checkbox
+                  marginRight=".5rem"
+                  border="1px solid var(--main-color-light)"
+                  borderRadius="3px"
+                  isChecked={selectedToDelete.length === studentDocuments.length}
+                  onChange={selectAllHandler}
+                />
+                <Heading as="h3" fontSize="1rem">
+                  Select All
+                </Heading>
+              </Flex>
+            ) : null}
+            <ManageButton
+              primaryText="Manage Students"
+              secondaryText="Close Manager"
+              managerIsOpen={managerIsOpen}
+              setManagerIsOpen={setManagerIsOpen}
+            />
+          </Flex>
+        )}
+        {thereAreNoStudents ? (
+          <Flex h="100%" align="center">
+            <Heading as="h1" textAlign="center" transform="translateY(-2.25rem)">
+              Click the plus sign to create a new student!
+            </Heading>
+          </Flex>
+        ) : (
+          <StudentBox>
+            {studentDocuments?.map(doc => {
+              return (
+                <Student
+                  key={doc.docId}
+                  student={doc}
+                  selectedToDelete={selectedToDelete}
+                  setSelectedToDelete={setSelectedToDelete}
+                  managerIsOpen={managerIsOpen}
+                />
+              )
+            })}
+          </StudentBox>
+        )}
         {managerIsOpen ? (
           <ConfirmationModal
             buttonText="Confirm"

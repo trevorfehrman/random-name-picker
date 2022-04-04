@@ -43,7 +43,7 @@ export const BodyBox = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   max-width: 75rem;
   margin: auto;
   padding: 0 1.3rem;

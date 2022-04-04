@@ -16,9 +16,14 @@ const PlusButton: React.FC<PlusButtonProps> = ({ onOpen, thereAreNoDocuments }) 
     }
   }, [thereAreNoDocuments])
 
+  const openHandler = () => {
+    setShouldBounce(false)
+    onOpen()
+  }
+
   return (
     <Button
-      onClick={onOpen}
+      onClick={openHandler}
       alignSelf="flex-end"
       marginBottom=".5rem"
       position="fixed"
@@ -29,7 +34,6 @@ const PlusButton: React.FC<PlusButtonProps> = ({ onOpen, thereAreNoDocuments }) 
       borderRadius="50%"
       backgroundColor="var(--main-color-medium)"
       className={shouldBounce ? 'bounce' : ''}
-      onMouseEnter={() => setShouldBounce(false)}
     >
       <AddIcon color="white" fontSize="1.5rem" />
     </Button>

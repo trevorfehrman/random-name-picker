@@ -7,13 +7,13 @@ import theme from 'theme'
 import { BrowserRouter as Router } from 'react-router-dom'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyB4VVwKvIOGa6n_6TBgp4mMW8I1xd4NEU4',
-  authDomain: 'random-name-picker-ee478.firebaseapp.com',
-  projectId: 'random-name-picker-ee478',
-  storageBucket: 'random-name-picker-ee478.appspot.com',
-  messagingSenderId: '862331274849',
-  appId: '1:862331274849:web:a62cbad7f22eb6a4ca4c20',
-  measurementId: 'G-MSVM1GZCYB',
+  apiKey: 'AIzaSyAnxiAndOT2JgrBFheVuvZGqa7yXSBhC6c',
+  authDomain: 'picker-8c90f.firebaseapp.com',
+  projectId: 'picker-8c90f',
+  storageBucket: 'picker-8c90f.appspot.com',
+  messagingSenderId: '794267331427',
+  appId: '1:794267331427:web:67a7fa473f6040649e0156',
+  measurementId: 'G-79LPC7HWSJ',
 }
 
 const AppProviders: React.FC = ({ children }) => {

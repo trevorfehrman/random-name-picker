@@ -17,8 +17,8 @@ const GroupBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100%;
   width: 100%;
-  margin-bottom: 7rem;
 `
 
 const StudentGroups: React.FC = () => {
@@ -65,14 +65,9 @@ const StudentGroups: React.FC = () => {
   console.log('nogroups', thereAreNoGroups)
 
   return (
-    <Box height="calc(100vh-4.5rem)" overflowY="hidden" id="athing">
+    <Box height="calc(100vh - 4.5rem)" overflowY="hidden" id="athing">
       <BodyBox>
-        <Flex
-          width="100%"
-          justifyContent={managerIsOpen ? 'space-between' : 'flex-end'}
-          alignItems="flex-end"
-          marginTop="1rem"
-        >
+        <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
           {managerIsOpen ? (
             <Flex alignItems="center">
               <Checkbox
@@ -99,8 +94,10 @@ const StudentGroups: React.FC = () => {
 
         <GroupBox>
           {thereAreNoGroups ? (
-            <Flex h="80vh" align="center">
-              <Heading as="h2">Click the plus sign to create a new Group!</Heading>
+            <Flex h="100%" align="center">
+              <Heading as="h2" textAlign="center" transform="translateY(-2.25rem)">
+                Click the plus sign to create a new Group!
+              </Heading>
             </Flex>
           ) : (
             studentGroupsDocuments?.map(doc => {
