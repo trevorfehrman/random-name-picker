@@ -96,7 +96,7 @@ const StudentGroups: React.FC = () => {
           {thereAreNoGroups ? (
             <Flex h="100%" align="center">
               <Heading as="h2" textAlign="center" transform="translateY(-2.25rem)">
-                Click the plus sign to create a new Group
+                Click the plus sign to create a new Group!
               </Heading>
             </Flex>
           ) : (
