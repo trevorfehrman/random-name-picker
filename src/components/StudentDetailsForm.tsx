@@ -12,6 +12,7 @@ import { useHistory } from 'react-router-dom'
 const ContentsBox = styled.div`
   color: var(--grey-dark);
   width: 100%;
+
   padding: 1.3rem;
   position: relative;
 `
@@ -24,7 +25,8 @@ export const StudentDetailsForm: React.FC<{
   submitHandler: (values: INewStudentValues) => void
   studentDocument: IStudentToBeUpdated
   submitText: string
-}> = ({ submitHandler, studentDocument, submitText }) => {
+  cancelDestination: string
+}> = ({ submitHandler, studentDocument, submitText, cancelDestination }) => {
   const { handleSubmit, register, reset, errors } = useForm()
 
   const history = useHistory()
@@ -105,7 +107,7 @@ export const StudentDetailsForm: React.FC<{
             })}
           </Flex>
         </Box>
-        <FooterWithButtons onCancel={() => history.push('/manage-students')} submitText={submitText} />
+        <FooterWithButtons onCancel={() => history.push(cancelDestination)} submitText={submitText} />
       </form>
     </ContentsBox>
   )

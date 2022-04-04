@@ -60,15 +60,19 @@ const StudentGroups: React.FC = () => {
     setSelectedToDelete(updatedSelectedToDelete)
   }
 
-  let thereAreNoGroups = true
-  if (studentGroupsDocuments) {
-    thereAreNoGroups = studentGroupsDocuments.length === 0
-  }
+  const thereAreNoGroups = studentGroupsDocuments?.length === 0
+
+  console.log('nogroups', thereAreNoGroups)
 
   return (
-    <Box height="100vh" overflowY="hidden">
+    <Box height="calc(100vh-4.5rem)" overflowY="hidden" id="athing">
       <BodyBox>
-        <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
+        <Flex
+          width="100%"
+          justifyContent={managerIsOpen ? 'space-between' : 'flex-end'}
+          alignItems="flex-end"
+          marginTop="1rem"
+        >
           {managerIsOpen ? (
             <Flex alignItems="center">
               <Checkbox
@@ -95,7 +99,9 @@ const StudentGroups: React.FC = () => {
 
         <GroupBox>
           {thereAreNoGroups ? (
-            <Heading as="h2">Click the plus sign to create a new Group!</Heading>
+            <Flex h="80vh" align="center">
+              <Heading as="h2">Click the plus sign to create a new Group!</Heading>
+            </Flex>
           ) : (
             studentGroupsDocuments?.map(doc => {
               return (
@@ -110,7 +116,11 @@ const StudentGroups: React.FC = () => {
               )
             })
           )}
-          {managerIsOpen ? <DeleteButton onOpen={onOpen} /> : <PlusButton onOpen={onOpen} />}
+          {managerIsOpen ? (
+            <DeleteButton onOpen={onOpen} />
+          ) : (
+            <PlusButton thereAreNoDocuments={thereAreNoGroups} onOpen={onOpen} />
+          )}
         </GroupBox>
 
         {managerIsOpen ? (

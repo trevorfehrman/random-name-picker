@@ -46,7 +46,7 @@ export const BodyBox = styled.div`
   height: 100vh;
   max-width: 75rem;
   margin: auto;
-  padding: 1.3rem;
+  padding: 0 1.3rem;
   position: relative;
 `
 

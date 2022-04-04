@@ -4,21 +4,32 @@ import { AddIcon } from '@chakra-ui/icons'
 
 type PlusButtonProps = {
   onOpen: () => void
+  thereAreNoDocuments: boolean
 }
 
-const PlusButton: React.FC<PlusButtonProps> = ({ onOpen }) => {
+const PlusButton: React.FC<PlusButtonProps> = ({ onOpen, thereAreNoDocuments }) => {
+  const [shouldBounce, setShouldBounce] = React.useState(false)
+
+  React.useEffect(() => {
+    if (thereAreNoDocuments) {
+      setShouldBounce(true)
+    }
+  }, [thereAreNoDocuments])
+
   return (
     <Button
       onClick={onOpen}
       alignSelf="flex-end"
       marginBottom=".5rem"
       position="fixed"
-      right="1.1rem"
-      bottom="1.1rem"
+      right="1.5rem"
+      bottom="1.5rem"
       width="4.4rem"
       height="4.4rem"
       borderRadius="50%"
       backgroundColor="var(--main-color-medium)"
+      className={shouldBounce ? 'bounce' : ''}
+      onMouseEnter={() => setShouldBounce(false)}
     >
       <AddIcon color="white" fontSize="1.5rem" />
     </Button>

@@ -2,6 +2,7 @@ import * as React from 'react'
 import 'App.css'
 import { useFirestore, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
 import { useTeacherRef } from 'helpers/firestoreHooks'
+import { Flex } from '@chakra-ui/react'
 
 import { Switch, Route } from 'react-router-dom'
 
@@ -12,9 +13,10 @@ import EditStudent from 'screens/EditStudent'
 import ManageGroup from 'screens/ManageGroup'
 import MobileHeader from 'components/MobileHeader'
 import { HeaderForDesktop } from 'components/HeaderForDesktop'
-import { IStudent } from 'interfacesAndTypes'
+import { ISharedStudentProfile } from 'interfacesAndTypes'
 import { ReviewNewProfile } from 'screens/ReviewNewProfile'
 import { ReviewProfileChanges } from 'screens/ReviewProfileChanges'
+import { ReviewNewProfiles } from 'screens/ReviewNewProfiles'
 
 interface iTeacherDoc {
   displayName: string
@@ -22,9 +24,6 @@ interface iTeacherDoc {
   photoURL: string
   teacherCode: string
   uid: string
-}
-interface ISharedStudentProfile extends IStudent {
-  teacherCode: string
 }
 
 const AuthenticatedApp: React.FC = () => {
@@ -40,7 +39,7 @@ const AuthenticatedApp: React.FC = () => {
     idField: 'docId',
   }).data
 
-  const notificationValue = sharedProfiles?.length
+  const sharedProfileAmount = sharedProfiles?.length
 
   React.useEffect(() => {
     console.log('a thing')
@@ -48,15 +47,20 @@ const AuthenticatedApp: React.FC = () => {
 
   return (
     <>
-      <MobileHeader />
-      <HeaderForDesktop notificationValue={notificationValue} />
+      <Flex direction="column">
+        <MobileHeader />
+        <HeaderForDesktop sharedProfileAmount={sharedProfileAmount} />
+      </Flex>
       <Switch>
         <Route path="/" exact component={StudentGroups} />
         <Route path="/student-group/:groupId" component={StudentGroup} />
         <Route path="/manage-students">
-          <ManageStudents sharedProfiles={sharedProfiles} />
+          <ManageStudents sharedProfileAmount={sharedProfileAmount} />
         </Route>
         <Route path="/edit-student/:studentId" component={EditStudent} />
+        <Route path="/review-new-profiles">
+          <ReviewNewProfiles sharedProfiles={sharedProfiles} />
+        </Route>
         <Route path="/review-profile-changes/:profileId" component={ReviewProfileChanges} />
         <Route path="/review-new-profile/:profileId" component={ReviewNewProfile} />
         <Route path="/manage-group/:studentGroupId" component={ManageGroup} />
