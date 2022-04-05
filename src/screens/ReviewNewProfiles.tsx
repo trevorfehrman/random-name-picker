@@ -12,7 +12,7 @@ export const ReviewNewProfiles: React.FC<{ sharedProfiles: ISharedStudentProfile
   const [existingProfiles, setExistingProfiles] = React.useState<ISharedStudentProfile[]>([])
   const [newProfiles, setNewProfiles] = React.useState<ISharedStudentProfile[]>([])
 
-  const { studentDocuments, studentsRef } = useStudents()
+  const { studentDocuments } = useStudents()
 
   const handleReviewNewProfile = (profileId: string) => {
     console.log(profileId)

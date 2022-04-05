@@ -62,10 +62,10 @@ const StudentGroups: React.FC = () => {
 
   const thereAreNoGroups = studentGroupsDocuments?.length === 0
 
-  console.log('nogroups', thereAreNoGroups)
+  console.log('nogroups', thereAreNoGroups, studentGroupsDocuments)
 
   return (
-    <Box height="calc(100vh - 4.5rem)" overflowY="hidden" id="athing">
+    <Box height="calc(100vh - 4.5rem)" overflowY="hidden" marginTop="2rem">
       <BodyBox>
         <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
           {managerIsOpen ? (
