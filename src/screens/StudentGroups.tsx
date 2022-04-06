@@ -12,6 +12,7 @@ import ManageButton from 'components/UI/ManageButton'
 import DeleteButton from 'components/UI/DeleteButton'
 import ConfirmationModal from 'components/ConfirmationModal'
 import firebase from 'firebase'
+import { SpinnerCentered } from 'components/UI/SpinnerCentered'
 
 const GroupBox = styled.div`
   display: flex;
@@ -65,75 +66,79 @@ const StudentGroups: React.FC = () => {
   console.log('nogroups', thereAreNoGroups, studentGroupsDocuments)
 
   return (
-    <Box height="calc(100vh - 4.5rem)" overflowY="hidden" marginTop="2rem">
-      <BodyBox>
-        <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
-          {managerIsOpen ? (
-            <Flex alignItems="center">
-              <Checkbox
-                marginRight=".5rem"
-                border="1px solid var(--main-color-light)"
-                borderRadius="3px"
-                isChecked={selectedToDelete.length === studentGroupsDocuments.length}
-                onChange={selectAllHandler}
-              />
-              <Heading as="h3" fontSize="1rem">
-                Select All
-              </Heading>
-            </Flex>
-          ) : null}
-          {thereAreNoGroups ? null : (
-            <ManageButton
-              primaryText="Manage Groups"
-              secondaryText="Close Manager"
-              managerIsOpen={managerIsOpen}
-              setManagerIsOpen={setManagerIsOpen}
-            />
-          )}
-        </Flex>
-
-        <GroupBox>
-          {thereAreNoGroups ? (
-            <Flex h="100%" align="center">
-              <Heading as="h2" textAlign="center" transform="translateY(-2.25rem)">
-                Click the plus sign to create a new Group!
-              </Heading>
-            </Flex>
-          ) : (
-            studentGroupsDocuments?.map(doc => {
-              return (
-                <StudentGroupPreview
-                  key={doc.docId}
-                  studentGroupId={doc.docId}
-                  studentGroupName={doc.studentGroupName}
-                  managerIsOpen={managerIsOpen}
-                  setSelectedToDelete={setSelectedToDelete}
-                  selectedToDelete={selectedToDelete}
+    <Box height="calc(100vh - 4.5rem)" overflowY="hidden">
+      {!studentGroupsDocuments ? (
+        <SpinnerCentered />
+      ) : (
+        <BodyBox>
+          <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
+            {managerIsOpen ? (
+              <Flex alignItems="center">
+                <Checkbox
+                  marginRight=".5rem"
+                  border="1px solid var(--main-color-light)"
+                  borderRadius="3px"
+                  isChecked={selectedToDelete.length === studentGroupsDocuments.length}
+                  onChange={selectAllHandler}
                 />
-              )
-            })
-          )}
-          {managerIsOpen ? (
-            <DeleteButton onOpen={onOpen} />
-          ) : (
-            <PlusButton thereAreNoDocuments={thereAreNoGroups} onOpen={onOpen} />
-          )}
-        </GroupBox>
+                <Heading as="h3" fontSize="1rem">
+                  Select All
+                </Heading>
+              </Flex>
+            ) : null}
+            {thereAreNoGroups ? null : (
+              <ManageButton
+                primaryText="Manage Groups"
+                secondaryText="Close Manager"
+                managerIsOpen={managerIsOpen}
+                setManagerIsOpen={setManagerIsOpen}
+              />
+            )}
+          </Flex>
 
-        {managerIsOpen ? (
-          <ConfirmationModal
-            buttonText="Confirm"
-            modalHeadingText="Confirm Delete"
-            isOpen={isOpen}
-            onClose={onClose}
-            onConfirm={deleteHandler}
-          >
-            <p>{`Are you sure you want to delete the selected groups?`}</p>
-          </ConfirmationModal>
-        ) : (
-          <CreateNewStudentGroupModal isOpen={isOpen} onClose={onClose} />
-        )}
-      </BodyBox>
+          <GroupBox>
+            {thereAreNoGroups ? (
+              <Flex h="100%" align="center">
+                <Heading as="h2" textAlign="center" transform="translateY(-2.25rem)">
+                  Click the plus sign to create a new Group!
+                </Heading>
+              </Flex>
+            ) : (
+              studentGroupsDocuments?.map(doc => {
+                return (
+                  <StudentGroupPreview
+                    key={doc.docId}
+                    studentGroupId={doc.docId}
+                    studentGroupName={doc.studentGroupName}
+                    managerIsOpen={managerIsOpen}
+                    setSelectedToDelete={setSelectedToDelete}
+                    selectedToDelete={selectedToDelete}
+                  />
+                )
+              })
+            )}
+            {managerIsOpen ? (
+              <DeleteButton onOpen={onOpen} />
+            ) : (
+              <PlusButton thereAreNoDocuments={thereAreNoGroups} onOpen={onOpen} />
+            )}
+          </GroupBox>
+
+          {managerIsOpen ? (
+            <ConfirmationModal
+              buttonText="Confirm"
+              modalHeadingText="Confirm Delete"
+              isOpen={isOpen}
+              onClose={onClose}
+              onConfirm={deleteHandler}
+            >
+              <p>{`Are you sure you want to delete the selected groups?`}</p>
+            </ConfirmationModal>
+          ) : (
+            <CreateNewStudentGroupModal isOpen={isOpen} onClose={onClose} />
+          )}
+        </BodyBox>
+      )}
     </Box>
   )
 }
