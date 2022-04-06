@@ -19,6 +19,7 @@ const ManageGroup: React.FC = () => {
   const history = useHistory()
   const studentGroupId = params.studentGroupId
   const [selectedStudents, setSelectedStudents] = React.useState<string[]>([])
+  const [shouldBounce, setShouldBounce] = React.useState(false)
 
   const { studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(studentGroupId)
 
@@ -27,6 +28,14 @@ const ManageGroup: React.FC = () => {
   const backHandler = () => {
     history.push(`/student-group/${studentGroupId}`)
   }
+
+  const thereAreNoStudentsInThisGroup = studentsInThisStudentGroupDocuments?.length === 0
+
+  React.useEffect(() => {
+    if (thereAreNoStudentsInThisGroup) {
+      setShouldBounce(true)
+    }
+  }, [thereAreNoStudentsInThisGroup])
 
   const selectAllHandler = (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -50,6 +59,11 @@ const ManageGroup: React.FC = () => {
     })
   }
 
+  const handleOpen = () => {
+    setShouldBounce(false)
+    onOpen()
+  }
+
   return (
     <>
       <BodyBox>
@@ -66,10 +80,19 @@ const ManageGroup: React.FC = () => {
           minHeight="3rem"
           letterSpacing=".1rem"
           margin="1rem auto"
-          onClick={onOpen}
+          onClick={handleOpen}
+          className={shouldBounce ? 'bounce' : ''}
         >
           + ADD STUDENTS
         </Button>
+
+        {thereAreNoStudentsInThisGroup ? (
+          <Flex>
+            <Heading as="h2" textAlign="center">
+              {`There are no students in this group`}
+            </Heading>
+          </Flex>
+        ) : null}
 
         <Flex
           direction="column"

@@ -4,9 +4,14 @@ import { Flex, Button } from '@chakra-ui/react'
 type FooterWithButtonsProps = {
   onCancel?: () => void
   addExistingHandler: () => void
+  thereAreNoStudentsInThisGroup: boolean
 }
 
-const FooterForAddExistingStudentsModal: React.FC<FooterWithButtonsProps> = ({ onCancel, addExistingHandler }) => {
+const FooterForAddExistingStudentsModal: React.FC<FooterWithButtonsProps> = ({
+  onCancel,
+  addExistingHandler,
+  thereAreNoStudentsInThisGroup,
+}) => {
   return (
     <Flex
       backgroundColor="var(--grey-very-light)"
@@ -26,7 +31,12 @@ const FooterForAddExistingStudentsModal: React.FC<FooterWithButtonsProps> = ({ o
           CANCEL
         </Button>
       ) : null}
-      <Button onClick={addExistingHandler} backgroundColor="var(--main-color-medium)" color="var(--white)">
+      <Button
+        onClick={addExistingHandler}
+        backgroundColor="var(--main-color-medium)"
+        color="var(--white)"
+        isDisabled={thereAreNoStudentsInThisGroup}
+      >
         ADD TO GROUP
       </Button>
     </Flex>

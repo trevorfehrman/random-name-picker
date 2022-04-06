@@ -8,7 +8,6 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Checkbox,
@@ -152,12 +151,13 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
             minHeight="100px"
             padding="10px"
             overflowY="auto"
+            paddingBottom="6rem"
           >
             {thereAreNoStudents ? (
               <Flex direction="column">
-                <Text marginBottom="1rem">
+                <Text marginBottom="2rem">
                   This is where you&apos;ll add students to this group. First, head to the Students page to create some
-                  students
+                  students!
                 </Text>
                 <Button
                   onClick={() => {
@@ -175,21 +175,11 @@ const AddExistingStudentsModal: React.FC<AddExistingStudentsModalProps> = ({ onC
           </Box>
         </ModalBody>
 
-        <ModalFooter>
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button
-            backgroundColor="var(--main-color-medium)"
-            color="var(--white)"
-            mr={3}
-            onClick={addExistingHandler}
-            isDisabled={selectedStudentsToAdd.length === 0}
-          >
-            Add To Group
-          </Button>
-        </ModalFooter>
-        <FooterForAddExistingStudentsModal onCancel={onClose} addExistingHandler={addExistingHandler} />
+        <FooterForAddExistingStudentsModal
+          onCancel={onClose}
+          addExistingHandler={addExistingHandler}
+          thereAreNoStudentsInThisGroup={studentDocuments?.length === 0}
+        />
       </ModalContent>
     </Modal>
   )

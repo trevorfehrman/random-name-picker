@@ -1,6 +1,5 @@
 import React from 'react'
 import { FormLabel, Input, Box } from '@chakra-ui/react'
-import { useHistory } from 'react-router-dom'
 import { FormBox } from 'styles'
 import styled from '@emotion/styled'
 import SubmitButton from './UI/SubmitButton'
@@ -20,17 +19,14 @@ const NewStudentGroup: React.FC<NewStudentGroupProps> = ({ onClose }) => {
 
   const { studentGroupsRef } = useStudentGroups()
 
-  const history = useHistory()
-
   async function submitHandler(e: React.BaseSyntheticEvent) {
     e?.preventDefault()
     try {
-      const result = await studentGroupsRef.add({
+      await studentGroupsRef.add({
         studentGroupName: studentGroupNameInput,
         selectedStudent: null,
       })
       onClose()
-      history.push(`/student-group/${result.id}`)
     } catch (err) {
       console.log(err)
     }
