@@ -8,6 +8,7 @@ import StudentToManage from 'components/StudentToManage'
 import { DeleteIcon } from '@chakra-ui/icons'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import { useFirestore } from 'reactfire'
+import { InstructionText } from 'components/UI/InstructionText'
 
 type ManageGroupParams = {
   studentGroupId: string
@@ -87,11 +88,7 @@ const ManageGroup: React.FC = () => {
         </Button>
 
         {thereAreNoStudentsInThisGroup ? (
-          <Flex>
-            <Heading as="h2" textAlign="center">
-              {`There are no students in this group`}
-            </Heading>
-          </Flex>
+          <InstructionText text="This is where your students will be listed.  Click add students!" />
         ) : null}
 
         <Flex

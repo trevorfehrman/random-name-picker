@@ -5,9 +5,10 @@ import { AddIcon } from '@chakra-ui/icons'
 type PlusButtonProps = {
   onOpen: () => void
   thereAreNoDocuments: boolean
+  ariaLabel: string
 }
 
-const PlusButton: React.FC<PlusButtonProps> = ({ onOpen, thereAreNoDocuments }) => {
+const PlusButton: React.FC<PlusButtonProps> = ({ onOpen, thereAreNoDocuments, ariaLabel }) => {
   const [shouldBounce, setShouldBounce] = React.useState(false)
 
   React.useEffect(() => {
@@ -34,6 +35,7 @@ const PlusButton: React.FC<PlusButtonProps> = ({ onOpen, thereAreNoDocuments }) 
       borderRadius="50%"
       backgroundColor="var(--main-color-medium)"
       className={shouldBounce ? 'bounce' : ''}
+      aria-label={ariaLabel}
     >
       <AddIcon color="white" fontSize="1.5rem" />
     </Button>
