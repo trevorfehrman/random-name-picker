@@ -17,6 +17,7 @@ import { ISharedStudentProfile } from 'interfacesAndTypes'
 import { ReviewNewProfile } from 'screens/ReviewNewProfile'
 import { ReviewProfileChanges } from 'screens/ReviewProfileChanges'
 import { ReviewNewProfiles } from 'screens/ReviewNewProfiles'
+import { navHeightInRem } from 'my-constants'
 
 interface iTeacherDoc {
   displayName: string
@@ -46,26 +47,28 @@ const AuthenticatedApp: React.FC = () => {
   }, [])
 
   return (
-    <>
-      <Flex direction="column">
+    <Flex direction="column" h="100vh">
+      <Flex direction="column" h={`${navHeightInRem}rem`}>
         <MobileHeader />
         <HeaderForDesktop sharedProfileAmount={sharedProfileAmount} />
       </Flex>
-      <Switch>
-        <Route path="/" exact component={StudentGroups} />
-        <Route path="/student-group/:groupId" component={StudentGroup} />
-        <Route path="/manage-students">
-          <ManageStudents sharedProfileAmount={sharedProfileAmount} />
-        </Route>
-        <Route path="/edit-student/:studentId" component={EditStudent} />
-        <Route path="/review-new-profiles">
-          <ReviewNewProfiles sharedProfiles={sharedProfiles} />
-        </Route>
-        <Route path="/review-profile-changes/:profileId" component={ReviewProfileChanges} />
-        <Route path="/review-new-profile/:profileId" component={ReviewNewProfile} />
-        <Route path="/manage-group/:studentGroupId" component={ManageGroup} />
-      </Switch>
-    </>
+      <Flex flexDirection="column" flex="1">
+        <Switch>
+          <Route path="/" exact component={StudentGroups} />
+          <Route path="/student-group/:groupId" component={StudentGroup} />
+          <Route path="/manage-students">
+            <ManageStudents sharedProfileAmount={sharedProfileAmount} />
+          </Route>
+          <Route path="/edit-student/:studentId" component={EditStudent} />
+          <Route path="/review-new-profiles">
+            <ReviewNewProfiles sharedProfiles={sharedProfiles} />
+          </Route>
+          <Route path="/review-profile-changes/:profileId" component={ReviewProfileChanges} />
+          <Route path="/review-new-profile/:profileId" component={ReviewNewProfile} />
+          <Route path="/manage-group/:studentGroupId" component={ManageGroup} />
+        </Switch>
+      </Flex>
+    </Flex>
   )
 }
 

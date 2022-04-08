@@ -13,6 +13,7 @@ import DeleteButton from 'components/UI/DeleteButton'
 import ConfirmationModal from 'components/ConfirmationModal'
 import firebase from 'firebase'
 import { SpinnerCentered } from 'components/UI/SpinnerCentered'
+import { InstructionText } from 'components/UI/InstructionText'
 
 const GroupBox = styled.div`
   display: flex;
@@ -66,7 +67,7 @@ const StudentGroups: React.FC = () => {
   console.log('nogroups', thereAreNoGroups, studentGroupsDocuments)
 
   return (
-    <Box height="calc(100vh - 4.5rem)" overflowY="hidden">
+    <Box height="100%" overflowY="hidden" padding="2rem">
       {!studentGroupsDocuments ? (
         <SpinnerCentered />
       ) : (
@@ -98,11 +99,7 @@ const StudentGroups: React.FC = () => {
 
           <GroupBox>
             {thereAreNoGroups ? (
-              <Flex h="100%" align="center">
-                <Heading as="h2" textAlign="center" transform="translateY(-2.25rem)">
-                  Click the plus sign to create a new Group!
-                </Heading>
-              </Flex>
+              <InstructionText text="Click the plus sign to create a new group!" />
             ) : (
               studentGroupsDocuments?.map(doc => {
                 return (
@@ -120,7 +117,7 @@ const StudentGroups: React.FC = () => {
             {managerIsOpen ? (
               <DeleteButton onOpen={onOpen} />
             ) : (
-              <PlusButton thereAreNoDocuments={thereAreNoGroups} onOpen={onOpen} />
+              <PlusButton thereAreNoDocuments={thereAreNoGroups} onOpen={onOpen} ariaLabel="add group" />
             )}
           </GroupBox>
 

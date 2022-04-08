@@ -12,6 +12,7 @@ import DeleteButton from 'components/UI/DeleteButton'
 import ConfirmationModal from 'components/ConfirmationModal'
 import firebase from 'firebase'
 import { SpinnerCentered } from 'components/UI/SpinnerCentered'
+import { InstructionText } from 'components/UI/InstructionText'
 
 const StudentBox = styled.div`
   display: flex;
@@ -113,11 +114,7 @@ const ManageStudents: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfi
             </Flex>
           )}
           {thereAreNoStudents ? (
-            <Flex h="100%" align="center">
-              <Heading as="h1" textAlign="center" transform="translateY(-2.25rem)">
-                Click the plus sign to create a new student!
-              </Heading>
-            </Flex>
+            <InstructionText text="Click the plus sign to create a new student!" />
           ) : (
             <StudentBox>
               {studentDocuments?.map(doc => {
@@ -151,7 +148,7 @@ const ManageStudents: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfi
       {managerIsOpen ? (
         <DeleteButton onOpen={onOpen} />
       ) : (
-        <PlusButton thereAreNoDocuments={studentDocuments?.length === 0} onOpen={onOpen} />
+        <PlusButton thereAreNoDocuments={studentDocuments?.length === 0} onOpen={onOpen} ariaLabel="add student" />
       )}
     </Box>
   )
