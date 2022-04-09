@@ -28,11 +28,19 @@ const StudentGroups: React.FC = () => {
 
   const [selectedToDelete, setSelectedToDelete] = React.useState<string[]>([])
 
+  const [thereIsOneGroupWithNoStudents, setThereIsOneGroupWithNoStudents] = React.useState(false)
+
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   const { studentGroupsDocuments, studentGroupsRef } = useStudentGroups()
 
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
+
+  React.useEffect(() => {
+    if (studentGroupsDocuments?.length === 0) {
+      setThereIsOneGroupWithNoStudents(false)
+    }
+  }, [studentGroupsDocuments])
 
   const deleteHandler = () => {
     selectedToDelete.forEach(studentGroupId => {
@@ -64,14 +72,13 @@ const StudentGroups: React.FC = () => {
 
   const thereAreNoGroups = studentGroupsDocuments?.length === 0
 
-  console.log('nogroups', thereAreNoGroups, studentGroupsDocuments)
-
   return (
     <Box height="100%" overflowY="hidden" padding="2rem">
       {!studentGroupsDocuments ? (
         <SpinnerCentered />
       ) : (
         <BodyBox>
+          <Heading as="h2">Your groups</Heading>
           <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
             {managerIsOpen ? (
               <Flex alignItems="center">
@@ -99,21 +106,25 @@ const StudentGroups: React.FC = () => {
 
           <GroupBox>
             {thereAreNoGroups ? (
-              <InstructionText text="Click the plus sign to create a new group!" />
+              <InstructionText>Click the plus sign to create a new group!</InstructionText>
             ) : (
               studentGroupsDocuments?.map(doc => {
                 return (
-                  <StudentGroupPreview
-                    key={doc.docId}
-                    studentGroupId={doc.docId}
-                    studentGroupName={doc.studentGroupName}
-                    managerIsOpen={managerIsOpen}
-                    setSelectedToDelete={setSelectedToDelete}
-                    selectedToDelete={selectedToDelete}
-                  />
+                  <Flex key={doc.docId} w="100%" justifyContent="center" direction="column">
+                    <StudentGroupPreview
+                      studentGroupId={doc.docId}
+                      studentGroupName={doc.studentGroupName}
+                      managerIsOpen={managerIsOpen}
+                      setSelectedToDelete={setSelectedToDelete}
+                      selectedToDelete={selectedToDelete}
+                      thisIsTheOnlyStudentGroup={studentGroupsDocuments?.length === 1}
+                      setThereIsOneGroupWithNoStudents={setThereIsOneGroupWithNoStudents}
+                    />
+                  </Flex>
                 )
               })
             )}
+            {thereIsOneGroupWithNoStudents && <InstructionText>Click on the group to enter</InstructionText>}
             {managerIsOpen ? (
               <DeleteButton onOpen={onOpen} />
             ) : (

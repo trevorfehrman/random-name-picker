@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Flex, Heading } from '@chakra-ui/react'
 import { centeringOffset } from 'my-constants'
 
-export const InstructionText: React.FC<{ text: string }> = ({ text }) => {
+export const InstructionText: React.FC = ({ children }) => {
   console.log(centeringOffset)
 
   return (
@@ -25,7 +25,7 @@ export const InstructionText: React.FC<{ text: string }> = ({ text }) => {
         opacity="0.7"
         fontWeight="semi-light"
       >
-        {text}
+        {children}
       </Heading>
     </Flex>
   )
