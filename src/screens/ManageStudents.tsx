@@ -5,7 +5,7 @@ import Student from 'components/Student'
 import { BodyBox } from 'styles'
 import CreateNewStudentModal from 'components/CreateNewStudentModal'
 import PlusButton from 'components/UI/PlusButton'
-import { useStudents, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
+import { useSharedProfiles, useStudents, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
 import styled from '@emotion/styled'
 import ManageButton from 'components/UI/ManageButton'
 import DeleteButton from 'components/UI/DeleteButton'
@@ -22,7 +22,7 @@ const StudentBox = styled.div`
   margin-bottom: 7rem;
 `
 
-const ManageStudents: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfileAmount }) => {
+const ManageStudents: React.FC = () => {
   const [managerIsOpen, setManagerIsOpen] = React.useState(false)
 
   const [selectedToDelete, setSelectedToDelete] = React.useState<string[]>([])
@@ -32,6 +32,10 @@ const ManageStudents: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfi
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { studentDocuments, studentsRef } = useStudents()
+
+  const { sharedProfiles } = useSharedProfiles()
+
+  const sharedProfileAmount = sharedProfiles?.length
 
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
 
@@ -114,7 +118,7 @@ const ManageStudents: React.FC<{ sharedProfileAmount: number }> = ({ sharedProfi
             </Flex>
           )}
           {thereAreNoStudents ? (
-            <InstructionText text="Click the plus sign to create a new student!" />
+            <InstructionText>Click the plus sign to create a new student!</InstructionText>
           ) : (
             <StudentBox>
               {studentDocuments?.map(doc => {

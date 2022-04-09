@@ -1,7 +1,14 @@
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { IStudentGroup, IStudent, IStudentInStudentGroup } from 'interfacesAndTypes'
+import { IStudentGroup, IStudent, IStudentInStudentGroup, ISharedStudentProfile } from 'interfacesAndTypes'
 import firebase from 'firebase'
 
+interface iTeacherDoc {
+  displayName: string
+  email: string
+  photoURL: string
+  teacherCode: string
+  uid: string
+}
 interface IUseStudentGroup {
   studentGroupDocument: IStudentGroup
   studentGroupRef: firebase.firestore.DocumentReference
@@ -25,6 +32,11 @@ interface IUseUnselectedStudents {
 interface IUseStudentGroups {
   studentGroupsRef: firebase.firestore.CollectionReference<firebase.firestore.DocumentData>
   studentGroupsDocuments: IStudentGroup[]
+}
+
+interface IUseSharedStudentProfiles {
+  sharedProfiles: ISharedStudentProfile[]
+  sharedProfilesRef: firebase.firestore.Query
 }
 
 export const useTeacherRef: () => firebase.firestore.DocumentReference = () => {
@@ -94,4 +106,20 @@ export const useUnselectedStudents: (studentGroupId: string) => IUseUnselectedSt
   ).data
 
   return { unselectedStudentsRef, unselectedStudentsDocuments }
+}
+
+export const useSharedProfiles: () => IUseSharedStudentProfiles = () => {
+  const teacherRef = useTeacherRef()
+  const teacherCode = useFirestoreDocData<iTeacherDoc>(teacherRef).data?.teacherCode || ''
+
+  console.log(teacherCode)
+
+  let sharedProfiles = null
+
+  const sharedProfilesRef = useFirestore().collection('sharedProfiles').where('teacherCode', '==', teacherCode)
+  sharedProfiles = useFirestoreCollectionData<ISharedStudentProfile & { docId: string }>(sharedProfilesRef, {
+    idField: 'docId',
+  }).data
+
+  return { sharedProfiles, sharedProfilesRef }
 }

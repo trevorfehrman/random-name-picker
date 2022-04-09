@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { Editable, EditablePreview, EditableInput, FormControl, FormErrorMessage } from '@chakra-ui/react'
+import { Editable, EditablePreview, EditableInput, FormControl, FormErrorMessage, FormLabel } from '@chakra-ui/react'
 import { useStudentGroup } from 'helpers/firestoreHooks'
 
 type EditableStudentGroupNameProps = {
@@ -9,10 +9,9 @@ type EditableStudentGroupNameProps = {
 
 const StudentGroupNameForm = styled.form`
   position: relative;
-  width: 16rem;
-  max-width: 90%;
+  width: 100%;
   display: flex;
-  margin: 0.5rem auto;
+  margin: 2rem auto;
 `
 
 const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({ studentGroupId }) => {
@@ -50,23 +49,30 @@ const EditableStudentGroupName: React.FC<EditableStudentGroupNameProps> = ({ stu
   }
   return (
     <StudentGroupNameForm>
-      <FormControl isInvalid={errors.length > 0} display="flex" flexDirection="column" alignItems="flex-end">
+      <FormControl isInvalid={errors.length > 0} display="flex" alignItems="center" w="100%">
         {studentGroupDocument && (
-          <Editable
-            defaultValue={studentGroupDocument.studentGroupName}
-            placeholder="Student Group Name"
-            w="100%"
-            textAlign="center"
-            color="var(--grey-dark)"
-            fontSize="1.5rem"
-            letterSpacing=".12em"
-            lineHeight="1.75rem"
-            textTransform="uppercase"
-            onSubmit={submitHandler}
-          >
-            <EditablePreview _hover={{ cursor: 'pointer' }} zIndex={1} position="relative" />
-            <EditableInput />
-          </Editable>
+          <>
+            <FormLabel htmlFor="group-name" whiteSpace="nowrap" fontSize="1.3rem">
+              Group Name:
+            </FormLabel>
+            <Editable
+              defaultValue={studentGroupDocument.studentGroupName}
+              id="group-name"
+              placeholder="Student Group Name"
+              w="100%"
+              textAlign="center"
+              color="var(--grey-dark)"
+              fontSize="2rem"
+              letterSpacing=".12em"
+              lineHeight="1.75rem"
+              textTransform="uppercase"
+              onSubmit={submitHandler}
+              startWithEditView
+            >
+              <EditablePreview _hover={{ cursor: 'pointer' }} zIndex={1} position="relative" />
+              <EditableInput />
+            </Editable>
+          </>
         )}
         {errors.map(errorMessage => {
           return (

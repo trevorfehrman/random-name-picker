@@ -2,7 +2,8 @@ import * as React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import 'firebase/firestore'
 import { useFirestore } from 'reactfire'
-import { Button, Box, Heading, Flex } from '@chakra-ui/react'
+import { Button, Box, Heading, Flex, IconButton } from '@chakra-ui/react'
+import { SettingsIcon } from '@chakra-ui/icons'
 import { IStudentInStudentGroup, GroupParams } from 'interfacesAndTypes'
 import FullScreenDisplay from 'components/FullScreenDisplay'
 import NameDisplay from 'components/NameDisplay'
@@ -20,6 +21,7 @@ import {
   useUnselectedStudents,
 } from 'helpers/firestoreHooks'
 import { InstructionText } from 'components/UI/InstructionText'
+import { centeringOffset } from 'my-constants'
 
 const StudentGroup: React.FC = () => {
   const [noStudentSelected, setNoStudentSelected] = React.useState(true)
@@ -51,7 +53,6 @@ const StudentGroup: React.FC = () => {
 
   const selectStudentAndStudentFactHandler = async () => {
     if (unselected.length === 0) {
-      console.log('made it here')
       return
     }
     const selectedStudent = unselected[0]
@@ -88,10 +89,18 @@ const StudentGroup: React.FC = () => {
   const thereAreNoStudentsInThisGroup = studentsInThisStudentGroupDocuments?.length === 0
 
   return (
-    <Flex position="relative" flexDirection="column" h="100%" w="100%" alignItems="center">
+    <Flex
+      position="relative"
+      flexDirection="column"
+      h="100%"
+      w="100%"
+      alignItems="center"
+      justify={{ base: 'flex-start', md: 'center' }}
+    >
       <Flex
         top="0"
         left="0"
+        position={{ base: 'relative', md: 'absolute' }}
         width="100%"
         alignItems="flex-start"
         justifyContent="space-between"
@@ -108,15 +117,54 @@ const StudentGroup: React.FC = () => {
         >
           {studentGroupDocument?.studentGroupName}
         </Heading>
-        <Button className={thereAreNoStudentsInThisGroup ? 'bounce' : ''} onClick={openManageGroupPageHandler}>
-          Add Students
-        </Button>
+        <IconButton
+          aria-label="group settings"
+          icon={<SettingsIcon />}
+          fontSize="1.5rem"
+          w="2.5rem"
+          h="2.5rem"
+          className={thereAreNoStudentsInThisGroup ? 'bounce' : ''}
+          onClick={openManageGroupPageHandler}
+          zIndex="20"
+        >
+          Group Settings
+        </IconButton>
       </Flex>
       {thereAreNoStudentsInThisGroup ? (
-        <InstructionText text="Click the add button to add students to this group!" />
+        <InstructionText>
+          Click the group settings icon (<SettingsIcon fontSize="1.5rem" />)
+        </InstructionText>
+      ) : noStudentSelected ? (
+        <Flex
+          position="absolute"
+          w="100%"
+          h="100%"
+          justifyContent="center"
+          align="center"
+          transform={`translateY(-${centeringOffset})`}
+        >
+          <Button
+            w="20rem"
+            position="relative"
+            height={{ base: '50%', lg: '40%' }}
+            minH="7rem"
+            backgroundColor="var(--white)"
+            color="var(--main-color-medium)"
+            border="1px solid var(--main-color-medium)"
+            fontSize="2rem"
+            onClick={selectStudentAndStudentFactHandler}
+            className="noHighlightOnClick bounce"
+            zIndex="20"
+          >
+            Start
+          </Button>
+        </Flex>
       ) : (
         <Box
           display="grid"
+          position={{ base: 'relative', md: 'absolute' }}
+          transform={{ base: 'translateY(0)', md: `translateY(-${centeringOffset}rem)` }}
+          // h="100%"
           gridTemplateRows={{ base: 'max-content 1fr max-content max-content', md: '5rem .5fr 2fr 1fr' }}
           gridTemplateColumns={{
             base: '1fr minmax(150px, max-content) 1fr',
@@ -138,11 +186,13 @@ const StudentGroup: React.FC = () => {
               '         .        studentPicture   studentFact              .       '
               '         .        studentPicture   studentListNextBtn       .       '`,
           }}
-          alignItems={{ base: 'center', lg: 'center' }}
+          alignItems="center"
           alignContent="center"
+          justifyContent="center"
           justifyItems="center"
           w="100%"
           maxW="90rem"
+          marginBottom="2rem"
         >
           <Heading
             as="h2"

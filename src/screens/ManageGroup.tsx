@@ -1,9 +1,18 @@
 import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import { useStudentsInThisStudentGroup, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
-import EditableStudentGroupName from 'components/EditableStudentGroupName'
-import { BodyBox } from 'styles'
-import { Button, IconButton, useDisclosure, Flex, Checkbox, Heading, Box } from '@chakra-ui/react'
+import { useStudentsInThisStudentGroup, useStudentsInStudentGroups, useStudentGroup } from 'helpers/firestoreHooks'
+import {
+  Button,
+  IconButton,
+  useDisclosure,
+  Flex,
+  Checkbox,
+  Heading,
+  Box,
+  FormControl,
+  FormLabel,
+  Input,
+} from '@chakra-ui/react'
 import StudentToManage from 'components/StudentToManage'
 import { DeleteIcon } from '@chakra-ui/icons'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
@@ -23,6 +32,8 @@ const ManageGroup: React.FC = () => {
   const [shouldBounce, setShouldBounce] = React.useState(false)
 
   const { studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(studentGroupId)
+
+  const { studentGroupDocument, studentGroupRef } = useStudentGroup(studentGroupId)
 
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
 
@@ -65,11 +76,27 @@ const ManageGroup: React.FC = () => {
     onOpen()
   }
 
+  const editStudentGroupNameHandler = (value: string) => {
+    studentGroupRef.update({ studentGroupName: value }).catch(err => {
+      console.log(err)
+    })
+  }
+
   return (
     <>
-      <BodyBox>
-        <Flex>
-          <EditableStudentGroupName studentGroupId={studentGroupId} />
+      <Flex direction="column" w="95%" maxW="50rem" marginX="auto">
+        <Flex w="100%" justify="center">
+          <FormControl display="flex" flexDirection="column" w="100%" marginY="2rem">
+            <FormLabel whiteSpace="nowrap">Group Name:</FormLabel>
+            <Input
+              fontSize="1.3rem"
+              padding="1rem"
+              defaultValue={studentGroupDocument?.studentGroupName}
+              onBlur={e => {
+                editStudentGroupNameHandler(e.target.value)
+              }}
+            ></Input>
+          </FormControl>
         </Flex>
 
         <Button
@@ -88,7 +115,7 @@ const ManageGroup: React.FC = () => {
         </Button>
 
         {thereAreNoStudentsInThisGroup ? (
-          <InstructionText text="This is where your students will be listed.  Click add students!" />
+          <InstructionText>This is where your students will be listed. Click add students!</InstructionText>
         ) : null}
 
         <Flex
@@ -100,6 +127,7 @@ const ManageGroup: React.FC = () => {
         >
           {studentsInThisStudentGroupDocuments?.length > 1 ? (
             <>
+              <Heading as="h2">Students in this group:</Heading>
               <Checkbox
                 spacing="1rem"
                 margin="1rem 0 .5rem 0"
@@ -125,7 +153,7 @@ const ManageGroup: React.FC = () => {
             )
           })}
         </Flex>
-      </BodyBox>
+      </Flex>
       <Box display="block" position="fixed" bottom="0" left="0" h="5rem" w="full">
         <Flex
           alignItems="center"
