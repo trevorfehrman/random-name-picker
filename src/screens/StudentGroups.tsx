@@ -4,7 +4,7 @@ import 'firebase/firestore'
 import StudentGroupPreview from 'components/StudentGroupPreview'
 import styled from '@emotion/styled'
 import { BodyBox } from 'styles'
-import { useDisclosure, Box, Flex, Checkbox, Heading } from '@chakra-ui/react'
+import { useDisclosure, Box, Flex, Checkbox, Heading, Text, IconButton } from '@chakra-ui/react'
 import CreateNewStudentGroupModal from 'components/CreateNewStudentGroupModal'
 import PlusButton from 'components/UI/PlusButton'
 import { useStudentGroups, useStudentsInStudentGroups } from 'helpers/firestoreHooks'
@@ -14,6 +14,7 @@ import ConfirmationModal from 'components/ConfirmationModal'
 import firebase from 'firebase'
 import { SpinnerCentered } from 'components/UI/SpinnerCentered'
 import { InstructionText } from 'components/UI/InstructionText'
+import { CloseIcon } from '@chakra-ui/icons'
 
 const GroupBox = styled.div`
   display: flex;
@@ -110,7 +111,7 @@ const StudentGroups: React.FC = () => {
             ) : (
               studentGroupsDocuments?.map(doc => {
                 return (
-                  <Flex key={doc.docId} w="100%" justifyContent="center" direction="column">
+                  <Flex key={doc.docId} w="100%" justifyContent="center" direction="column" position="relative">
                     <StudentGroupPreview
                       studentGroupId={doc.docId}
                       studentGroupName={doc.studentGroupName}
@@ -124,7 +125,76 @@ const StudentGroups: React.FC = () => {
                 )
               })
             )}
-            {thereIsOneGroupWithNoStudents && <InstructionText>Click on the group to enter</InstructionText>}
+            {
+              thereIsOneGroupWithNoStudents && (
+                <Flex
+                  marginTop="1rem"
+                  borderX="1px solid var(--grey-dark)"
+                  borderRadius="5px"
+                  justify="center"
+                  align="center"
+                  position="relative"
+                  borderBottom="1px solid var(--grey-dark)"
+                  opacity=".9"
+                  boxShadow="2px 4px 8px rgba(0, 0, 0, 0.2)"
+                >
+                  <IconButton
+                    aria-label="close tip"
+                    position="absolute"
+                    right="-.5rem"
+                    top="-.5rem"
+                    bg="transparent"
+                    zIndex="40"
+                    cursor="pointer"
+                    icon={<CloseIcon fontSize="10px" />}
+                    _hover={{ bg: 'transparent' }}
+                    _active={{ bg: 'transparent', border: '' }}
+                    onClick={() => {
+                      console.log('double buttz')
+                      setThereIsOneGroupWithNoStudents(false)
+                    }}
+                  />
+
+                  <Box
+                    w="1rem"
+                    h="1rem"
+                    border="1px solid var(--grey-dark)"
+                    transform="translateX(3rem) rotate(45deg)"
+                    position="absolute"
+                    top="-.3rem"
+                    left="0"
+                    bg="var(--white)"
+                    zIndex="0"
+                  />
+                  <Box
+                    position="absolute"
+                    w="100%"
+                    h="100%"
+                    top="0"
+                    left="0"
+                    zIndex="-20"
+                    borderRadius="5px"
+                    borderTop="1px solid var(--grey-dark)"
+                  />
+                  <Box
+                    position="absolute"
+                    w="100%"
+                    h="calc(100% - 1px)"
+                    bg="var(--white)"
+                    bottom="0"
+                    left="0"
+                    zIndex="10"
+                    borderRadius="5px"
+                  />
+
+                  <Text fontSize="1.2rem" as="h3" zIndex="30" padding="1rem 1.5rem">
+                    Click on the group to enter
+                  </Text>
+                </Flex>
+              )
+              // <InstructionText>Click on the group to enter</InstructionText>
+            }
+
             {managerIsOpen ? (
               <DeleteButton onOpen={onOpen} />
             ) : (
