@@ -12,7 +12,7 @@ export const InstructionText: React.FC = ({ children }) => {
       justify="center"
       align="center"
       position="absolute"
-      bottom="0"
+      top="0"
       left="0"
       paddingX="1.5rem"
       zIndex="-10"
