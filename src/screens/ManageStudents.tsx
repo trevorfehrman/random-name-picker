@@ -13,6 +13,7 @@ import ConfirmationModal from 'components/ConfirmationModal'
 import firebase from 'firebase'
 import { SpinnerCentered } from 'components/UI/SpinnerCentered'
 import { InstructionText } from 'components/UI/InstructionText'
+import { Popover } from 'components/UI/Popover'
 
 const StudentBox = styled.div`
   display: flex;
@@ -27,6 +28,10 @@ const ManageStudents: React.FC = () => {
 
   const [selectedToDelete, setSelectedToDelete] = React.useState<string[]>([])
 
+  const [thereAreNoStudents, setThereAreNoStudents] = React.useState(false)
+
+  const [initialStudentNumber, setInitialStudentNumber] = React.useState<null | number>(null)
+
   const history = useHistory()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -38,6 +43,20 @@ const ManageStudents: React.FC = () => {
   const sharedProfileAmount = sharedProfiles?.length
 
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
+
+  React.useEffect(() => {
+    if (studentDocuments?.length === 0) {
+      setThereAreNoStudents(true)
+    } else {
+      setThereAreNoStudents(false)
+    }
+  }, [studentDocuments])
+
+  React.useEffect(() => {
+    if (studentDocuments && initialStudentNumber === null) {
+      setInitialStudentNumber(studentDocuments.length)
+    }
+  }, [initialStudentNumber, studentDocuments])
 
   const selectAllHandler = () => {
     console.log('this worked!')
@@ -65,10 +84,16 @@ const ManageStudents: React.FC = () => {
     setManagerIsOpen(false)
   }
 
-  const thereAreNoStudents = studentDocuments?.length === 0
-
   return (
     <Box height="calc(100vh - 4.5rem)">
+      <Box position="fixed" right="8rem" top="5rem" zIndex="1000">
+        <Popover
+          text="once you've created your students, head back to the groups page"
+          shouldShowPopover={initialStudentNumber === 0 && studentDocuments?.length > 0}
+          type="below"
+        />
+      </Box>
+
       {!studentDocuments ? (
         <SpinnerCentered />
       ) : (
@@ -88,11 +113,11 @@ const ManageStudents: React.FC = () => {
               </Button>
             </Flex>
           ) : null}
-          {!thereAreNoStudents && (
-            <Heading as="h2" marginTop="2rem">
-              Your students
-            </Heading>
-          )}
+
+          <Heading as="h2" marginTop="2rem">
+            Your students
+          </Heading>
+
           {!thereAreNoStudents && (
             <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
               {managerIsOpen ? (
@@ -118,7 +143,7 @@ const ManageStudents: React.FC = () => {
             </Flex>
           )}
           {thereAreNoStudents ? (
-            <InstructionText>Click the plus sign to create a new student!</InstructionText>
+            <InstructionText>You have no students</InstructionText>
           ) : (
             <StudentBox>
               {studentDocuments?.map(doc => {
@@ -149,6 +174,13 @@ const ManageStudents: React.FC = () => {
           )}
         </BodyBox>
       )}
+      <Box position="fixed" bottom="8rem" right="1.5rem">
+        <Popover
+          text="click on the plus sign to create a student"
+          shouldShowPopover={thereAreNoStudents}
+          type="above"
+        />
+      </Box>
       {managerIsOpen ? (
         <DeleteButton onOpen={onOpen} />
       ) : (

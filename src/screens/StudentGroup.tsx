@@ -22,6 +22,7 @@ import {
 } from 'helpers/firestoreHooks'
 import { InstructionText } from 'components/UI/InstructionText'
 import { centeringOffset } from 'my-constants'
+import { Popover } from 'components/UI/Popover'
 
 const StudentGroup: React.FC = () => {
   const [noStudentSelected, setNoStudentSelected] = React.useState(true)
@@ -126,14 +127,18 @@ const StudentGroup: React.FC = () => {
           className={thereAreNoStudentsInThisGroup ? 'bounce' : ''}
           onClick={openManageGroupPageHandler}
           zIndex="20"
-        >
-          Group Settings
-        </IconButton>
+        />
+        <Box position="fixed" top="8rem" right="1rem">
+          <Popover
+            arrowPosition="right"
+            text="Click here to enter group settings"
+            shouldShowPopover={thereAreNoStudentsInThisGroup}
+            type="below"
+          />
+        </Box>
       </Flex>
       {thereAreNoStudentsInThisGroup ? (
-        <InstructionText>
-          Click the group settings icon (<SettingsIcon fontSize="1.5rem" />)
-        </InstructionText>
+        <InstructionText>There are no students in this group</InstructionText>
       ) : noStudentSelected ? (
         <Flex
           position="absolute"
