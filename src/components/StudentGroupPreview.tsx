@@ -48,7 +48,6 @@ const StudentGroup: React.FC<StudentGroupProps> = ({
   const thereAreNoStudentsInThisGroup = studentsInThisStudentGroupDocuments?.length === 0
 
   React.useEffect(() => {
-    console.log('ran')
     if (thereAreNoStudentsInThisGroup && thisIsTheOnlyStudentGroup) {
       setThereIsOneGroupWithNoStudents(true)
     } else {

@@ -17,7 +17,7 @@ import StudentToManage from 'components/StudentToManage'
 import { DeleteIcon } from '@chakra-ui/icons'
 import AddExistingStudentsModal from 'components/AddExisitingStudentsModal'
 import { useFirestore } from 'reactfire'
-import { InstructionText } from 'components/UI/InstructionText'
+import { Popover } from 'components/UI/Popover'
 
 type ManageGroupParams = {
   studentGroupId: string
@@ -31,6 +31,10 @@ const ManageGroup: React.FC = () => {
   const [selectedStudents, setSelectedStudents] = React.useState<string[]>([])
   const [shouldBounce, setShouldBounce] = React.useState(false)
 
+  const [thereAreNoStudentsInThisGroup, setThereAreNoStudentsInThisGroup] = React.useState(false)
+
+  const [initialNumberOfStudentsInGroup, setInitialNumberOfStudentsInGroup] = React.useState<number | null>(null)
+
   const { studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(studentGroupId)
 
   const { studentGroupDocument, studentGroupRef } = useStudentGroup(studentGroupId)
@@ -41,7 +45,19 @@ const ManageGroup: React.FC = () => {
     history.push(`/student-group/${studentGroupId}`)
   }
 
-  const thereAreNoStudentsInThisGroup = studentsInThisStudentGroupDocuments?.length === 0
+  React.useEffect(() => {
+    if (studentsInThisStudentGroupDocuments && initialNumberOfStudentsInGroup === null) {
+      setInitialNumberOfStudentsInGroup(studentsInThisStudentGroupDocuments?.length)
+    }
+  }, [initialNumberOfStudentsInGroup, studentsInThisStudentGroupDocuments])
+
+  React.useEffect(() => {
+    if (studentsInThisStudentGroupDocuments?.length === 0) {
+      setThereAreNoStudentsInThisGroup(true)
+    } else {
+      setThereAreNoStudentsInThisGroup(false)
+    }
+  }, [studentsInThisStudentGroupDocuments])
 
   React.useEffect(() => {
     if (thereAreNoStudentsInThisGroup) {
@@ -114,9 +130,9 @@ const ManageGroup: React.FC = () => {
           + ADD STUDENTS
         </Button>
 
-        {thereAreNoStudentsInThisGroup ? (
-          <InstructionText>This is where your students will be listed. Click add students!</InstructionText>
-        ) : null}
+        <Flex w="100%" justify="center">
+          <Popover text="Your group needs students" shouldShowPopover={thereAreNoStudentsInThisGroup} type="below" />
+        </Flex>
 
         <Flex
           direction="column"
@@ -154,6 +170,14 @@ const ManageGroup: React.FC = () => {
           })}
         </Flex>
       </Flex>
+      <Box position="fixed" bottom="7rem" right="3rem">
+        <Popover
+          text="Head back to the main group page to start selecting students!"
+          shouldShowPopover={initialNumberOfStudentsInGroup === 0 && studentsInThisStudentGroupDocuments?.length > 0}
+          type="above"
+        />
+      </Box>
+
       <Box display="block" position="fixed" bottom="0" left="0" h="5rem" w="full">
         <Flex
           alignItems="center"
@@ -172,6 +196,9 @@ const ManageGroup: React.FC = () => {
             fontSize="1.1rem"
             fontWeight="600"
             onClick={backHandler}
+            className={
+              initialNumberOfStudentsInGroup === 0 && studentsInThisStudentGroupDocuments?.length > 0 ? 'bounce' : ''
+            }
           >
             BACK TO GROUP
           </Button>

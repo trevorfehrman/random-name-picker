@@ -27,6 +27,12 @@ export const ReviewNewProfiles: React.FC = () => {
   }
 
   React.useEffect(() => {
+    if (sharedProfiles?.length === 0) {
+      history.push('/manage-students')
+    }
+  })
+
+  React.useEffect(() => {
     const calculatedExistingProfiles: ISharedStudentProfile[] = []
 
     const calculatedNewProfiles: ISharedStudentProfile[] = []
