@@ -1,5 +1,13 @@
+import * as React from 'react'
 import { useFirestore, useUser, useFirestoreDocData, useFirestoreCollectionData } from 'reactfire'
-import { IStudentGroup, IStudent, IStudentInStudentGroup, ISharedStudentProfile } from 'interfacesAndTypes'
+import {
+  IStudentGroup,
+  IStudent,
+  IStudentInfo,
+  IStudentInStudentGroup,
+  ISharedStudentProfile,
+  ISelectedStudentInfo,
+} from 'interfacesAndTypes'
 import firebase from 'firebase'
 
 interface iTeacherDoc {
@@ -122,4 +130,20 @@ export const useSharedProfiles: () => IUseSharedStudentProfiles = () => {
   }).data
 
   return { sharedProfiles, sharedProfilesRef }
+}
+
+export const useFirebaseImageUrl = (student: IStudent | IStudentInfo | ISelectedStudentInfo): string => {
+  const [imageUrl, setImageUrl] = React.useState('')
+
+  React.useEffect(() => {
+    if (student) {
+      const storage = firebase.storage()
+      const imageRef = storage.ref(student?.profilePic)
+      imageRef.getDownloadURL().then(result => {
+        setImageUrl(result)
+      })
+    }
+  }, [student])
+
+  return imageUrl
 }

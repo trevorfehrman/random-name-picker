@@ -14,7 +14,7 @@ export interface ISelectedStudent {
   order: number
 }
 
-interface ISelectedStudentInfo {
+export interface ISelectedStudentInfo {
   studentName: string
   profilePic: string
   selectedFact: IStudentFact | null
@@ -29,7 +29,7 @@ export interface IStudent {
   studentName: string
   profileId: string
   docId: string
-  profilePic?: string
+  profilePic: string
   studentFacts: IStudentFacts
 }
 
@@ -47,17 +47,17 @@ export interface IStudentInStudentGroup {
   order: number
 }
 
-interface IStudentInfo {
+export interface IStudentInfo {
   studentName: string
   profilePic: string
   studentFacts: IStudentFact[]
 }
-
-export interface INewStudentValues {
+export interface IFileUpload {
   studentName: string
-  profilePic: string
-  [key: string]: string
+  profilePic: FileList
 }
+
+export type INewStudentValues = IStudentFacts & IFileUpload
 
 export interface IStudentToAdd {
   studentId: string

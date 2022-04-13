@@ -8,6 +8,7 @@ import StudentFactInput from 'components/StudentFactInput'
 import { studentFactInputs } from 'student-facts'
 import { IStudent, INewStudentValues } from 'interfacesAndTypes'
 import { useHistory } from 'react-router-dom'
+import Firebase from 'firebase'
 
 const ContentsBox = styled.div`
   color: var(--grey-dark);
@@ -27,9 +28,21 @@ export const StudentDetailsForm: React.FC<{
   submitText: string
   cancelDestination: string
 }> = ({ submitHandler, studentDocument, submitText, cancelDestination }) => {
+  const [imageUrl, setImageUrl] = React.useState('')
   const { handleSubmit, register, reset, errors } = useForm()
 
   const history = useHistory()
+
+  React.useEffect(() => {
+    if (studentDocument) {
+      Firebase.storage()
+        .ref(studentDocument?.profilePic)
+        .getDownloadURL()
+        .then(result => {
+          setImageUrl(result)
+        })
+    }
+  }, [studentDocument?.profilePic, studentDocument])
 
   React.useEffect(() => {
     const resetObject: Record<string, unknown> = {}
@@ -41,7 +54,7 @@ export const StudentDetailsForm: React.FC<{
     console.log(resetObject)
     reset({
       studentName: studentDocument?.studentName,
-      profilePic: studentDocument?.profilePic,
+      // profilePic: studentDocument?.profilePic,
       ...resetObject,
     })
   }, [reset, studentDocument])
@@ -56,14 +69,7 @@ export const StudentDetailsForm: React.FC<{
       >
         <Box width="100%" margin="0 auto 2rem auto" paddingBottom="2rem">
           <Box>
-            <Image
-              w="9.5rem"
-              h="9.5rem"
-              fit="cover"
-              margin="1rem auto 0 auto"
-              borderRadius="3px"
-              src={studentDocument?.profilePic}
-            ></Image>
+            <Image w="9.5rem" h="9.5rem" fit="cover" margin="1rem auto 0 auto" borderRadius="3px" src={imageUrl} />
           </Box>
 
           <Flex
@@ -80,26 +86,17 @@ export const StudentDetailsForm: React.FC<{
               <FormLabel color="var(--main-color-medium)" htmlFor="studentName">
                 Name
               </FormLabel>
-              <Input
-                id="studentName"
-                name="studentName"
-                placeholder="Student Name"
-                ref={register({ minLength: 5, required: true })}
-              />
-              {errors.studentName && errors.studentName.type === 'required' && (
-                <FormErrorMessage>Oops!</FormErrorMessage>
-              )}
+              <Input id="studentName" name="studentName" placeholder="Student Name" ref={register({ minLength: 5 })} />
               {errors.studentName && errors.studentName.type === 'minLength' && (
                 <FormErrorMessage>Need more!</FormErrorMessage>
               )}
             </FormControlStyled>
 
-            <FormControlStyled isInvalid={errors.profilePic} isRequired>
+            <FormControlStyled isInvalid={errors.profilePic}>
               <FormLabel color="var(--main-color-medium)" htmlFor="profile-pic">
                 Profile Pic
               </FormLabel>
-              <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
-              {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
+              <Input type="file" id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register} />
             </FormControlStyled>
 
             {studentFactInputs.map(studentFactInput => {

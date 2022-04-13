@@ -8,6 +8,7 @@ import { INewStudentValues } from 'interfacesAndTypes'
 import FooterWithButtons from 'components/UI/FooterWithButtons'
 import { useStudents } from 'helpers/firestoreHooks'
 import { FormControlStyled } from 'components/FormControlStyled'
+import { useStorage, useUser } from 'reactfire'
 
 type NewStudentProps = {
   onClose: () => void
@@ -16,15 +17,25 @@ type NewStudentProps = {
 const NewStudent: React.FC<NewStudentProps> = ({ onClose }) => {
   const { register, handleSubmit, errors } = useForm()
 
+  const storage = useStorage()
+
+  const { data } = useUser()
+
   const { studentsRef } = useStudents()
 
   const addStudentHandler = async (values: INewStudentValues) => {
     const { studentName, profilePic } = values
+    if (profilePic[0].size > 1000000) {
+      return console.log('please upload a photo less than 1mb')
+    }
+    const imageUrl = `images/${data.uid}/${studentName}/${profilePic[0].name}`
+    const imagesRef = storage.ref(imageUrl)
     const studentFacts = createStudentFactsObject(values)
     try {
+      await imagesRef.put(profilePic[0])
       studentsRef.add({
         studentName,
-        profilePic,
+        profilePic: imageUrl,
         studentFacts,
       })
       onClose()
@@ -57,7 +68,13 @@ const NewStudent: React.FC<NewStudentProps> = ({ onClose }) => {
             <FormLabel color="var(--main-color-medium)" htmlFor="profile-pic">
               Profile Pic
             </FormLabel>
-            <Input id="profile-pic" name="profilePic" placeholder="Profile Pic" ref={register({ required: true })} />
+            <Input
+              type="file"
+              id="profile-pic"
+              name="profilePic"
+              placeholder="Profile Pic"
+              ref={register({ required: true })}
+            />
             {errors.profilePic && errors.profilePic.type === 'required' && <FormErrorMessage>Oops!</FormErrorMessage>}
           </FormControlStyled>
 
