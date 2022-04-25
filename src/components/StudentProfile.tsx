@@ -3,6 +3,7 @@ import { Flex, Image, Box, IconButton, Icon } from '@chakra-ui/react'
 import { BiExpand, BiCollapse } from 'react-icons/bi'
 import { ISelectedStudent } from 'interfacesAndTypes'
 import styled from '@emotion/styled/macro'
+import { useFirebaseImageUrl } from 'helpers/firestoreHooks'
 
 type StudentProfileProps = {
   selectedStudent: ISelectedStudent
@@ -49,6 +50,8 @@ const StudentProfile: React.FC<StudentProfileProps> = ({
   setFullScreenDisplayIsOpen,
   fullScreenDisplayIsOpen,
 }) => {
+  const imageUrl = useFirebaseImageUrl(selectedStudent.studentInfo)
+
   const expandHandler = (e: React.SyntheticEvent) => {
     e.stopPropagation()
     fullScreenDisplayIsOpen ? setFullScreenDisplayIsOpen(false) : setFullScreenDisplayIsOpen(true)
@@ -66,7 +69,7 @@ const StudentProfile: React.FC<StudentProfileProps> = ({
       maxHeight="34rem"
     >
       <ImageBox>
-        <Image boxSize="100%" borderRadius="5px" src={selectedStudent?.studentInfo.profilePic} objectFit="cover" />
+        <Image boxSize="100%" borderRadius="5px" src={imageUrl} objectFit="cover" />
         <FullScreenOption>
           <IconButton
             icon={

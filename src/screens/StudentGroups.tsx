@@ -13,6 +13,8 @@ import DeleteButton from 'components/UI/DeleteButton'
 import ConfirmationModal from 'components/ConfirmationModal'
 import firebase from 'firebase'
 import { SpinnerCentered } from 'components/UI/SpinnerCentered'
+import { Popover } from 'components/UI/Popover'
+import { InstructionText } from 'components/UI/InstructionText'
 
 const GroupBox = styled.div`
   display: flex;
@@ -27,11 +29,24 @@ const StudentGroups: React.FC = () => {
 
   const [selectedToDelete, setSelectedToDelete] = React.useState<string[]>([])
 
+  const [thereAreNoGroups, setThereAreNoGroups] = React.useState(false)
+
+  const [thereIsOneGroupWithNoStudents, setThereIsOneGroupWithNoStudents] = React.useState(false)
+
   const { isOpen, onClose, onOpen } = useDisclosure()
 
   const { studentGroupsDocuments, studentGroupsRef } = useStudentGroups()
 
   const studentsInStudentGroupsRef = useStudentsInStudentGroups()
+
+  React.useEffect(() => {
+    if (studentGroupsDocuments?.length === 0) {
+      setThereIsOneGroupWithNoStudents(false)
+      setThereAreNoGroups(true)
+    } else {
+      setThereAreNoGroups(false)
+    }
+  }, [studentGroupsDocuments])
 
   const deleteHandler = () => {
     selectedToDelete.forEach(studentGroupId => {
@@ -61,16 +76,14 @@ const StudentGroups: React.FC = () => {
     setSelectedToDelete(updatedSelectedToDelete)
   }
 
-  const thereAreNoGroups = studentGroupsDocuments?.length === 0
-
-  console.log('nogroups', thereAreNoGroups, studentGroupsDocuments)
-
   return (
-    <Box height="calc(100vh - 4.5rem)" overflowY="hidden">
+    <Box height="100%" overflowY="hidden" padding="2rem">
       {!studentGroupsDocuments ? (
         <SpinnerCentered />
       ) : (
         <BodyBox>
+          {thereAreNoGroups && <InstructionText>You have no groups</InstructionText>}
+          <Heading as="h2">Your groups</Heading>
           <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
             {managerIsOpen ? (
               <Flex alignItems="center">
@@ -86,7 +99,7 @@ const StudentGroups: React.FC = () => {
                 </Heading>
               </Flex>
             ) : null}
-            {thereAreNoGroups ? null : (
+            {!thereAreNoGroups && (
               <ManageButton
                 primaryText="Manage Groups"
                 secondaryText="Close Manager"
@@ -97,30 +110,36 @@ const StudentGroups: React.FC = () => {
           </Flex>
 
           <GroupBox>
-            {thereAreNoGroups ? (
-              <Flex h="100%" align="center">
-                <Heading as="h2" textAlign="center" transform="translateY(-2.25rem)">
-                  Click the plus sign to create a new Group!
-                </Heading>
-              </Flex>
-            ) : (
-              studentGroupsDocuments?.map(doc => {
-                return (
+            {studentGroupsDocuments?.map(doc => {
+              return (
+                <Flex key={doc.docId} w="100%" justifyContent="center" direction="column" position="relative">
                   <StudentGroupPreview
-                    key={doc.docId}
                     studentGroupId={doc.docId}
                     studentGroupName={doc.studentGroupName}
                     managerIsOpen={managerIsOpen}
                     setSelectedToDelete={setSelectedToDelete}
                     selectedToDelete={selectedToDelete}
+                    thisIsTheOnlyStudentGroup={studentGroupsDocuments?.length === 1}
+                    setThereIsOneGroupWithNoStudents={setThereIsOneGroupWithNoStudents}
                   />
-                )
-              })
-            )}
+                </Flex>
+              )
+            })}
+
+            <Popover
+              text="Click on the group to enter"
+              shouldShowPopover={thereIsOneGroupWithNoStudents}
+              type="below"
+            />
+
+            <Box position="fixed" bottom="8rem" right="1.7rem">
+              <Popover type="above" text="Click here to create a group" shouldShowPopover={thereAreNoGroups} />
+            </Box>
+
             {managerIsOpen ? (
               <DeleteButton onOpen={onOpen} />
             ) : (
-              <PlusButton thereAreNoDocuments={thereAreNoGroups} onOpen={onOpen} />
+              <PlusButton thereAreNoDocuments={thereAreNoGroups} onOpen={onOpen} ariaLabel="add group" />
             )}
           </GroupBox>
 

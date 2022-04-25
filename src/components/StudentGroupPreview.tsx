@@ -28,6 +28,8 @@ type StudentGroupProps = {
   managerIsOpen: boolean
   setSelectedToDelete: React.Dispatch<React.SetStateAction<string[]>>
   selectedToDelete: string[]
+  thisIsTheOnlyStudentGroup: boolean
+  setThereIsOneGroupWithNoStudents: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const StudentGroup: React.FC<StudentGroupProps> = ({
@@ -36,10 +38,22 @@ const StudentGroup: React.FC<StudentGroupProps> = ({
   managerIsOpen,
   selectedToDelete,
   setSelectedToDelete,
+  thisIsTheOnlyStudentGroup,
+  setThereIsOneGroupWithNoStudents,
 }) => {
   const { studentsInThisStudentGroupDocuments } = useStudentsInThisStudentGroup(studentGroupId)
 
   const history = useHistory()
+
+  const thereAreNoStudentsInThisGroup = studentsInThisStudentGroupDocuments?.length === 0
+
+  React.useEffect(() => {
+    if (thereAreNoStudentsInThisGroup && thisIsTheOnlyStudentGroup) {
+      setThereIsOneGroupWithNoStudents(true)
+    } else {
+      setThereIsOneGroupWithNoStudents(false)
+    }
+  }, [setThereIsOneGroupWithNoStudents, thereAreNoStudentsInThisGroup, thisIsTheOnlyStudentGroup])
 
   const openStudentGroupHandler = () => {
     history.push(`/student-group/${studentGroupId}`)
@@ -57,6 +71,7 @@ const StudentGroup: React.FC<StudentGroupProps> = ({
   return (
     <>
       <StudentGroupContainer
+        className={thisIsTheOnlyStudentGroup && thereAreNoStudentsInThisGroup ? 'bounce' : ''}
         onClick={
           managerIsOpen
             ? () => {

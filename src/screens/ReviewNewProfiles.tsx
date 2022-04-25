@@ -3,16 +3,18 @@ import { ISharedStudentProfile } from 'interfacesAndTypes'
 import { Flex, Heading, Button } from '@chakra-ui/react'
 import { useHistory } from 'react-router'
 import { BodyBox } from 'styles'
-import { useStudents } from 'helpers/firestoreHooks'
+import { useSharedProfiles, useStudents } from 'helpers/firestoreHooks'
 import { ProfilePreview } from 'components/ProfilePreview'
 
-export const ReviewNewProfiles: React.FC<{ sharedProfiles: ISharedStudentProfile[] }> = ({ sharedProfiles }) => {
+export const ReviewNewProfiles: React.FC = () => {
   const history = useHistory()
 
   const [existingProfiles, setExistingProfiles] = React.useState<ISharedStudentProfile[]>([])
   const [newProfiles, setNewProfiles] = React.useState<ISharedStudentProfile[]>([])
 
   const { studentDocuments } = useStudents()
+
+  const { sharedProfiles } = useSharedProfiles()
 
   const handleReviewNewProfile = (profileId: string) => {
     console.log(profileId)
@@ -23,6 +25,12 @@ export const ReviewNewProfiles: React.FC<{ sharedProfiles: ISharedStudentProfile
     console.log(profileId)
     history.push(`/review-profile-changes/${profileId}`)
   }
+
+  React.useEffect(() => {
+    if (sharedProfiles?.length === 0) {
+      history.push('/manage-students')
+    }
+  })
 
   React.useEffect(() => {
     const calculatedExistingProfiles: ISharedStudentProfile[] = []

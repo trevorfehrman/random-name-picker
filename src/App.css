@@ -121,9 +121,13 @@ body {
     transform: translateY(0) scale(1);
   }
   30% {
-    transform: translateY(-1rem) scale(1.1);
+    transform: translateY(-0.3rem) scale(1.02);
   }
   100% {
     transform: translateY(0) scale(1);
   }
+}
+
+.underline {
+  text-decoration: underline;
 }
