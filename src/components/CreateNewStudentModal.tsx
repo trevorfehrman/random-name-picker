@@ -13,9 +13,10 @@ import NewStudent from 'components/NewStudent'
 type CreateNewStudentModalProps = {
   isOpen: boolean
   onClose: () => void
+  setIsAddingStudent: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const CreateNewStudentModal: React.FC<CreateNewStudentModalProps> = ({ isOpen, onClose }) => {
+const CreateNewStudentModal: React.FC<CreateNewStudentModalProps> = ({ isOpen, onClose, setIsAddingStudent }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
@@ -23,7 +24,7 @@ const CreateNewStudentModal: React.FC<CreateNewStudentModalProps> = ({ isOpen, o
         <ModalHeader>New Student</ModalHeader>
         <ModalCloseButton />
         <ModalBody overflowY="scroll">
-          <NewStudent onClose={onClose} />
+          <NewStudent onClose={onClose} setIsAddingStudent={setIsAddingStudent} />
         </ModalBody>
         {/* <FooterWithButtons onCancel={onCancel} onSubmit={onSubmit} submitText="CREATE" /> */}
 

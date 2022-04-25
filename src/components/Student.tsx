@@ -10,8 +10,8 @@ import { useFirebaseImageUrl } from 'helpers/firestoreHooks'
 type StudentProps = {
   student: IStudent
   managerIsOpen: boolean
-  selectedToDelete: string[]
-  setSelectedToDelete: React.Dispatch<React.SetStateAction<string[]>>
+  selectedToDelete: { studentId: string; profilePic: string }[]
+  setSelectedToDelete: React.Dispatch<React.SetStateAction<{ studentId: string; profilePic: string }[]>>
 }
 
 const Student: React.FC<StudentProps> = ({ student, managerIsOpen, selectedToDelete, setSelectedToDelete }) => {
@@ -29,10 +29,10 @@ const Student: React.FC<StudentProps> = ({ student, managerIsOpen, selectedToDel
   const checkHandler = () => {
     console.log(student.docId)
     setSelectedToDelete(prevSelectedToDelete => {
-      console.log(prevSelectedToDelete.includes(student.docId))
-      if (prevSelectedToDelete.includes(student.docId)) {
-        return prevSelectedToDelete.filter(studentId => studentId !== student.docId)
-      } else return [...prevSelectedToDelete, student.docId]
+      console.log(prevSelectedToDelete.some(selected => selected.studentId === student.docId))
+      if (prevSelectedToDelete.some(selected => selected.studentId === student.docId)) {
+        return prevSelectedToDelete.filter(selected => selected.studentId !== student.docId)
+      } else return [...prevSelectedToDelete, { studentId: student.docId, profilePic: student.profilePic }]
     })
   }
 
@@ -53,7 +53,7 @@ const Student: React.FC<StudentProps> = ({ student, managerIsOpen, selectedToDel
               border="1px solid var(--main-color-light)"
               borderRadius="3px"
               marginRight="1rem"
-              isChecked={selectedToDelete.includes(student.docId)}
+              isChecked={selectedToDelete.some(selected => selected.studentId === student.docId)}
               onChange={checkHandler}
             />
           ) : null}

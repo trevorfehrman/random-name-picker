@@ -12,9 +12,10 @@ import { useStorage, useUser } from 'reactfire'
 
 type NewStudentProps = {
   onClose: () => void
+  setIsAddingStudent: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const NewStudent: React.FC<NewStudentProps> = ({ onClose }) => {
+const NewStudent: React.FC<NewStudentProps> = ({ onClose, setIsAddingStudent }) => {
   const { register, handleSubmit, errors } = useForm()
 
   const storage = useStorage()
@@ -24,10 +25,12 @@ const NewStudent: React.FC<NewStudentProps> = ({ onClose }) => {
   const { studentsRef } = useStudents()
 
   const addStudentHandler = async (values: INewStudentValues) => {
+    setIsAddingStudent(true)
     const { studentName, profilePic } = values
     if (profilePic[0].size > 1000000) {
       return console.log('please upload a photo less than 1mb')
     }
+    onClose()
     const imageUrl = `images/${data.uid}/${studentName}/${profilePic[0].name}`
     const imagesRef = storage.ref(imageUrl)
     const studentFacts = createStudentFactsObject(values)
@@ -38,9 +41,10 @@ const NewStudent: React.FC<NewStudentProps> = ({ onClose }) => {
         profilePic: imageUrl,
         studentFacts,
       })
-      onClose()
+      setIsAddingStudent(false)
     } catch (err) {
       console.log(err)
+      setIsAddingStudent(false)
     }
   }
 

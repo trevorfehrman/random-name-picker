@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { Flex, useDisclosure, Box, Checkbox, Heading, Button } from '@chakra-ui/react'
+import { Flex, useDisclosure, Box, Checkbox, Heading, Button, Spinner } from '@chakra-ui/react'
 import Student from 'components/Student'
 import { BodyBox } from 'styles'
 import CreateNewStudentModal from 'components/CreateNewStudentModal'
@@ -26,13 +26,17 @@ const StudentBox = styled.div`
 const ManageStudents: React.FC = () => {
   const [managerIsOpen, setManagerIsOpen] = React.useState(false)
 
-  const [selectedToDelete, setSelectedToDelete] = React.useState<string[]>([])
+  const [selectedToDelete, setSelectedToDelete] = React.useState<{ studentId: string; profilePic: string }[]>([])
 
   const [thereAreNoStudents, setThereAreNoStudents] = React.useState(false)
 
   const [initialStudentNumber, setInitialStudentNumber] = React.useState<null | number>(null)
 
+  const [isAddingStudent, setIsAddingStudent] = React.useState(false)
+
   const history = useHistory()
+
+  const storage = firebase.storage()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -60,28 +64,35 @@ const ManageStudents: React.FC = () => {
 
   const selectAllHandler = () => {
     console.log('this worked!')
-    const updatedSelectedToDelete: string[] = []
+    const updatedSelectedToDelete: { studentId: string; profilePic: string }[] = []
     if (selectedToDelete.length < studentDocuments.length) {
-      studentDocuments.forEach(doc => updatedSelectedToDelete.push(doc.docId))
+      studentDocuments.forEach(doc =>
+        updatedSelectedToDelete.push({ studentId: doc.docId, profilePic: doc.profilePic }),
+      )
     }
     setSelectedToDelete(updatedSelectedToDelete)
   }
 
   const deleteHandler = async () => {
-    selectedToDelete.forEach(async studentId => {
+    selectedToDelete.forEach(async studentToDelete => {
+      console.log(studentToDelete.studentId)
       const deleteBatch = firebase.firestore().batch()
-      deleteBatch.delete(studentsRef.doc(studentId))
-      const allGroupsWithThisStudentRef = studentsInStudentGroupsRef.where('studentId', '==', studentId)
+      deleteBatch.delete(studentsRef.doc(studentToDelete.studentId))
+      const allGroupsWithThisStudentRef = studentsInStudentGroupsRef.where('studentId', '==', studentToDelete.studentId)
       const snapshot = await allGroupsWithThisStudentRef.get()
       if (snapshot.docs.length > 0) {
         snapshot.docs.forEach(doc => {
           deleteBatch.delete(doc.ref)
         })
       }
-      deleteBatch.commit()
+      await deleteBatch.commit()
+      const existingImageUrl = studentToDelete.profilePic
+      const existingImageRef = storage.ref(existingImageUrl)
+      existingImageRef.delete()
     })
     onClose()
     setManagerIsOpen(false)
+    setSelectedToDelete([])
   }
 
   return (
@@ -113,10 +124,17 @@ const ManageStudents: React.FC = () => {
               </Button>
             </Flex>
           ) : null}
+          <Flex direction="column" align="center">
+            <Heading as="h2" marginTop="2rem">
+              Your students
+            </Heading>
 
-          <Heading as="h2" marginTop="2rem">
-            Your students
-          </Heading>
+            {isAddingStudent && (
+              <Flex position="absolute" top="5rem">
+                <Spinner />
+              </Flex>
+            )}
+          </Flex>
 
           {!thereAreNoStudents && (
             <Flex width="100%" justifyContent={managerIsOpen ? 'space-between' : 'flex-end'} alignItems="flex-end">
@@ -170,7 +188,7 @@ const ManageStudents: React.FC = () => {
               Are you sure you want to delete the selected Students? They will be removed from all groups.
             </ConfirmationModal>
           ) : (
-            <CreateNewStudentModal onClose={onClose} isOpen={isOpen} />
+            <CreateNewStudentModal onClose={onClose} isOpen={isOpen} setIsAddingStudent={setIsAddingStudent} />
           )}
         </BodyBox>
       )}
